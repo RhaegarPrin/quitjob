@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<odoo>
+    <record id="quitjob_manage.employee" model="ir.actions.act_window">
+        <field name="name">Employee_action</field>
+        <field name="res_model">employee.company</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record id="quitjob_manage.employee_req" model="ir.actions.act_window">
+        <field name="name">Employee_req</field>
+        <field name="res_model">employee.req</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record id="quitjob_manage.dl_req" model="ir.actions.act_window">
+        <field name="name">DL_action</field>
+        <field name="res_model">dl.req</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record id="quitjob_manage.pm_req" model="ir.actions.act_window">
+        <field name="name">PM_action</field>
+        <field name="res_model">pm.req</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <menuitem id="quitjob_manage.employee_menu"
+              name=" Quit J Manage"/>
+
+    <menuitem id="quitjob_manage.emp_menu"
+              name=" Employee Action"
+              parent="quitjob_manage.employee_menu"
+              action="quitjob_manage.employee"/>
+
+    <menuitem id="quitjob_manage.employee_req_menu"
+              name="Employee REquest"
+              parent="quitjob_manage.employee_menu"
+              action="quitjob_manage.employee_req"/>
+
+    <menuitem id="quitjob_manage.dl_req_menu"
+              name="DL req"
+              parent="quitjob_manage.employee_menu"
+              action="quitjob_manage.dl_req"/>
+
+    <menuitem id="quitjob_manage.pm_req_menu"
+              name="PM req"
+              parent="quitjob_manage.employee_menu"
+              action="quitjob_manage.pm_req"/>
+</odoo>

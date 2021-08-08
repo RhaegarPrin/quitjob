@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<odoo>
+    <record id="pm_req_form" model="ir.ui.view">
+        <field name="name">PM Request Form</field>
+        <field name="model">pm.req</field>
+        <field name="arch" type="xml">
+            <form>
+                <form>
+                    <strong>Employee :</strong>
+                    <field name="rela_user"/>
+                </form>
+                <form>
+                    <strong>DL:</strong>
+                    <field name="emp_reqs"/>
+                </form>
+                <form>
+                    <strong>Employee Rq:</strong>
+                    <field name="pm_id"/>
+                </form>
+            </form>
+        </field>
+    </record>
+</odoo>
