@@ -39,17 +39,20 @@
               action="quitjob_manage.employee"/>
 
     <menuitem id="quitjob_manage.employee_req_menu"
+              groups="group_emp_user"
               name="Employee REquest"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee_req"/>
 
     <menuitem id="quitjob_manage.dl_req_menu"
               name="DL req"
+              groups="group_dl_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.dl_req"/>
 
     <menuitem id="quitjob_manage.pm_req_menu"
               name="PM req"
+              groups="group_pm_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.pm_req"/>
 </odoo>
