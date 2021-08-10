@@ -7,52 +7,57 @@
         <field name="model">employee.req</field>
         <field name="arch" type="xml">
             <form>
-                <form>
-                    <strong>Employee :</strong>
-                    <field name="rela_user"/>
-                </form>
-                <form>
-                    <strong>DL :</strong>
-                    <field name="dl_id"/>
-                    <field name="pm_id"/>
-                </form>
-                <form>
-                    <strong>Request Date :</strong>
-                    <field name="req_date"/>
-                </form>
-                <form>
-                    <strong>Ly do :</strong>
-                    <field name="reason"/>
-                </form>
-                <form>
-                    <strong>Status :</strong>
-                    <field name="status" readonly="1"/>
-                </form>
-                <form>
-                    <span>DL accept 1
-                        <field name="dl_first_accept" attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
-                    </span>
-                    <span>DL accept 2
-                        <field name="dl_second_accept" attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
-                    </span>
-                    <span>PM
-                        <field name="pm_accept" attrs="{'invisible': [('pm_accept', '=', False)]}"/>
-                    </span>
-                    <span>
-                        <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
-                    </span>
-                    <span>Other
-                        <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
-                    </span>
-                </form>
-                <notebook>
-                    <page string="Interview detail">
-                        <form>
-                            <strong>Interview :</strong>
-                            <field name="interview_ids"/>
-                        </form>
-                    </page>
-                </notebook>
+                <header>
+                    <field name="status" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <form>
+                        <strong>Employee :</strong>
+                        <field name="rela_user"/>
+                    </form>
+                    <form>
+                        <strong>DL :</strong>
+                        <field name="dl_id"/>
+                        <field name="pm_id"/>
+                    </form>
+                    <form>
+                        <strong>Request Date :</strong>
+                        <field name="req_date"/>
+                    </form>
+                    <form>
+                        <strong>Ly do :</strong>
+                        <field name="reason"/>
+                    </form>
+<!--                    <form>-->
+<!--                        <strong>Status :</strong>-->
+<!--                        <field name="status" readonly="1"/>-->
+<!--                    </form>-->
+                    <form>
+                        <span>DL accept 1
+                            <field name="dl_first_accept" attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
+                        </span>
+                        <span>DL accept 2
+                            <field name="dl_second_accept" attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
+                        </span>
+                        <span>PM
+                            <field name="pm_accept" attrs="{'invisible': [('pm_accept', '=', False)]}"/>
+                        </span>
+                        <span>
+                            <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
+                        </span>
+                        <span>Other
+                            <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
+                        </span>
+                    </form>
+                    <notebook>
+                        <page string="Interview detail">
+                            <form>
+                                <strong>Interview :</strong>
+                                <field name="interview_ids"/>
+                            </form>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>
@@ -98,7 +103,7 @@
         <field name="inherit_id" ref="emp_req_form"/>
         <field name="groups_id" eval="[(4, ref('group_emp_user'))]"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='status']" position="after">
+            <xpath expr="//field[@name='interview_ids']" position="before">
                 <form>
                     <button name="send_req" type="object">Send rq</button>
                     <button name="cancel_send_req" type="object">Cancel rq</button>
@@ -115,8 +120,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='reason']" position="after">
                 <fiel name="rela_user" string="User"/>
-                <button name="Dl_approud_1" type="object">DL Appr</button>
-                <button name="Dl_approud_2" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL Appr 2
+                <button name="Dl_approud_1" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL Appr</button>
+                <button name="Dl_approud_2" type="object" attrs="{'invisible':[('pm_accept','=',False)]}">DL Appr 2
                 </button>
             </xpath>
         </field>
