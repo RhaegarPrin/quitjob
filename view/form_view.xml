@@ -14,6 +14,7 @@
                 <form>
                     <strong>DL :</strong>
                     <field name="dl_id"/>
+                    <field name="pm_id"/>
                 </form>
                 <form>
                     <strong>Request Date :</strong>
@@ -34,7 +35,50 @@
                     <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
                     <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
                 </form>
+                <notebook>
+                    <page string="Interview detail">
+                        <form>
+                            <strong>Interview :</strong>
+                            <field name="interview_ids"/>
+                        </form>
+                    </page>
+                </notebook>
             </form>
+        </field>
+    </record>
+
+    <record id="emp_req_kanban" model="ir.ui.view">
+        <field name="name">Emp req kanban</field>
+        <field name="model">employee.req</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <form>
+                                <span>Name:
+                                    <field name="rela_user"/>
+                                </span>
+                            </form>
+                            <form>
+                                <span>DL Acc1:
+                                    <field name="dl_first_accept"/>
+                                </span>
+                            </form>
+                            <form>
+                                <span>PM Acc:
+                                    <field name="pm_accept"/>
+                                </span>
+                            </form>
+                            <form>
+                                <span>DL Acc2:
+                                    <field name="dl_second_accept"/>
+                                </span>
+                            </form>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 
@@ -46,8 +90,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="after">
                 <form>
-                    <button name="send_req" type="object" >Send rq</button>
-                    <button name="cancel_send_req" type="object" >Cancel rq</button>
+                    <button name="send_req" type="object">Send rq</button>
+                    <button name="cancel_send_req" type="object">Cancel rq</button>
                 </form>
             </xpath>
         </field>
@@ -62,6 +106,8 @@
             <xpath expr="//field[@name='reason']" position="after">
                 <fiel name="rela_user" string="User"/>
                 <button name="Dl_approud_1" type="object">DL Appr</button>
+                <button name="Dl_approud_2" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL Appr 2
+                </button>
             </xpath>
         </field>
     </record>

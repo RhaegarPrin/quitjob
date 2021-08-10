@@ -13,13 +13,42 @@
                 </form>
                 <form>
                     <strong>Employee Rq:</strong>
-                    <field name="emp_reqs" />
+                    <field name="emp_reqs"/>
                 </form>
                 <form>
                     <strong>Employee Rq:</strong>
                     <field name="pm_id"/>
                 </form>
             </form>
+        </field>
+    </record>
+
+    <record id="dl_req_tree" model="ir.ui.view">
+        <field name="name">DL Request Form</field>
+        <field name="model">dl.req</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="rela_user"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="dl_req_kanban" model="ir.ui.view">
+        <field name="name">DL Request Kanban</field>
+        <field name="model">dl.req</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <span>Name:
+                            <field name="rela_user"/>
+                            </span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>
