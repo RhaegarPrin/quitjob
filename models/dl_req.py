@@ -7,7 +7,7 @@ class dl_req(models.Model):
     emp_reqs = fields.One2many('employee.req', 'dl_id', string="List_req", domain=[('status', '=', 'send')])
     valid_reqs = fields.Boolean(compute="_compute_valid_req", store=True, default=False)
     pm_id = fields.Many2one('pm.req', string='PM')
-    rela_user = fields.Many2one('res.users', string='USER Related')
+    rela_user = fields.Many2one('res.users', string='USER Related',default=lambda self: self.env.user)
 
     # @api.depends("emp_reqs")
     # def _empty_or_not(self):

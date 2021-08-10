@@ -7,8 +7,10 @@ from odoo.exceptions import ValidationError
 class Employee_rq(models.Model):
     _name = "employee.req"
 
-    rela_user = fields.Many2one('res.users', string='USER Related')
-    dl_id = fields.Many2one('dl.req', string="Employee", required=True)
+    rela_user = fields.Many2one('res.users', string='USER Related', default=lambda self: self.env.user,
+                                required=True)
+    dl_id = fields.Many2one('dl.req', string="DL", required=True,default=lambda self: self.env['dl.req'].search([]))
+    pm_id = fields.Many2one('pm.req', related='dl_id.pm_id',default=lambda self: self.env['pm.req'].search([]))
 
     dl_first_accept = fields.Boolean(default=False, string="DL 1st accepted")
     dl_second_accept = fields.Boolean(default=False, string="DL 2nd accepted")
@@ -16,17 +18,18 @@ class Employee_rq(models.Model):
     hr_accept = fields.Boolean(default=False, string="hr accepted")
     other_confirm = fields.Boolean(default=False, string="Other confirm")
     req_date = fields.Date(string="Request Date", default=fields.Date.today())
-
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
         ('Met ', 'Met'),
         ('Chuyen Cty', 'Chuyen Cty'),
         ('khac', 'Khac'),
     ])
+
     status = fields.Selection([
         ('draft', 'Draft'),
         ('send', 'Send')
     ], default='draft')
+    interview_ids = fields.One2many('interview_rs', 'emp_id', string="interviews", store=True )
 
     def send_req(self):
         for record in self:
