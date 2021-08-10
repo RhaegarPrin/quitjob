@@ -29,11 +29,21 @@
                     <field name="status" readonly="1"/>
                 </form>
                 <form>
-                    <field name="dl_first_accept" attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
-                    <field name="dl_second_accept" attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
-                    <field name="pm_accept" attrs="{'invisible': [('pm_accept', '=', False)]}"/>
-                    <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
-                    <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
+                    <span>DL accept 1
+                        <field name="dl_first_accept" attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
+                    </span>
+                    <span>DL accept 2
+                        <field name="dl_second_accept" attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
+                    </span>
+                    <span>PM
+                        <field name="pm_accept" attrs="{'invisible': [('pm_accept', '=', False)]}"/>
+                    </span>
+                    <span>
+                        <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
+                    </span>
+                    <span>Other
+                        <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
+                    </span>
                 </form>
                 <notebook>
                     <page string="Interview detail">

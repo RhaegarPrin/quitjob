@@ -4,11 +4,6 @@ access_interview_rs_pm,access.interview_rs_pm,model_interview_rs,quitjob_manage.
 access_interview_rs_emp,access.interview_rs_emp,model_interview_rs,quitjob_manage.group_emp_user,1,0,0,0
 access_interview_rs_dl,access.interview_rs_dl,model_interview_rs,quitjob_manage.group_dl_user,1,0,0,0
 
-access_interview_question,access.interview_question,model_interview_question,quitjob_manage.group_pm_user,1,1,1,1
-access_interview_question_emp,access.interview_question,model_interview_question,quitjob_manage.group_emp_user,1,0,0,0
-
-access_interview_answer_emp,access.interview_answer,model_interview_answer,quitjob_manage.group_emp_user,1,1,1,1
-access_interview_answer,access.interview_answer,model_interview_answer,quitjob_manage.group_pm_user,1,0,0,0
 
 access_employee_company,access.employee.company,model_employee_company,base.group_user,1,1,1,1
 
