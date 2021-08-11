@@ -64,7 +64,8 @@
               action="quitjob_manage.pm_req"/>
 
     <menuitem id="quitjob_manage.hr_req_menu"
-              name="HR req"
+              name="Hr req"
+              groups="group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.hr_req"/>
 </odoo>
