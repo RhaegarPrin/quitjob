@@ -22,3 +22,6 @@ access_dl_req_emp,access.dl.req_emp,model_dl_req,quitjob_manage.group_emp_user,1
 access_pm_req,access.pm.req,model_pm_req,quitjob_manage.group_pm_user,1,1,1,1
 access_pm_req_dl,access.pm.req_dl,model_pm_req,quitjob_manage.group_dl_user,1,0,0,0
 access_pm_req_emp,access.pm.req_emp,model_pm_req,quitjob_manage.group_emp_user,1,0,0,0
+access_pm_req_hr,access.pm.req_hr,model_pm_req,base.group_system,1,1,1,1
+
+access_hr_req,access.hr.req,model_hr_req,base.group_user,1,1,1,1

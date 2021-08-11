@@ -11,13 +11,13 @@
     'images': [],
     'depends': [],
     'data': [
+        'security/security.xml',
         'view/menu.xml',
         'view/form_view.xml',
         'view/dl_view.xml',
         'view/pm_view.xml',
         'view/interview_view.xml',
         'security/ir.model.access.csv',
-        'security/security.xml'
     ],
     'demo': [],
     'installable': True,

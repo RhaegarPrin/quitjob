@@ -30,6 +30,13 @@
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
+    <record id="quitjob_manage.hr_req" model="ir.actions.act_window">
+        <field name="name">HR_action</field>
+        <field name="res_model">hr.req</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
     <menuitem id="quitjob_manage.employee_menu"
               name=" Quit J Manage"/>
 
@@ -55,4 +62,9 @@
               groups="group_pm_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.pm_req"/>
+
+    <menuitem id="quitjob_manage.hr_req_menu"
+              name="HR req"
+              parent="quitjob_manage.employee_menu"
+              action="quitjob_manage.hr_req"/>
 </odoo>
