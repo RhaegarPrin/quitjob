@@ -44,7 +44,7 @@
     </record>
 
     <record id="quitjob_manage.pm_rule" model="ir.rule">
-        <field name="name">QUITJOB DL RULE</field>
+        <field name="name">QUITJOB PM RULE</field>
         <field name="model_id" ref="model_pm_req"/>
         <field name="domain_force">[('rela_user','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('group_pm_user'))]"/>
