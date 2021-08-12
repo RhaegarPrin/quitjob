@@ -12,8 +12,12 @@
                     <field name="rela_user"/>
                 </form>
                 <form>
+                    <strong>hr_rq :</strong>
+                    <field name="hr_id"/>
+                </form>
+                <form>
                     <strong>DL:</strong>
-                    <field name="emp_reqs"/>
+                    <field name="dl_reqs"/>
                 </form>
                 <form>
                     <strong>Employee Rq</strong>

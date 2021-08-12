@@ -54,3 +54,7 @@ class Employee_rq(models.Model):
     def HR_approud(self):
         for record in self:
             record.hr_accept = True
+
+    def delete_rec(self):
+        for record in self:
+            record.unlink()

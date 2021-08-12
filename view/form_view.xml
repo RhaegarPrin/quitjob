@@ -28,10 +28,11 @@
                         <strong>Ly do :</strong>
                         <field name="reason"/>
                     </form>
-<!--                    <form>-->
-<!--                        <strong>Status :</strong>-->
-<!--                        <field name="status" readonly="1"/>-->
-<!--                    </form>-->
+
+                    <!--                    <form>-->
+                    <!--                        <strong>Status :</strong>-->
+                    <!--                        <field name="status" readonly="1"/>-->
+                    <!--                    </form>-->
                     <form>
                         <span>DL accept 1
                             <field name="dl_first_accept" attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
@@ -120,7 +121,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='reason']" position="after">
                 <fiel name="rela_user" string="User"/>
-                <button name="Dl_approud_1" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL Appr</button>
+
+                <button name="Dl_approud_1" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL Appr
+                </button>
                 <button name="Dl_approud_2" type="object" attrs="{'invisible':[('pm_accept','=',False)]}">DL Appr 2
                 </button>
             </xpath>
@@ -136,6 +139,19 @@
             <xpath expr="//field[@name='reason']" position="after">
                 <fiel name="rela_user" string="User"/>
                 <button name="PM_approud" type="object">PM Appr</button>
+                <button name="delete_rec" type="object">Delete</button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherited_hr_rep_form" model="ir.ui.view">
+        <field name="name">inherited.dl_req_form</field>
+        <field name="model">employee.req</field>
+        <field name="inherit_id" ref="emp_req_form"/>
+        <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='reason']" position="after">
+                <button name="HR_approud" type="object">HR Appr</button>
             </xpath>
         </field>
     </record>

@@ -40,6 +40,16 @@
         <field name="view_mode">kanban,tree,form</field>
     </record>
 
+    <record id="quitjob_manage.hr_req" model="ir.actions.act_window">
+        <field name="name">HR_action</field>
+        <field name="res_model">hr.req</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+
+
+
     <menuitem id="quitjob_manage.employee_menu"
               name=" Quit J Manage"/>
 
@@ -48,28 +58,28 @@
     <menuitem id="quitjob_manage.emp_new"
               name=" Employees"
               sequence="1"
-              groups="base.group_user,group_emp_user,group_dl_user,group_pm_user"
+              groups="base.group_user,group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.department"/>
 
     <menuitem id="quitjob_manage.contracts"
               name=" Contracts"
               sequence="3"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.department"/>
 
     <menuitem id="quitjob_manage.sarscov2"
               name=" SARS-COV-2"
               sequence="4"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.department"/>
 
     <menuitem id="quitjob_manage.skills"
               name=" Skills"
               sequence="5"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.department"/>
     <!--    fake menu-item-->
@@ -103,31 +113,31 @@
     <!--    fake menu-item-->
     <menuitem id="quitjob_manage.challenges"
               name=" Challenges"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee"/>
 
     <menuitem id="quitjob_manage.intern"
               name=" Intern Management"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee"/>
 
     <menuitem id="quitjob_manage.department"
               name=" Departments"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee"/>
 
     <menuitem id="quitjob_manage.report"
               name=" Reporting"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee"/>
 
     <menuitem id="quitjob_manage.config"
               name=" Configuration"
-              groups="group_emp_user,group_dl_user,group_pm_user"
+              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee"/>
     <!--    fake menu-item-->
