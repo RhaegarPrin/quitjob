@@ -9,9 +9,10 @@
     'category': 'Accounting/Accounting',
     'website': 'https://www.odoo.com/page/billing',
     'images': [],
-    'depends': [],
+    'depends': ['sale'],
     'data': [
         'security/security.xml',
+        'data/mail_template.xml',
         'view/menu.xml',
         'view/form_view.xml',
         'view/dl_view.xml',

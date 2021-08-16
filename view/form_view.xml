@@ -16,9 +16,17 @@
                         <field name="rela_user"/>
                     </form>
                     <form>
+                        <strong>Employee Email :</strong>
+                        <field name="rela_user_email"/>
+                    </form>
+                    <form>
                         <strong>DL :</strong>
                         <field name="dl_id"/>
                         <field name="pm_id"/>
+                    </form>
+                    <form>
+                        <strong>IT :</strong>
+                        <field name="it_id"/>
                     </form>
                     <form>
                         <strong>Request Date :</strong>
@@ -150,6 +158,18 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='reason']" position="after">
                 <button name="HR_approud" type="object">HR Appr</button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherited_it_rep_form" model="ir.ui.view">
+        <field name="name">inherited.it_req_form</field>
+        <field name="model">employee.req</field>
+        <field name="inherit_id" ref="emp_req_form"/>
+        <field name="groups_id" eval="[(4, ref('group_it_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='reason']" position="after">
+                <button name="it_confirm" type="object">IT confirm</button>
             </xpath>
         </field>
     </record>

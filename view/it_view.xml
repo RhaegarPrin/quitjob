@@ -2,9 +2,9 @@
 
 
 <odoo>
-    <record id="dl_req_form" model="ir.ui.view">
-        <field name="name">DL Request Form</field>
-        <field name="model">dl.req</field>
+    <record id="pm_req_form" model="ir.ui.view">
+        <field name="name">PM Request Form</field>
+        <field name="model">pm.req</field>
         <field name="arch" type="xml">
             <form>
                 <form>
@@ -12,38 +12,31 @@
                     <field name="rela_user"/>
                 </form>
                 <form>
-                    <strong>Employee Rq:</strong>
-                    <field name="emp_reqs"/>
+                    <strong>hr_rq :</strong>
+                    <field name="hr_id"/>
                 </form>
                 <form>
-                    <strong>PM :</strong>
-                    <field name="pm_id"/>
+                    <strong>DL:</strong>
+                    <field name="dl_reqs"/>
+                </form>
+                <form>
+                    <strong>Employee Rq</strong>
+                    <field name="emp_reqs"/>
                 </form>
             </form>
         </field>
     </record>
 
-    <record id="dl_req_tree" model="ir.ui.view">
-        <field name="name">DL Request Form</field>
-        <field name="model">dl.req</field>
-        <field name="arch" type="xml">
-            <tree>
-                <field name="rela_user"/>
-            </tree>
-        </field>
-    </record>
-
-
-    <record id="dl_req_kanban" model="ir.ui.view">
-        <field name="name">DL Request Kanban</field>
-        <field name="model">dl.req</field>
+    <record id="pm_req_kanban" model="ir.ui.view">
+        <field name="name">PM Request Kanban</field>
+        <field name="model">pm.req</field>
         <field name="arch" type="xml">
             <kanban>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_card oe_kanban_global_click">
                             <span>Name:
-                            <field name="rela_user"/>
+                                <field name="rela_user"/>
                             </span>
                         </div>
                     </t>

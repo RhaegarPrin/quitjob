@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data noupdate="1">
+        <record id="mail_template_hr" model="mail.template">
+            <field name="name">HR MAIL</field>
+            <field name="model_id" ref="model_hr_req"/>
+            <field name="subject">SUBJECT</field>
+            <field name="email_from">${object.rela_user.login}</field>
+            <field name="email_to">NONE</field>
+            <field name="body_html" type="html">
+                <p>test mail ${object.rela_user.login}</p>
+                <p>send to ${object.emp_reqs}</p>
+            </field>
+        </record>
+
+        <record id="mail_template_emp_2_dl" model="mail.template">
+            <field name="name">Emp 2 DL</field>
+            <field name="model_id" ref="model_employee_req"/>
+            <field name="subject">SUBJECT</field>
+            <field name="email_from">${object.rela_user.login}</field>
+            <field name="email_to">${object.dl_id.rela_user.login}</field>
+            <field name="body_html" type="html">
+                <p>test mail ${object.rela_user.login}</p>
+                <p>send to ${object.dl_id.rela_user.login}</p>
+            </field>
+        </record>
+
+        <record id="mail_template_emp_2_pm" model="mail.template">
+            <field name="name">Emp 2 PM</field>
+            <field name="model_id" ref="model_employee_req"/>
+            <field name="subject">SUBJECT emp 2 pm</field>
+            <field name="email_from">${object.rela_user.login}</field>
+            <field name="email_to">${object.pm_id.rela_user.login}</field>
+            <field name="body_html" type="html">
+                <p>test mail ${object.rela_user.login}</p>
+                <p>send to ${object.pm_id.rela_user.login}</p>
+            </field>
+        </record>
+
+        <record id="mail_template_pm_2_dl" model="mail.template">
+            <field name="name">PM 2 DL</field>
+            <field name="model_id" ref="model_employee_req"/>
+            <field name="subject">SUBJECT emp 2 pm</field>
+            <field name="email_from">${object.pm_id.rela_user.login}</field>
+            <field name="email_to">${object.dl_id.rela_user.login}</field>
+            <field name="body_html" type="html">
+                <p>test mail ${object.pm_id.rela_user.login}</p>
+                <p>send to ${object.dl_id.rela_user.login}</p>
+                <p>Xac nhan req cua ${object.rela_user.login}</p>
+            </field>
+        </record>
+
+        <record id="mail_template_emp_2_hr" model="mail.template">
+            <field name="name">Emp 2 HR</field>
+            <field name="model_id" ref="model_employee_req"/>
+            <field name="subject">SUBJECT emp 2 hr</field>
+            <field name="email_from">${object.rela_user.login}</field>
+            <field name="email_to">${object.pm_id.hr_id.rela_user.login}</field>
+            <field name="body_html" type="html">
+                <p>test mail ${object.rela_user.login}</p>
+                <p>send to ${object.pm_id.hr_id.rela_user.login}</p>
+            </field>
+        </record>
+
+        <record id="mail_template_emp_2_it" model="mail.template">
+            <field name="name">Emp 2 IT</field>
+            <field name="model_id" ref="model_employee_req"/>
+            <field name="subject">SUBJECT emp 2 IT</field>
+            <field name="email_from">${object.rela_user.login}</field>
+            <field name="email_to">${object.it_id.rela_user.login}</field>
+            <field name="body_html" type="html">
+                <p>test mail ${object.rela_user.login}</p>
+                <p>send to ${object.it_id.rela_user.login}</p>
+                <p>Request for IT confirm</p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
