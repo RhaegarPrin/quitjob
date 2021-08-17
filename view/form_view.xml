@@ -33,6 +33,9 @@
                         <field name="req_date"/>
                     </form>
                     <form>
+                        <field name="est_date"/>
+                    </form>
+                    <form>
                         <strong>Ly do :</strong>
                         <field name="reason"/>
                     </form>
@@ -40,29 +43,44 @@
                     <!--                        <strong>Status :</strong>-->
                     <!--                        <field name="status" readonly="1"/>-->
                     <!--                    </form>-->
-                    <form>
-                        <span>DL accept 1
-                            <field name="dl_first_accept" attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
-                        </span>
-                        <span>DL accept 2
-                            <field name="dl_second_accept" attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
-                        </span>
-                        <span>PM
-                            <field name="pm_accept" attrs="{'invisible': [('pm_accept', '=', False)]}"/>
-                        </span>
-                        <span>
-                            <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
-                        </span>
-                        <span>Other
-                            <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
-                        </span>
-                    </form>
                     <notebook>
-                        <page string="Interview detail">
+
+                        <page string="DL confirm ">
+                            <form>
+                                <span>DL accept 1
+                                    <field name="dl_first_accept"
+                                           attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
+                                </span>
+                                <span>DL accept 2
+                                    <field name="dl_second_accept"
+                                           attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
+                                </span>
+                            </form>
+                        </page>
+
+                        <page string="PM confirm ">
+                            <form>
+                                <span>PM
+                                    <field name="pm_accept" attrs="{'invisible': [('pm_accept', '=', False)]}"/>
+                                </span>
+                            </form>
                             <form>
                                 <strong>Interview :</strong>
                                 <field name="interview_ids"/>
                             </form>
+                        </page>
+
+                        <page string="HR confirm ">
+                            <form>
+                                <span>HR
+                                    <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
+                                </span>
+                            </form>
+                        </page>
+                        <page string="IT confirm">
+                            <span>Other
+                                <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
+                            </span>
                         </page>
                     </notebook>
                 </sheet>
@@ -105,6 +123,24 @@
         </field>
     </record>
 
+    <record id="emp_req_tree" model="ir.ui.view">
+        <field name="name">Emp req tree</field>
+        <field name="model">employee.req</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="rela_user"/>
+                <field name="req_date"/>
+                <field name="est_date"/>
+                <field name="reason"/>
+                <field name="dl_first_accept"/>
+                <field name="dl_second_accept"/>
+                <field name="pm_accept"/>
+                <field name="hr_accept"/>
+                <field name="other_confirm"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="inherited_emp_rep_form" model="ir.ui.view">
         <field name="name">inherited.dl_req_form</field>
         <field name="model">employee.req</field>
@@ -130,7 +166,12 @@
                 <fiel name="rela_user" string="User"/>
                 <button name="Dl_approud_1" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL Appr
                 </button>
+                <button name="Dl_approud_1_cancel" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">Cancel DL Appr
+                </button>
+
                 <button name="Dl_approud_2" type="object" attrs="{'invisible':[('pm_accept','=',False)]}">DL Appr 2
+                </button>
+                <button name="Dl_approud_2_cancel" type="object" attrs="{'invisible':[('pm_accept','=',False)]}"> Cancel DL Appr 2
                 </button>
             </xpath>
         </field>
@@ -145,6 +186,7 @@
             <xpath expr="//field[@name='reason']" position="after">
                 <fiel name="rela_user" string="User"/>
                 <button name="PM_approud" type="object">PM Appr</button>
+                <button name="PM_approud_cancel" type="object">PM Appr cancel</button>
                 <button name="delete_rec" type="object">Delete</button>
             </xpath>
         </field>
@@ -158,6 +200,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='reason']" position="after">
                 <button name="HR_approud" type="object">HR Appr</button>
+                <button name="HR_approud_cancel" type="object">HR Appr cancel</button>
             </xpath>
         </field>
     </record>

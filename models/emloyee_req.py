@@ -1,4 +1,3 @@
-from numpy.random._examples.cffi.extending import vals
 from odoo import api, fields, models, _, tools
 from odoo import fields, models
 from odoo.exceptions import ValidationError
@@ -20,6 +19,8 @@ class Employee_rq(models.Model):
     hr_accept = fields.Boolean(default=False, string="hr accepted")
     other_confirm = fields.Boolean(default=False, string="Other confirm")
     req_date = fields.Date(string="Request Date", default=fields.Date.today())
+    est_date = fields.Date(string="Request Date")
+
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
         ('Met ', 'Met'),
@@ -35,6 +36,7 @@ class Employee_rq(models.Model):
         ('dl2', 'Dl 2nd accepted'),
         ('hr', 'Hr accepted'),
         ('it', 'IT confirmed'),
+        ('done', 'All done'),
     ], default='draft')
     interview_ids = fields.One2many('interview_rs', 'emp_id', string="interviews", store=True)
 
@@ -48,51 +50,90 @@ class Employee_rq(models.Model):
 
     def cancel_send_req(self):
         for record in self:
-            record.status = 'draft'
+            if record.dl_first_accept == False:
+                record.status = 'draft'
 
     def Dl_approud_1(self):
         for record in self:
-            record.dl_first_accept = True
-            record.status = 'dl1'
-            template_id = self.env.ref("quitjob_manage.mail_template_emp_2_pm").id
-            print(template_id)
-            template = self.env['mail.template'].browse(template_id)
-            template.send_mail(self.id, force_send=True)
+            if record.dl_second_accept == False:
+                record.dl_first_accept = True
+                record.status = 'dl1'
+                template_id = self.env.ref("quitjob_manage.mail_template_emp_2_pm").id
+                print(template_id)
+                template = self.env['mail.template'].browse(template_id)
+                template.send_mail(self.id, force_send=True)
+
+    def Dl_approud_1_cancel(self):
+        for record in self:
+            if record.pm_accept == False:
+                record.status = 'send'
+                record.dl_first_accept = False
 
     def Dl_approud_2(self):
         for record in self:
-            record.dl_second_accept = True
-            record.status = 'dl2'
-            template_id = self.env.ref("quitjob_manage.mail_template_emp_2_hr").id
-            print(template_id)
-            template = self.env['mail.template'].browse(template_id)
-            template.send_mail(self.id, force_send=True)
+            if record.hr_accept == False:
+                record.dl_second_accept = True
+                record.status = 'dl2'
+                template_id = self.env.ref("quitjob_manage.mail_template_emp_2_hr").id
+                print(template_id)
+                template = self.env['mail.template'].browse(template_id)
+                template.send_mail(self.id, force_send=True)
+
+    def Dl_approud_2_cancel(self):
+        for record in self:
+            if record.hr_accept == False:
+                record.status = 'pm'
+                record.dl_second_accept = False
 
     def PM_approud(self):
         for record in self:
-            record.pm_accept = True
-            record.status = 'pm'
-            template_id = self.env.ref("quitjob_manage.mail_template_pm_2_dl").id
-            print(template_id)
-            template = self.env['mail.template'].browse(template_id)
-            template.send_mail(self.id, force_send=True)
+            if record.dl_second_accept == False and record.dl_second_accept:
+                record.pm_accept = True
+                record.status = 'pm'
+                template_id = self.env.ref("quitjob_manage.mail_template_pm_2_dl").id
+                print(template_id)
+                template = self.env['mail.template'].browse(template_id)
+                template.send_mail(self.id, force_send=True)
+
+    def PM_approud_cancel(self):
+        for record in self:
+            if record.dl_second_accept == False:
+                record.status = 'dl1'
+                if record.dl_first_accept == False :
+                    record.status='send'
+                record.pm_accept = False
 
     def HR_approud(self):
         for record in self:
-            record.hr_accept = True
-            record.status = 'hr'
-            print('email : ', record.rela_user.login)
-            print(record.dl_id.rela_user.login)
-            template_id = self.env.ref("quitjob_manage.mail_template_emp_2_it").id
-            print(template_id)
-            template = self.env['mail.template'].browse(template_id)
-            template.send_mail(self.id, force_send=True)
+            if record.other_confirm == False and record.dl_second_accept:
+                record.hr_accept = True
+                record.status = 'hr'
+                print('email : ', record.rela_user.login)
+                print(record.dl_id.rela_user.login)
+                template_id = self.env.ref("quitjob_manage.mail_template_emp_2_it").id
+                print(template_id)
+                template = self.env['mail.template'].browse(template_id)
+                template.send_mail(self.id, force_send=True)
+
+    def HR_approud_cancel(self):
+        for record in self:
+            if record.dl_second_accept == False:
+                record.status = 'send'
+            else:
+                record.status = 'dl2'
+            record.hr_accept = False
 
     def it_confirm(self):
         for record in self:
-            record.other_confirm = True
-            record.status = 'it'
+            if record.hr_accept:
+                record.other_confirm = True
+                record.status = 'it'
 
     def delete_rec(self):
         for record in self:
-            record.unlink()
+            if record.dl_second_accept == False:
+                record.unlink()
+
+    @api.onchange("status")
+    def on_change_status(self):
+        print('onchange trigger')
