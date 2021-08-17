@@ -137,3 +137,4 @@ class Employee_rq(models.Model):
     @api.onchange("status")
     def on_change_status(self):
         print('onchange trigger')
+
