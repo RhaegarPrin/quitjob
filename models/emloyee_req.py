@@ -18,6 +18,7 @@ class Employee_rq(models.Model):
     pm_accept = fields.Boolean(default=False, string="PM accepted")
     hr_accept = fields.Boolean(default=False, string="hr accepted")
     other_confirm = fields.Boolean(default=False, string="Other confirm")
+    result = fields.Boolean(compute="_compute_status")
     req_date = fields.Date(string="Request Date", default=fields.Date.today())
     est_date = fields.Date(string="Request Date")
 
@@ -42,11 +43,12 @@ class Employee_rq(models.Model):
 
     def send_req(self):
         for record in self:
-            record.status = 'send'
-            template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
-            print(template_id)
-            template = self.env['mail.template'].browse(template_id)
-            template.send_mail(self.id, force_send=True)
+            if record.status == 'draft':
+                record.status = 'send'
+                template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
+                print(template_id)
+                template = self.env['mail.template'].browse(template_id)
+                template.send_mail(self.id, force_send=True)
 
     def cancel_send_req(self):
         for record in self:
@@ -87,7 +89,7 @@ class Employee_rq(models.Model):
 
     def PM_approud(self):
         for record in self:
-            if record.dl_second_accept == False and record.dl_second_accept:
+            if record.dl_second_accept == False and record.dl_first_accept:
                 record.pm_accept = True
                 record.status = 'pm'
                 template_id = self.env.ref("quitjob_manage.mail_template_pm_2_dl").id
@@ -99,8 +101,8 @@ class Employee_rq(models.Model):
         for record in self:
             if record.dl_second_accept == False:
                 record.status = 'dl1'
-                if record.dl_first_accept == False :
-                    record.status='send'
+                if record.dl_first_accept == False:
+                    record.status = 'send'
                 record.pm_accept = False
 
     def HR_approud(self):
@@ -134,7 +136,5 @@ class Employee_rq(models.Model):
             if record.dl_second_accept == False:
                 record.unlink()
 
-    @api.onchange("status")
-    def on_change_status(self):
-        print('onchange trigger')
+
 

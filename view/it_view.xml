@@ -9,7 +9,7 @@
             <form>
                 <form>
                     <strong>Employee :</strong>
-                    <field name="rela_user"/>
+                    <field name="name"/>
                 </form>
                 <form>
                     <strong>hr_rq :</strong>

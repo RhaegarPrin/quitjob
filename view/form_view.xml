@@ -13,11 +13,7 @@
                 <sheet>
                     <form>
                         <strong>Employee :</strong>
-                        <field name="rela_user"/>
-                    </form>
-                    <form>
-                        <strong>Employee Email :</strong>
-                        <field name="rela_user_email"/>
+                        <field name="rela_user" readonly="1"/>
                     </form>
                     <form>
                         <strong>DL :</strong>
@@ -30,7 +26,7 @@
                     </form>
                     <form>
                         <strong>Request Date :</strong>
-                        <field name="req_date"/>
+                        <field name="req_date" readonly="1"/>
                     </form>
                     <form>
                         <field name="est_date"/>
@@ -147,11 +143,9 @@
         <field name="inherit_id" ref="emp_req_form"/>
         <field name="groups_id" eval="[(4, ref('group_emp_user'))]"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='interview_ids']" position="before">
-                <form>
-                    <button name="send_req" type="object">Send rq</button>
-                    <button name="cancel_send_req" type="object">Cancel rq</button>
-                </form>
+            <xpath expr="//field[@name='status']" position="before">
+                    <button name="send_req" type="object" string="send req">Send rq</button>
+                    <button name="cancel_send_req" type="object" string="cancel req">Cancel rq</button>
             </xpath>
         </field>
     </record>
@@ -164,9 +158,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='reason']" position="after">
                 <fiel name="rela_user" string="User"/>
-                <button name="Dl_approud_1" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL Appr
+                <button name="Dl_approud_1" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL 1 Appr
                 </button>
-                <button name="Dl_approud_1_cancel" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">Cancel DL Appr
+                <button name="Dl_approud_1_cancel" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">Cancel 1 Appr
                 </button>
 
                 <button name="Dl_approud_2" type="object" attrs="{'invisible':[('pm_accept','=',False)]}">DL Appr 2
