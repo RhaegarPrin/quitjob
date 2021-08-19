@@ -17,23 +17,23 @@
                     </form>
                     <form>
                         <strong>DL :</strong>
-                        <field name="dl_id"/>
-                        <field name="pm_id"/>
+                        <field name="dl_id" attrs="{'readonly': [('dl_first_accept', '=', True)]}"/>
+                        <field name="pm_id" attrs="{'readonly': [('dl_first_accept', '=', True)]}"/>
                     </form>
                     <form>
                         <strong>IT :</strong>
-                        <field name="it_id"/>
+                        <field name="it_id" attrs="{'readonly': [('dl_first_accept', '=', True)]}"/>
                     </form>
                     <form>
                         <strong>Request Date :</strong>
                         <field name="req_date" readonly="1"/>
                     </form>
                     <form>
-                        <field name="est_date"/>
+                        <field name="est_date" attrs="{'readonly': [('dl_first_accept', '=', True)]}"/>
                     </form>
                     <form>
                         <strong>Ly do :</strong>
-                        <field name="reason"/>
+                        <field name="reason" attrs="{'readonly': [('dl_first_accept', '=', True)]}"/>
                     </form>
                     <!--                    <form>-->
                     <!--                        <strong>Status :</strong>-->
@@ -44,11 +44,11 @@
                         <page string="DL confirm ">
                             <form>
                                 <span>DL accept 1
-                                    <field name="dl_first_accept"
+                                    <field name="dl_first_accept" readonly="1"
                                            attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
                                 </span>
                                 <span>DL accept 2
-                                    <field name="dl_second_accept"
+                                    <field name="dl_second_accept" readonly="1"
                                            attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
                                 </span>
                             </form>
@@ -57,7 +57,8 @@
                         <page string="PM confirm ">
                             <form>
                                 <span>PM
-                                    <field name="pm_accept" attrs="{'invisible': [('pm_accept', '=', False)]}"/>
+                                    <field name="pm_accept" readonly="1"
+                                           attrs="{'invisible': [('pm_accept', '=', False)]}"/>
                                 </span>
                             </form>
                             <form>
@@ -69,13 +70,15 @@
                         <page string="HR confirm ">
                             <form>
                                 <span>HR
-                                    <field name="hr_accept" attrs="{'invisible': [('hr_accept', '=', False)]}"/>
+                                    <field name="hr_accept" readonly="1"
+                                           attrs="{'invisible': [('hr_accept', '=', False)]}"/>
                                 </span>
                             </form>
                         </page>
                         <page string="IT confirm">
                             <span>Other
-                                <field name="other_confirm" attrs="{'invisible': [('other_confirm', '=', False)]}"/>
+                                <field name="other_confirm" readonly="1"
+                                       attrs="{'invisible': [('other_confirm', '=', False)]}"/>
                             </span>
                         </page>
                     </notebook>
@@ -144,8 +147,8 @@
         <field name="groups_id" eval="[(4, ref('group_emp_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                    <button name="send_req" type="object" string="send req">Send rq</button>
-                    <button name="cancel_send_req" type="object" string="cancel req">Cancel rq</button>
+                <button name="send_req" type="object" string="send req">Send rq</button>
+                <button name="cancel_send_req" type="object" string="cancel req">Cancel rq</button>
             </xpath>
         </field>
     </record>
@@ -160,13 +163,27 @@
                 <fiel name="rela_user" string="User"/>
                 <button name="Dl_approud_1" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">DL 1 Appr
                 </button>
-                <button name="Dl_approud_1_cancel" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">Cancel 1 Appr
+                <button name="Dl_approud_1_cancel" type="object" attrs="{'invisible':[('pm_accept','=',True)]}">Cancel 1
+                    Appr
                 </button>
 
                 <button name="Dl_approud_2" type="object" attrs="{'invisible':[('pm_accept','=',False)]}">DL Appr 2
                 </button>
-                <button name="Dl_approud_2_cancel" type="object" attrs="{'invisible':[('pm_accept','=',False)]}"> Cancel DL Appr 2
+                <button name="Dl_approud_2_cancel" type="object" attrs="{'invisible':[('pm_accept','=',False)]}">Cancel
+                    DL Appr 2
                 </button>
+            </xpath>
+            <xpath expr="//field[@name='dl_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pm_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='it_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reason']" position="attributes">
+                <attribute name="readonly">1</attribute>
             </xpath>
         </field>
     </record>
@@ -196,6 +213,18 @@
                 <button name="HR_approud" type="object">HR Appr</button>
                 <button name="HR_approud_cancel" type="object">HR Appr cancel</button>
             </xpath>
+            <xpath expr="//field[@name='dl_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pm_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='it_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reason']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -207,6 +236,18 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='reason']" position="after">
                 <button name="it_confirm" type="object">IT confirm</button>
+            </xpath>
+            <xpath expr="//field[@name='dl_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='pm_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='it_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='reason']" position="attributes">
+                <attribute name="readonly">1</attribute>
             </xpath>
         </field>
     </record>

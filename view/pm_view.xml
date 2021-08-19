@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <form>
                 <form>
-                    <strong>Employee :</strong>
+                    <strong>PM :</strong>
                     <field name="name"/>
                 </form>
                 <form>
@@ -16,11 +16,11 @@
                     <field name="hr_id"/>
                 </form>
                 <form>
-                    <strong>DL:</strong>
+                    <strong>LIST DL:</strong>
                     <field name="dl_reqs"/>
                 </form>
                 <form>
-                    <strong>Employee Rq</strong>
+                    <strong>Employee Rqs</strong>
                     <field name="emp_reqs"/>
                 </form>
             </form>

@@ -54,6 +54,9 @@ class Employee_rq(models.Model):
         for record in self:
             if record.dl_first_accept == False:
                 record.status = 'draft'
+            else:
+                print('go in')
+                raise ValidationError("You cant change status!")
 
     def Dl_approud_1(self):
         for record in self:
@@ -136,5 +139,8 @@ class Employee_rq(models.Model):
             if record.dl_second_accept == False:
                 record.unlink()
 
-
-
+    @api.constrains('est_date', 'req_date')
+    def _check_est_date(self):
+        for r in self:
+            if r.est_date < r.req_date and r.est_date > fields.Date.today():
+                raise ValidationError("Invalid est_date")
