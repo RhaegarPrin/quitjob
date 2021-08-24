@@ -1,6 +1,16 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
 
+access_hr_note_test,access.hr_note_test,model_hr_note_test,base.group_user,1,1,1,1
+access_hr_note_test_2,access.hr_note_test_2,model_hr_note_test,,1,1,1,1
 
+access_quit_reason,access.quit.reason,model_quit_reason,base.group_system,1,1,1,1
+access_quit_reason_user,access.quit.reason_user,model_quit_reason,base.group_user,1,0,0,0
+
+access_quit_note_emp,access.quit.note_emp,model_quit_note,quitjob_manage.group_emp_user,1,0,0,0
+access_quit_note_pm,access.quit.note_pm,model_quit_note,quitjob_manage.group_pm_user,1,0,0,0
+access_quit_note_dl,access.quit.note_dl,model_quit_note,quitjob_manage.group_dl_user,1,1,1,1
+access_quit_note_hr,access.quit.note_hr,model_quit_note,quitjob_manage.group_hr_user,1,1,1,1
+access_quit_note_it,access.quit.note_it,model_quit_note,quitjob_manage.group_it_user,1,1,1,1
 
 access_employee_company_emp,access.employee.company_emp,model_employee_company,quitjob_manage.group_emp_user,1,0,0,0
 access_employee_company_dl,access.employee.company_dl,model_employee_company,quitjob_manage.group_dl_user,1,0,0,0
@@ -17,32 +27,24 @@ access_interview_rs_it,access.interview_rs_it,model_interview_rs,quitjob_manage.
 
 
 access_employee_req,access.employee.req,model_employee_req,quitjob_manage.group_emp_user,1,1,1,1
-access_employee_req_dl,access.employee.req_dl,model_employee_req,quitjob_manage.group_dl_user,1,1,0,0
-access_employee_req_pm,access.employee.req_pm,model_employee_req,quitjob_manage.group_pm_user,1,1,0,0
-access_employee_req_hr,access.employee.req_hr,model_employee_req,quitjob_manage.group_hr_user,1,1,0,0
-access_employee_req_it,access.employee.req_hr,model_employee_req,quitjob_manage.group_it_user,1,1,0,0
+access_employee_req_dl,access.employee.req_dl,model_employee_req,quitjob_manage.group_dl_user,1,1,1,1
+access_employee_req_pm,access.employee.req_pm,model_employee_req,quitjob_manage.group_pm_user,1,1,1,1
+access_employee_req_hr,access.employee.req_hr,model_employee_req,quitjob_manage.group_hr_user,1,1,1,1
+access_employee_req_it,access.employee.req_hr,model_employee_req,quitjob_manage.group_it_user,1,1,1,1
 
 
 
 
-access_dl_req,access.dl.req,model_dl_req,quitjob_manage.group_dl_user,1,1,1,1
-access_dl_req_pm,access.dl.req_pm,model_dl_req,quitjob_manage.group_pm_user,1,1,0,0
-access_dl_req_emp,access.dl.req_emp,model_dl_req,quitjob_manage.group_emp_user,1,0,0,0
-access_dl_req_hr,access.dl.req_hr,model_dl_req,quitjob_manage.group_hr_user,1,1,0,0
 
 
 
 
-access_pm_req,access.pm.req,model_pm_req,quitjob_manage.group_pm_user,1,1,1,1
-access_pm_req_dl,access.pm.req_dl,model_pm_req,quitjob_manage.group_dl_user,1,0,0,0
-access_pm_req_emp,access.pm.req_emp,model_pm_req,quitjob_manage.group_emp_user,1,0,0,0
-access_pm_req_hr,access.pm.req_hr,model_pm_req,quitjob_manage.group_hr_user,1,1,0,0
 
 
 
-access_hr_req,access.hr.req,model_hr_req,quitjob_manage.group_hr_user,1,1,1,1
-access_hr_req_pm,access.hr.req_pm,model_hr_req,quitjob_manage.group_pm_user,1,0,0,0
-access_hr_req_dl,access.hr.req_dl,model_hr_req,quitjob_manage.group_dl_user,1,0,0,0
+
+
+
 
 
 access_it_req,access.it.req,model_it_req,base.group_system,1,1,1,1

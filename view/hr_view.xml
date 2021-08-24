@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="hr_note" model="ir.ui.view">
+        <field name="name">Hr note new form</field>
+        <field name="model">hr_note_test</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="employee_req_id"  string="EMP_ID"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="quitjob_manage.employee_hr_note" model="ir.actions.act_window">
+        <field name="name">Hr note</field>
+        <field name="res_model">employee.req</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'force_detailed_view': 'true',
+            'form_view_initial_mode': 'edit'}
+        </field>
+        <field name="view_id" ref="quitjob_manage.hr_note"/>
+    </record>
+</odoo>

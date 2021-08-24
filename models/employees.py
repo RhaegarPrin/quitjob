@@ -4,7 +4,6 @@ from odoo.exceptions import ValidationError
 
 class Employee(models.Model):
     _name="employee.company"
-
     full_name =fields.Char('Name',required=True)
     DOB = fields.Date(string="DOB", default=fields.Date.today())
     Addr = fields.Selection([

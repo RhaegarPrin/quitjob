@@ -2,30 +2,30 @@
 
 
 <odoo>
-    <record id="pm_req_form" model="ir.ui.view">
-        <field name="name">PM Request Form</field>
-        <field name="model">pm.req</field>
-        <field name="arch" type="xml">
-            <form>
-                <form>
-                    <strong>PM :</strong>
-                    <field name="name"/>
-                </form>
-                <form>
-                    <strong>hr_rq :</strong>
-                    <field name="hr_id"/>
-                </form>
-                <form>
-                    <strong>LIST DL:</strong>
-                    <field name="dl_reqs"/>
-                </form>
-                <form>
-                    <strong>Employee Rqs</strong>
-                    <field name="emp_reqs"/>
-                </form>
-            </form>
-        </field>
-    </record>
+<!--    <record id="pm_req_form" model="ir.ui.view">-->
+<!--        <field name="name">PM Request Form</field>-->
+<!--        <field name="model">pm.req</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <form>-->
+<!--                <form>-->
+<!--                    <strong>PM :</strong>-->
+<!--                    <field name="name"/>-->
+<!--                </form>-->
+<!--                <form>-->
+<!--                    <strong>hr_rq :</strong>-->
+<!--                    <field name="hr_id"/>-->
+<!--                </form>-->
+<!--                <form>-->
+<!--                    <strong>LIST DL:</strong>-->
+<!--                    <field name="dl_reqs"/>-->
+<!--                </form>-->
+<!--                <form>-->
+<!--                    <strong>Employee Rqs</strong>-->
+<!--                    <field name="emp_reqs"/>-->
+<!--                </form>-->
+<!--            </form>-->
+<!--        </field>-->
+<!--    </record>-->
 
     <record id="pm_req_kanban" model="ir.ui.view">
         <field name="name">PM Request Kanban</field>
