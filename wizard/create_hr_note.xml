@@ -1,10 +1,11 @@
 <odoo>
-    <record id="hr_note_trans" model="ir.ui.view">
+    <record id="hr_note_trans_form" model="ir.ui.view">
         <field name="name">Hr note trans new form</field>
         <field name="model">hr_note_trans</field>
+        <field name="active">false</field>
         <field name="arch" type="xml">
-            <form>
-                <group string="Reason test" create="0" edit="0" delete="0">
+            <form create="1" edit="0" delete="1">
+                <group string="Reason test">
                     <field name="employee_req_id" string="EMP_ID"/>
                     <field name="notes" string="Note"/>
                     <field name="dl_notes" string="DL Note"/>

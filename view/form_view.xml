@@ -2,6 +2,8 @@
 
 
 <odoo>
+<!--    form view cơ bản của employee.re -->
+<!--    tùy từng role phía dưới sẽ kế thừa lại form này rồi chỉnh lại field-->
     <record id="emp_req_form" model="ir.ui.view">
         <field name="name">Employee Request Form</field>
         <field name="model">employee.req</field>
@@ -52,7 +54,7 @@
                             </span>
                         </form>
                         <group>
-                            <field name="hr_notes" string="NOTE"/>
+<!--                            <field name="hr_notes" string="NOTE"/>-->
                         </group>
                     </div>
                     <notebook attrs="{'invisible' : [('hr_accept','=',False)]}">
@@ -103,6 +105,8 @@
             </form>
         </field>
     </record>
+<!--    form view employee req-->
+
 
     <record id="emp_req_kanban" model="ir.ui.view">
         <field name="name">Emp req kanban</field>
@@ -149,6 +153,7 @@
                 <field name="req_date"/>
                 <field name="est_date"/>
                 <field name="reasons" widget="many2many_tags"/>
+                <field name="status"/>
                 <field name="pm_accept" string="PM Assessing"/>
                 <field name="dl_second_accept" string="DL Assessing"/>
                 <field name="hr_accept" string="HR Assessing"/>
@@ -157,6 +162,7 @@
         </field>
     </record>
 
+<!--    kế thừa chỉnh lại employee.req cho  employee user  -->
     <record id="inherited_emp_rep_form" model="ir.ui.view">
         <field name="name">inherited.dl_req_form</field>
         <field name="model">employee.req</field>
@@ -167,9 +173,11 @@
                 <button name="send_req" type="object" string="send req" confirm="Send to DL ?"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
+                <button name="cancel_send_req" type="object" string="back to draft"/>
             </xpath>
         </field>
     </record>
+<!--    kế thừa chỉnh lại employee.req cho  employee user  -->
 
     <record id="inherited_dl_rep_form" model="ir.ui.view">
         <field name="name">inherited.dl_req_form</field>
@@ -178,9 +186,13 @@
         <field name="groups_id" eval="[(4, ref('group_dl_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="Dl_approud_1" type="object" string="DL Assessing"/>
-                <button name="Dl_2_PM" type="object" string="Assessing for PM"/>
-                <button name="Refuse" type="object" string="refurese"/>
+                <button name="Dl_approud_1" type="object" string="DL Assessing"
+                        attrs="{'invisible' : [('status','!=','dl2')]}"/>
+                <button name="Dl_2_PM" type="object" string="Assessing for PM"
+                        attrs="{'invisible' : [('status','!=','dl2')]}"/>
+                <button name="Refuse" type="object" string="refurese"
+                        attrs="{'invisible' : [('status','!=','dl2')]}"/>
+                <button name="Refuse" type="object" string="Test"/>
             </xpath>
         </field>
     </record>
@@ -193,11 +205,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="PM_approud" type="object" string="PM Assessing"
-                        attrs="{'invisible' : ['|',('status','in',['refuse','draft']),('pm_accept','=',True)]}"
+                        attrs="{'invisible' : [('status','!=','pm')]}"
                 />
 
                 <button name="PM_approud_cancel" type="object" string="Cancel"
-                        attrs="{'invisible' : [('status','in',['refuse','draft'])]}"
+                        attrs="{'invisible' : [('status','!=','pm')]}"
                 />
             </xpath>
             <xpath expr="//field[@name='pm_interview']" position="replace">
@@ -218,9 +230,6 @@
 <!--                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>-->
             </xpath>
 
-<!--            <xpath expr="//field[@name='hr_interview']" position="replace">-->
-<!--                <field name="hr_interview" attrs="{'readonly' : [('status','!=','dl')]}"/>-->
-<!--            </xpath>-->
             <xpath expr="//field[@name='reasons']" position="attributes">
                 <attribute name="readonly">1</attribute>
             </xpath>

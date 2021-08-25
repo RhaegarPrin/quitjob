@@ -2,6 +2,7 @@
 
 
 <odoo>
+
     <record id="interview_form" model="ir.ui.view">
         <field name="name">interview_rs Form</field>
         <field name="model">interview_rs</field>

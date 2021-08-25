@@ -3,27 +3,54 @@
 <odoo>
     <record id="hr_note" model="ir.ui.view">
         <field name="name">Hr note new form</field>
-        <field name="model">hr_note_test</field>
+        <field name="model">employee.req</field>
         <field name="arch" type="xml">
             <form>
-            <group string="Reason test" >
-                    <field name="employee_req_id"  string="EMP_ID"/>
-                    <field name="notes"  string="Note"/>
-                    <field name="carr" string="Ho so"/>
-            </group>
+                <group string="Reason test">
+                    <field name="hr_interview" string="Note" />
+                    <field name="dl_interview" string="DL Note"/>
+                    <field name="pm_interview" string="PM Note"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="approved_note" model="ir.ui.view">
+        <field name="name">Approved Note</field>
+        <field name="model">employee.req</field>
+        <field name="active">false</field>
+        <field name="arch" type="xml">
+            <form>
+                <form string="PICK">
+                    <field name="pm_id" string="PM" attrs="{'invisible':[('status','!=','draft')]}"/>
+                    <field name="dl_id" string="DL" attrs="{'invisible':[('status','!=','pm')]}"/>
+                    <field name="hr_id" string="HR" attrs="{'invisible':[('status','!=','dl2')]}"/>
+                </form>
+
+                <group string="Reason test">
+                    <field name="status" string="Status"/>
+                    <field name="hr_interview" string="HR Note"/>
+                    <field name="hr_accept" string="HR Aprroved"/>
+                    <field name="dl_interview" string="DL Note"/>
+                    <field name="dl_second_accept" string="DL Aprroved"/>
+                    <field name="pm_interview" string="PM Note"/>
+                    <field name="pm_accept" string="DL Aprroved"/>
+                </group>
+                <button name="send_req_done" type="object" string="Send reQ">Send reqest</button>
             </form>
         </field>
     </record>
 
     <record id="quitjob_manage.employee_hr_note" model="ir.actions.act_window">
         <field name="name">Hr note</field>
-        <field name="res_model">hr_note_test</field>
+        <field name="res_model">hr_note_trans</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="context">{'force_detailed_view': 'true',
+            'res_id':self.id,
             'form_view_initial_mode': 'edit'}
         </field>
-        <field name="view_id" ref="quitjob_manage.hr_note"/>
+        <field name="view_id" ref="quitjob_manage.hr_note_trans_form"/>
     </record>
 </odoo>
