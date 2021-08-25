@@ -1,0 +1,18 @@
+<odoo>
+    <record id="hr_note_trans" model="ir.ui.view">
+        <field name="name">Hr note trans new form</field>
+        <field name="model">hr_note_trans</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="Reason test" create="0" edit="0" delete="0">
+                    <field name="employee_req_id" string="EMP_ID"/>
+                    <field name="notes" string="Note"/>
+                    <field name="dl_notes" string="DL Note"/>
+                    <field name="pm_notes" string="PM Note"/>
+                    <field name="carr" string="Ho so"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+</odoo>

@@ -1,15 +1,19 @@
 from odoo import api, fields, models, _, tools
 from odoo import fields, models
 from odoo.exceptions import ValidationError
+import datetime
+
 
 class Employee_rq(models.Model):
     _name = "employee.req"
+    _inherit = "hr_note_test"
     reasons = fields.Many2many('quit.reason', string='Reasons')
     notes = fields.Many2one('quit.note', string='DL Coms')
     position = fields.Char(compute="_get_position", string='Position')
     job_title = fields.Char(related='employee_id.job_title')
-    department_id = fields.Many2one('hr.department',related='employee_id.department_id')
-    employee_id = fields.Many2one('hr.employee',string='Employee', default=lambda self: self.env.user.employee_id )
+    department_id = fields.Many2one('hr.department', related='employee_id.department_id')
+    employee_id = fields.Many2one('hr.employee', string='Employee',
+                                  default=lambda self: self.env.user.employee_id)
     rela_user = fields.Many2one('res.users', string='USER Related', related='employee_id.user_id',
                                 required=True
                                 # ,domain=lambda self: [(
@@ -18,7 +22,7 @@ class Employee_rq(models.Model):
                                 #         # and ("groups_id", "=", self.env.ref("quitjob_manage.group_dl_user").id)
                                 # )]
                                 )
-    contract_id = fields.Many2one('hr.contract',related='employee_id.contract_id',groups="base.group_user")
+    contract_id = fields.Many2one('hr.contract', related='employee_id.contract_id', groups="base.group_user")
 
     rela_user_email = fields.Char(related="rela_user.email")
     parent_id = fields.Many2one('hr.employee', related='employee_id.parent_id')
@@ -28,11 +32,11 @@ class Employee_rq(models.Model):
     dl_second_accept = fields.Boolean(default=False, string="DL 2nd accepted")
     pm_accept = fields.Boolean(default=False, string="PM accepted")
     hr_accept = fields.Boolean(default=False, string="hr accepted")
-    other_confirm = fields.Boolean(default=False, string="Other confirm")
+    other_confirm = fields.Boolean(default=False, string="IT confirm")
+    accountant_confirm = fields.Boolean(default=False, string="Ke toan confirm")
     result = fields.Boolean(compute="_compute_status")
     req_date = fields.Date(string="Request Date")
-    est_date = fields.Date(string="Request Date")
-
+    est_date = fields.Date(string="Request Date", compute="_compute_est_date")
 
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
@@ -40,23 +44,24 @@ class Employee_rq(models.Model):
         ('Chuyen Cty', 'Chuyen Cty'),
         ('khac', 'Khac'),
     ])
+
     def list_status(self):
-        lst= [
+        lst = [
             ('refuse', 'Refuse'),
             ('draft', 'Draft'),
             ('send', 'Send'),
             ('pm', 'PM Assessing'),
             ('dl2', 'Dl Assessing'),
             ('hr', 'Hr Assessing'),
-            ('it', 'IT Assessing'),
             ('done', 'Approved')]
         return lst
-    status = fields.Selection( list_status, default='draft')
+
+    status = fields.Selection(list_status, default='draft')
     interview_ids = fields.One2many('interview_rs', 'emp_id', string="interviews", store=True)
-    hr_notes = fields.Many2one('hr_note_test', string='hr Notes', store=True)
-    pm_interview = fields.Char(string='PM Note')
-    dl_interview = fields.Char(string='DL Note')
-    hr_interview = fields.Char(string='HR Note')
+    hr_notes = fields.One2many('hr_note_trans', 'employee_req_id', string='hr Notes', store=True)
+    pm_interview = fields.Char(string='PM Note',related='hr_notes.pm_notes')
+    dl_interview = fields.Char(string='DL Note' , related='hr_notes.dl_notes')
+    hr_interview = fields.Char(string='HR Note', related='hr_notes.notes')
     personal_asset = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
@@ -81,7 +86,7 @@ class Employee_rq(models.Model):
     def send_req(self):
         for record in self:
             if record.status == 'draft':
-                record.status = 'send'
+                record.status = 'dl2'
                 template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
                 print(template_id)
                 template = self.env['mail.template'].browse(template_id)
@@ -110,7 +115,7 @@ class Employee_rq(models.Model):
     def Dl_2_PM(self):
         for record in self:
             if record.hr_accept == False:
-                record.status = 'send'
+                record.status = 'pm'
                 record.dl_first_accept = True
                 record.dl_second_accept = False
                 record.pm_accept = False
@@ -119,17 +124,33 @@ class Employee_rq(models.Model):
                 template = self.env['mail.template'].browse(template_id)
                 template.send_mail(self.id, force_send=True)
 
-
     def Refuse(self):
         for record in self:
-            record.status='refuse'
-
+            record.status = 'refuse'
+            record.pm_accept = False
+            record.dl_first_accept = False
+            record.dl_second_accept = False
+            record.hr_accept = False
+            record.other_confirm = False
+            record.accountant_confirm = False
+        print('ok in')
+        form_view = self.env.ref('quitjob_manage.hr_note_trans')
+        return {
+                'name': _('Hr refuse'),
+                'view_type': 'form',
+                'view_mode': 'form',
+                'view_id': form_view.id,
+                'res_model': 'hr_note_trans',
+                'type': 'ir.actions.act_window',
+                'res_id': self.id,
+                'target': 'new'
+            }
 
     def Dl_approud_2(self):
         for record in self:
             if record.hr_accept == False:
                 record.dl_second_accept = True
-                record.status = 'dl2'
+                record.status = 'hr'
                 template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
                 print(template_id)
                 template = self.env['mail.template'].browse(template_id)
@@ -141,11 +162,12 @@ class Employee_rq(models.Model):
                 record.status = 'pm'
                 record.dl_second_accept = False
 
+
     def PM_approud(self):
         for record in self:
-            if record.status == 'send' and record.dl_first_accept:
+            if record.status == 'pm' and record.dl_first_accept:
                 record.pm_accept = True
-                record.status = 'pm'
+                record.status = 'hr'
                 template_id = self.env.ref("quitjob_manage.mail_template_pm_2_dl").id
                 print(template_id)
                 template = self.env['mail.template'].browse(template_id)
@@ -155,8 +177,19 @@ class Employee_rq(models.Model):
         for record in self:
             if record.dl_first_accept == True:
                 record.status = 'refuse'
-                record.dl_first_accept=False
+                record.dl_first_accept = False
                 record.pm_accept = False
+                form_view = self.env.ref('quitjob_manage.hr_note_trans')
+                return {
+                    'name': _('Hr refuse'),
+                    'view_type': 'form',
+                    'view_mode': 'form',
+                    'view_id': form_view.id,
+                    'res_model': 'hr_note_trans',
+                    'type': 'ir.actions.act_window',
+                    'res_id': self.id,
+                    'target': 'new'
+                }
 
     def HR_approud(self):
         print(self.env.user.employee_id.name)
@@ -172,7 +205,7 @@ class Employee_rq(models.Model):
             record.hr_accept = True
             record.dl_second_accept = True
             record.pm_accept = True
-            record.status = 'hr'
+            record.status = 'done'
             template_id = self.env.ref("quitjob_manage.mail_template_emp_2_it").id
             print(template_id)
             template = self.env['mail.template'].browse(template_id)
@@ -186,29 +219,47 @@ class Employee_rq(models.Model):
                 print('wrong')
 
     def HR_approud_cancel(self):
+        form_view = self.env.ref('quitjob_manage.hr_note_trans')
         for record in self:
-            if record.dl_second_accept == False:
-                record.status = 'send'
-            else:
-                record.status = 'dl2'
-            record.hr_accept = False
+            record.status='refuse'
+        print(form_view.id)
+        return {
+            'name': _('Hr refuse'),
+            'view_type' :'form',
+            'view_mode' :'form',
+            'view_id' : form_view.id,
+            'res_model' :'hr_note_trans',
+            'type': 'ir.actions.act_window',
+            'res_id':self.id,
+            'target': 'new'
+        }
+
 
     def it_confirm(self):
         for record in self:
-            if record.hr_accept:
+            if record.dl_second_accept:
                 record.other_confirm = True
-                record.status = 'it'
+            else:
+                raise ValidationError("Chờ DL Assessing")
 
     def delete_rec(self):
         for record in self:
             if record.dl_second_accept == False:
                 record.unlink()
 
-    @api.constrains('est_date', 'req_date')
+    @api.constrains('req_date')
     def _check_est_date(self):
         for r in self:
-            if r.est_date < r.req_date or r.req_date < r.create_date.date():
+            if r.req_date < r.create_date.date():
                 raise ValidationError("Invalid est_date")
+
+    @api.depends('req_date')
+    def _compute_est_date(self):
+        for record in self:
+            if record.req_date:
+                record.est_date = record.req_date + datetime.timedelta(5)
+            else:
+                record.est_date = datetime.date.today()
 
     def group_score(self, group_name):
         if group_name == 'Hr User':
@@ -277,7 +328,8 @@ class Employee_rq(models.Model):
 
     @api.onchange('employee_id')
     def rela_user_hr_employee(self):
-        self.rela_user=self.employee_id.user_id
+        self.rela_user = self.employee_id.user_id
+
     #
     # def hr_note_inverse(self):
     #     if len(self.hr_notes) > 0:

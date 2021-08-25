@@ -6,16 +6,18 @@
         <field name="model">hr_note_test</field>
         <field name="arch" type="xml">
             <form>
-                <group>
+            <group string="Reason test" >
                     <field name="employee_req_id"  string="EMP_ID"/>
-                </group>
+                    <field name="notes"  string="Note"/>
+                    <field name="carr" string="Ho so"/>
+            </group>
             </form>
         </field>
     </record>
 
     <record id="quitjob_manage.employee_hr_note" model="ir.actions.act_window">
         <field name="name">Hr note</field>
-        <field name="res_model">employee.req</field>
+        <field name="res_model">hr_note_test</field>
         <field name="type">ir.actions.act_window</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>

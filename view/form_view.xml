@@ -20,12 +20,11 @@
                         <group>
                             <field name="department_id" string="Department"/>
                             <field name="parent_id" string="Quản lý" attrs="{'readonly': [('status', '!=', 'draft')]}"/>
-                            <field name="it_id" string="IT" attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                            <!--                            <field name="it_id" string="IT"  attrs="{'readonly': [('status', '!=', 'draft')]}"/>-->
                         </group>
                     </group>
                     <group>
-                        <field name="create_date" string="Ngày tạo bản ghi"
-                               attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                        <field name="create_date" string="Ngày tạo bản ghi" readonly="1"/>
                         <field name="req_date" string="Ngày ngỉ yêu cầu"
                                attrs="{'readonly': [('status', '!=', 'draft')]}"/>
                         <field name="est_date" string="Ngày ngỉ dự kiến"
@@ -39,24 +38,24 @@
                     <div>
                         <form>
                             <span>PM Note :
-                                <field name="pm_interview"/>
+                                <field name="pm_interview" readonly="1"/>
                             </span>
                         </form>
                         <form>
                             <span>DL Note :
-                                <field name="dl_interview"/>
+                                <field name="dl_interview" readonly="1"/>
                             </span>
                         </form>
                         <form>
                             <span>HR Note :
-                                <field name="hr_interview"/>
+                                <field name="hr_interview" readonly="1"/>
                             </span>
                         </form>
+                        <group>
+                            <field name="hr_notes" string="NOTE"/>
+                        </group>
                     </div>
-                    <group>
-                        <field name="hr_notes" context="{'default_hr_notes': id}" string="HR NOTE TEST"/>
-                    </group>
-                    <notebook>
+                    <notebook attrs="{'invisible' : [('hr_accept','=',False)]}">
                         <page string="DL confirm ">
                             <div>
                                 <group>
@@ -80,20 +79,12 @@
                                 </span>
                             </form>
                         </page>
-                        <page string="PM confirm ">
-                            <form>
-                                <span>PM
-                                    <field name="pm_accept" readonly="1"
-                                           attrs="{'invisible': [('pm_accept', '=', False)]}"/>
-                                </span>
-                            </form>
-                            <form>
-                                <strong>Interview :</strong>
-                                <field name="interview_ids"/>
-                            </form>
-                        </page>
 
                         <page string="HR confirm ">
+                            <group>
+                                <field name="hr_notes" context="{'default_hr_notes': id}" readonly="1"
+                                       string="HR Note"/>
+                            </group>
                             <form>
                                 <span>HR
                                     <field name="hr_accept" readonly="1"
@@ -187,27 +178,9 @@
         <field name="groups_id" eval="[(4, ref('group_dl_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="Dl_approud_1" type="object" string="DL Assessing"
-                        attrs="{'invisible': [('dl_first_accept', '=', True),('status', '!=', 'pm')]}"/>
-                <button name="Dl_2_PM" type="object" string="Assessing for PM"
-                        attrs="{'invisible': [('dl_first_accept', '=', True) ]}"/>
-                <button name="Refuse" type="object" string="refurese"
-                        attrs="{'invisible': [('status', '>', 'pm'),('dl_first_accept', '=', True) ]}"/>
-            </xpath>
-            <xpath expr="//field[@name='personal_asset']" position="attributes">
-                <attribute name="readonly">0</attribute>
-            </xpath>
-            <xpath expr="//field[@name='customer_asset']" position="attributes">
-                <attribute name="readonly">0</attribute>
-            </xpath>
-            <xpath expr="//field[@name='other_asset']" position="attributes">
-                <attribute name="readonly">0</attribute>
-            </xpath>
-            <xpath expr="//field[@name='Email_asset']" position="attributes">
-                <attribute name="readonly">0</attribute>
-            </xpath>
-            <xpath expr="//field[@name='git_account']" position="attributes">
-                <attribute name="readonly">0</attribute>
+                <button name="Dl_approud_1" type="object" string="DL Assessing"/>
+                <button name="Dl_2_PM" type="object" string="Assessing for PM"/>
+                <button name="Refuse" type="object" string="refurese"/>
             </xpath>
         </field>
     </record>
@@ -219,14 +192,16 @@
         <field name="groups_id" eval="[(4, ref('group_pm_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <fiel name="rela_user" string="User"/>
                 <button name="PM_approud" type="object" string="PM Assessing"
-                        attrs="{'invisible': ['|',('dl_first_accept', '=', False),('pm_accept', '=', True)]}"
-                ></button>
+                        attrs="{'invisible' : ['|',('status','in',['refuse','draft']),('pm_accept','=',True)]}"
+                />
+
                 <button name="PM_approud_cancel" type="object" string="Cancel"
-                        attrs="{'invisible': ['|',('dl_first_accept', '=', False),('pm_accept', '=', True)]}"
-                >
-                </button>
+                        attrs="{'invisible' : [('status','in',['refuse','draft'])]}"
+                />
+            </xpath>
+            <xpath expr="//field[@name='pm_interview']" position="replace">
+                <field name="pm_interview" attrs="{'readonly' : [('status','!=','send')]}"/>
             </xpath>
         </field>
     </record>
@@ -239,14 +214,15 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="HR_approud" type="object" string="HR assessing">HR Appr</button>
-                <button type="object" string="HR assessing cvanel">HR Appr cancel</button>
-                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>
+                <button name="HR_approud_cancel" type="object" string="refuse"/>
+<!--                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>-->
             </xpath>
-            <xpath expr="//field[@name='it_id']" position="attributes">
-                <attribute name="readonly">1</attribute>
-            </xpath>
+
+<!--            <xpath expr="//field[@name='hr_interview']" position="replace">-->
+<!--                <field name="hr_interview" attrs="{'readonly' : [('status','!=','dl')]}"/>-->
+<!--            </xpath>-->
             <xpath expr="//field[@name='reasons']" position="attributes">
-                <attribute name="readonly">0</attribute>
+                <attribute name="readonly">1</attribute>
             </xpath>
         </field>
     </record>
@@ -257,20 +233,40 @@
         <field name="inherit_id" ref="emp_req_form"/>
         <field name="groups_id" eval="[(4, ref('group_it_user'))]"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='reasons']" position="after">
-                <button name="it_confirm" type="object">IT confirm</button>
+            <xpath expr="//field[@name='status']" position="before">
+                <button name="it_confirm" type="object" string="Confirm"/>
             </xpath>
-            <xpath expr="//field[@name='dl_id']" position="attributes">
-                <attribute name="readonly">1</attribute>
+            <xpath expr="//field[@name='other_asset']" position="replace">
+                <field name="other_asset" string="Thu hồi tài sản thiết bị cá nhân"
+                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
             </xpath>
-            <xpath expr="//field[@name='pm_id']" position="attributes">
-                <attribute name="readonly">1</attribute>
+            <xpath expr="//field[@name='Email_asset']" position="replace">
+                <field name="Email_asset" string="Có giữ lại mail không"
+                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
             </xpath>
-            <xpath expr="//field[@name='it_id']" position="attributes">
-                <attribute name="readonly">1</attribute>
+            <xpath expr="//field[@name='git_account']" position="replace">
+                <field name="git_account" string="Acc redmind và Git"
+                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
             </xpath>
-            <xpath expr="//field[@name='reasons']" position="attributes">
-                <attribute name="readonly">1</attribute>
+        </field>
+    </record>
+
+    <record id="inherited_accountant_rep_form" model="ir.ui.view">
+        <field name="name">inherited.accountant_req_form</field>
+        <field name="model">employee.req</field>
+        <field name="inherit_id" ref="emp_req_form"/>
+        <field name="groups_id" eval="[(4, ref('group_accountant_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status']" position="before">
+                <button name="accountant_confirm" type="object" string="Confirm"/>
+            </xpath>
+            <xpath expr="//field[@name='personal_asset']" position="replace">
+                <field name="personal_asset"
+                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
+            </xpath>
+            <xpath expr="//field[@name='customer_asset']" position="replace">
+                <filed name="customer_asset"
+                       attrs="{'readonly' : [('status','in',['refuse','draft'])] }"/>
             </xpath>
         </field>
     </record>

@@ -1,1 +1,1 @@
-import hr_wizard
+from . import hr_wizard

@@ -6,12 +6,12 @@
         <field name="name">interview_rs Form</field>
         <field name="model">interview_rs</field>
         <field name="arch" type="xml">
-            <group>
+            <form>
                 <span>Note : <field name="note"/></span>
                 <span> Allow Employee view rs : <field name="emp_view"/></span>
                 <span>Accept rq <field name="result"></field></span>
-                <field name="emp_id" string ="employee req"/>
-            </group>
+                <field name="emp_id" string ="employee req" readonly="1"/>
+            </form>
         </field>
     </record>
 </odoo>
