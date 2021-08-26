@@ -47,13 +47,19 @@ class Employee_rq(models.Model):
         ('dl2', 'Dl Assessing'),
         ('hr', 'Hr Assessing'),
         ('done', 'Approved')], default='draft')
+    creator_role = fields.Char()
+    editable = fields.Boolean(compute='_check_edit_')
 
     interview_ids = fields.One2many('interview_rs', 'emp_id', string="interviews", store=True)
     hr_notes = fields.One2many('hr_note_trans', 'employee_req_id', string='hr Notes', store=True)
-    pm_interview = fields.Char(string='PM Note',   groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
-    dl_interview = fields.Char(string='DL Note', groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
-    dl_msg_pm = fields.Char(string='DL MSG for PM', groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
-    hr_interview = fields.Char(string='HR Note', groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
+    pm_interview = fields.Char(string='PM Note',
+                               groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
+    dl_interview = fields.Char(string='DL Note',
+                               groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
+    dl_msg_pm = fields.Char(string='DL MSG for PM',
+                            groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
+    hr_interview = fields.Char(string='HR Note',
+                               groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
     personal_asset = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
@@ -84,6 +90,7 @@ class Employee_rq(models.Model):
                 print(template_id)
                 template = self.env['mail.template'].browse(template_id)
                 template.send_mail(self.id, force_send=True)
+                record.editable = False
 
     def send_req(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
@@ -119,6 +126,7 @@ class Employee_rq(models.Model):
                 print(template_id)
                 template = self.env['mail.template'].browse(template_id)
                 template.send_mail(self.id, force_send=True)
+                record.editable = False
 
     def Dl_approud_1(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
@@ -158,19 +166,20 @@ class Employee_rq(models.Model):
             'target': 'new',
         }
 
-# Gọi form refuse pm , dl , hr đều dùng
+    # Gọi form refuse pm , dl , hr đều dùng
     def call_Refuse_form(self):
-            form_view = self.env.ref('quitjob_manage.refuse_note')
-            return {
-                'name': _('DL Note'),
-                'view_type': 'form',
-                'view_mode': 'form',
-                'view_id': form_view.id,
-                'res_model': 'employee.req',
-                'type': 'ir.actions.act_window',
-                'res_id': self.id,
-                'target': 'new',
-            }
+        form_view = self.env.ref('quitjob_manage.refuse_note')
+        return {
+            'name': _('DL Note'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': form_view.id,
+            'res_model': 'employee.req',
+            'type': 'ir.actions.act_window',
+            'res_id': self.id,
+            'target': 'new',
+        }
+
     def pm_refuse_done(self):
         for record in self:
             record.status = 'refuse'
@@ -192,30 +201,16 @@ class Employee_rq(models.Model):
             record.hr_accept = False
             record.other_confirm = False
             record.accountant_confirm = False
-    # def Dl_approud_2(self):
-    #     for record in self:
-    #         if record.hr_accept == False:
-    #             record.dl_second_accept = True
-    #             record.status = 'hr'
-    #             template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
-    #             print(template_id)
-    #             template = self.env['mail.template'].browse(template_id)
-    #             template.send_mail(self.id, force_send=True)
-    #
-    # def Dl_approud_2_cancel(self):
-    #     for record in self:
-    #         if record.hr_accept == False:
-    #             record.status = 'pm'
-    #             record.dl_second_accept = False
+
     def PM_approud_done(self):
         for record in self:
-            if record.status == 'pm' and record.dl_first_accept:
-                record.pm_accept = True
-                record.status = 'dl2'
-                template_id = self.env.ref("quitjob_manage.mail_template_pm_2_dl").id
-                print(template_id)
-                template = self.env['mail.template'].browse(template_id)
-                template.send_mail(self.id, force_send=True)
+            record.pm_accept = True
+            record.status = 'dl2'
+            template_id = self.env.ref("quitjob_manage.mail_template_pm_2_dl").id
+            print(template_id)
+            template = self.env['mail.template'].browse(template_id)
+            template.send_mail(self.id, force_send=True)
+            record.editable=False
 
     def PM_approud(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
@@ -230,7 +225,6 @@ class Employee_rq(models.Model):
             'target': 'new',
         }
 
-
     def Hr_approved_done(self):
         for record in self:
             # if record.other_confirm == False and record.dl_second_accept:
@@ -242,8 +236,47 @@ class Employee_rq(models.Model):
             print(template_id)
             template = self.env['mail.template'].browse(template_id)
             template.send_mail(self.id, force_send=True)
+            record.editable = False
 
+    @api.model
+    def create(self, vals):
+        print('line 1')
+        res_id = super(Employee_rq, self).create(vals)
+        if res_id.create_uid.has_group('quitjob_manage.group_hr_user'):
+            res_id.creator_role = 'hr'
+            print('hr user')
+            res_id.status = 'hr'
+            res_id.pm_accept = True
+            res_id.dl_first_accept = True
+            res_id.dl_second_accept = True
+        if res_id.create_uid.has_group('quitjob_manage.group_dl_user'):
+            print('dl user')
+            res_id.creator_role = 'dl2'
+            res_id.status = 'dl2'
+            res_id.pm_accept = True
+            res_id.dl_first_accept = True
+        if res_id.create_uid.has_group('quitjob_manage.group_pm_user'):
+            res_id.creator_role = 'pm'
+            print('pm user')
+            res_id.status = 'pm'
+            res_id.pm_accept = True
+        if res_id.create_uid.has_group('quitjob_manage.group_emp_user'):
+            res_id.creator_role = 'draft'
+            print('emp user')
+        print('line 2  ', res_id.create_uid)
+        return res_id
 
+    @api.depends('status','creator_role')
+    def _check_edit_(self):
+        print('go in')
+        for r in self:
+            print(r.status)
+            print(r.creator_role)
+            if r.status in [r.creator_role]:
+                r.editable=True
+            else :
+                print('false --- ')
+                r.editable=False
 
     def it_confirm(self):
         for record in self:

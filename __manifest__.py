@@ -11,8 +11,8 @@
     'images': [],
     'depends': ['sale','hr'],
     'data': [
-        'security/security.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
         'data/mail_template.xml',
         'view/menu.xml',
         'view/hr_view.xml',

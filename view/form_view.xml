@@ -27,28 +27,30 @@
                         </group>
                     </group>
                     <group>
+                        <field name="editable"/>
                         <field name="create_date" string="Ngày tạo bản ghi" readonly="1"/>
                         <field name="req_date" string="Ngày ngỉ yêu cầu"
-                               attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                               attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
                         <field name="est_date" string="Ngày ngỉ dự kiến"
                                attrs="{'readonly': [('status', '!=', 'draft')]}"/>
                     </group>
                     <group string="Lý do">
                         <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
-                               attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                               attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
                     </group>
                     <group string="Lý do chi tiêt">
-                        <field name="specific_reason" attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                        <field name="specific_reason"
+                               attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
                     </group>
                     <div>
                         <group>
-                                <field name="pm_interview" readonly="1" string="PM NOTE"/>
+                            <field name="pm_interview" readonly="1" string="PM NOTE"/>
                         </group>
                         <group>
-                                <field name="dl_interview" readonly="1" string="DL NOTE"/>
+                            <field name="dl_interview" readonly="1" string="DL NOTE"/>
                         </group>
                         <group>
-                                <field name="hr_interview" readonly="1" string="HR NOTE"/>
+                            <field name="hr_interview" readonly="1" string="HR NOTE"/>
                         </group>
                         <group>
                             <!--                            <field name="hr_notes" string="NOTE"/>-->
@@ -190,6 +192,7 @@
                 <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','dl2')]}"/>
             </xpath>
+
         </field>
     </record>
 
@@ -221,6 +224,8 @@
         <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
+                <button name="PM_approud" type="object" string="Confirm"
+                />
                 <button name="PM_approud" type="object" string="HR assessing"
                         attrs="{'invisible' : [('status','!=','hr')]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"

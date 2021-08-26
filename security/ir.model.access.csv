@@ -28,10 +28,10 @@ access_interview_rs_it,access.interview_rs_it,model_interview_rs,quitjob_manage.
 
 
 access_employee_req,access.employee.req,model_employee_req,quitjob_manage.group_emp_user,1,1,1,1
-access_employee_req_dl,access.employee.req_dl,model_employee_req,quitjob_manage.group_dl_user,1,1,1,0
-access_employee_req_pm,access.employee.req_pm,model_employee_req,quitjob_manage.group_pm_user,1,1,1,0
-access_employee_req_hr,access.employee.req_hr,model_employee_req,quitjob_manage.group_hr_user,1,1,1,0
-access_employee_req_it,access.employee.req_hr,model_employee_req,quitjob_manage.group_it_user,1,1,1,0
+access_employee_req_dl,access.employee.req_dl,model_employee_req,quitjob_manage.group_dl_user,1,1,1,1
+access_employee_req_pm,access.employee.req_pm,model_employee_req,quitjob_manage.group_pm_user,1,1,1,1
+access_employee_req_hr,access.employee.req_hr,model_employee_req,quitjob_manage.group_hr_user,1,1,1,1
+access_employee_req_it,access.employee.req_hr,model_employee_req,quitjob_manage.group_it_user,1,1,1,1
 
 
 
