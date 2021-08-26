@@ -2,8 +2,8 @@
 
 
 <odoo>
-<!--    form view cơ bản của employee.re -->
-<!--    tùy từng role phía dưới sẽ kế thừa lại form này rồi chỉnh lại field-->
+    <!--    form view cơ bản của employee.re -->
+    <!--    tùy từng role phía dưới sẽ kế thừa lại form này rồi chỉnh lại field-->
     <record id="emp_req_form" model="ir.ui.view">
         <field name="name">Employee Request Form</field>
         <field name="model">employee.req</field>
@@ -11,11 +11,12 @@
             <form>
                 <header>
                     <field name="status" widget="statusbar"/>
+                    <field name="pm_accept" invisible="1"/>
                 </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="employee_id" string="Employee"/>
+                            <field name="employee_id" string="Employee" readonly="1"/>
                             <field name="job_title" string="Vị trí"/>
                             <field name="contract_id" string="Contract"/>
                         </group>
@@ -32,29 +33,25 @@
                         <field name="est_date" string="Ngày ngỉ dự kiến"
                                attrs="{'readonly': [('status', '!=', 'draft')]}"/>
                     </group>
-                    <form>
-                        <strong>Reason :</strong>
+                    <group string="Lý do">
                         <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
                                attrs="{'readonly': [('status', '!=', 'draft')]}"/>
-                    </form>
+                    </group>
+                    <group string="Lý do chi tiêt">
+                        <field name="specific_reason" attrs="{'readonly': [('status', '!=', 'draft')]}" />
+                    </group>
                     <div>
-                        <form>
-                            <span>PM Note :
-                                <field name="pm_interview" readonly="1"/>
-                            </span>
-                        </form>
-                        <form>
-                            <span>DL Note :
-                                <field name="dl_interview" readonly="1"/>
-                            </span>
-                        </form>
-                        <form>
-                            <span>HR Note :
-                                <field name="hr_interview" readonly="1"/>
-                            </span>
-                        </form>
                         <group>
-<!--                            <field name="hr_notes" string="NOTE"/>-->
+                                <field name="pm_interview" readonly="1" string="PM NOTE"/>
+                        </group>
+                        <group>
+                                <field name="dl_interview" readonly="1" string="DL NOTE"/>
+                        </group>
+                        <group>
+                                <field name="hr_interview" readonly="1" string="HR NOTE"/>
+                        </group>
+                        <group>
+                            <!--                            <field name="hr_notes" string="NOTE"/>-->
                         </group>
                     </div>
                     <notebook attrs="{'invisible' : [('hr_accept','=',False)]}">
@@ -105,7 +102,7 @@
             </form>
         </field>
     </record>
-<!--    form view employee req-->
+    <!--    form view employee req-->
 
 
     <record id="emp_req_kanban" model="ir.ui.view">
@@ -162,7 +159,7 @@
         </field>
     </record>
 
-<!--    kế thừa chỉnh lại employee.req cho  employee user  -->
+    <!--    kế thừa chỉnh lại employee.req cho  employee user  -->
     <record id="inherited_emp_rep_form" model="ir.ui.view">
         <field name="name">inherited.dl_req_form</field>
         <field name="model">employee.req</field>
@@ -170,14 +167,14 @@
         <field name="groups_id" eval="[(4, ref('group_emp_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="send_req" type="object" string="send req" confirm="Send to DL ?"
+                <button name="send_req" type="object" string="send req"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
                 <button name="cancel_send_req" type="object" string="back to draft"/>
             </xpath>
         </field>
     </record>
-<!--    kế thừa chỉnh lại employee.req cho  employee user  -->
+    <!--    kế thừa chỉnh lại employee.req cho  employee user  -->
 
     <record id="inherited_dl_rep_form" model="ir.ui.view">
         <field name="name">inherited.dl_req_form</field>
@@ -189,10 +186,9 @@
                 <button name="Dl_approud_1" type="object" string="DL Assessing"
                         attrs="{'invisible' : [('status','!=','dl2')]}"/>
                 <button name="Dl_2_PM" type="object" string="Assessing for PM"
+                        attrs="{'invisible' : ['|',('status','!=','dl2'),('pm_accept','=',True)]}"/>
+                <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','dl2')]}"/>
-                <button name="Refuse" type="object" string="refurese"
-                        attrs="{'invisible' : [('status','!=','dl2')]}"/>
-                <button name="Refuse" type="object" string="Test"/>
             </xpath>
         </field>
     </record>
@@ -208,7 +204,7 @@
                         attrs="{'invisible' : [('status','!=','pm')]}"
                 />
 
-                <button name="PM_approud_cancel" type="object" string="Cancel"
+                <button name="call_Refuse_form" type="object" string="Cancel"
                         attrs="{'invisible' : [('status','!=','pm')]}"
                 />
             </xpath>
@@ -225,9 +221,11 @@
         <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="HR_approud" type="object" string="HR assessing">HR Appr</button>
-                <button name="HR_approud_cancel" type="object" string="refuse"/>
-<!--                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>-->
+                <button name="PM_approud" type="object" string="HR assessing"
+                        attrs="{'invisible' : [('status','!=','hr')]}"/>
+                <button name="call_Refuse_form" type="object" string="Refuse"
+                        attrs="{'invisible' : [('status','!=','hr')]}"/>
+                <!--                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>-->
             </xpath>
 
             <xpath expr="//field[@name='reasons']" position="attributes">
