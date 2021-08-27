@@ -17,8 +17,9 @@ class Employee_rq(models.Model):
                                 required=True)
     contract_id = fields.Many2one('hr.contract', related='employee_id.contract_id', groups="base.group_user")
     pm_id = fields.Many2one('hr.employee', string='pm')
+                            # domain=lambda self :[('department_id', '=', self.env.user.employee_id.department_id)])
     dl_id = fields.Many2one('hr.employee', string='dl')
-    hr_id = fields.Many2one('hr.employee', string='dl')
+    hr_id = fields.Many2one('hr.employee', string='hr')
     rela_user_email = fields.Char(related="rela_user.email")
     parent_id = fields.Many2one('hr.employee', related='department_id.manager_id')
     it_id = fields.Many2one('it.req')
@@ -48,7 +49,7 @@ class Employee_rq(models.Model):
         ('hr', 'Hr Assessing'),
         ('done', 'Approved')], default='draft')
     creator_role = fields.Char()
-    editable = fields.Boolean(compute='_check_edit_')
+    editable = fields.Boolean(default=True, compute='_check_edit_')
 
     interview_ids = fields.One2many('interview_rs', 'emp_id', string="interviews", store=True)
     hr_notes = fields.One2many('hr_note_trans', 'employee_req_id', string='hr Notes', store=True)
@@ -210,7 +211,7 @@ class Employee_rq(models.Model):
             print(template_id)
             template = self.env['mail.template'].browse(template_id)
             template.send_mail(self.id, force_send=True)
-            record.editable=False
+            record.editable = False
 
     def PM_approud(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
@@ -266,17 +267,26 @@ class Employee_rq(models.Model):
         print('line 2  ', res_id.create_uid)
         return res_id
 
-    @api.depends('status','creator_role')
+    def unlink(self):
+        print(self)
+        for record in self:
+            if record.editable == False:
+                raise ValidationError(_("Ban kho the xoa ban ghi"))
+            else:
+                print('sdfdfadf')
+        return super(Employee_rq, self).unlink()
+
+    @api.depends('status', 'creator_role')
     def _check_edit_(self):
         print('go in')
         for r in self:
             print(r.status)
             print(r.creator_role)
             if r.status in [r.creator_role]:
-                r.editable=True
-            else :
+                r.editable = True
+            else:
                 print('false --- ')
-                r.editable=False
+                r.editable = False
 
     def it_confirm(self):
         for record in self:

@@ -19,38 +19,37 @@
                             <field name="employee_id" string="Employee" readonly="1"/>
                             <field name="job_title" string="Vị trí"/>
                             <field name="contract_id" string="Contract"/>
-                        </group>
-                        <group>
                             <field name="department_id" string="Department"/>
                             <field name="parent_id" string="Quản lý" attrs="{'readonly': [('status', '!=', 'draft')]}"/>
                             <!--                            <field name="it_id" string="IT"  attrs="{'readonly': [('status', '!=', 'draft')]}"/>-->
                         </group>
-                    </group>
-                    <group>
-                        <field name="editable"/>
-                        <field name="create_date" string="Ngày tạo bản ghi" readonly="1"/>
-                        <field name="req_date" string="Ngày ngỉ yêu cầu"
-                               attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
-                        <field name="est_date" string="Ngày ngỉ dự kiến"
-                               attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                        <group>
+                            <field name="editable"/>
+                            <field name="create_date" string="Created on" readonly="1"/>
+                            <field name="req_date" string="Ngày mong muốn"
+                                   attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
+                            <field name="est_date" string="Ngày dự kiến nghỉ việc theo quy định"
+                                   attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                        </group>
                     </group>
                     <group string="Lý do">
                         <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
+                               string=""
                                attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
                     </group>
                     <group string="Lý do chi tiêt">
-                        <field name="specific_reason"
+                        <field name="specific_reason" string=""
                                attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
                     </group>
                     <div>
-                        <group>
-                            <field name="pm_interview" readonly="1" string="PM NOTE"/>
+                        <group string="PM NOTE" groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
+                            <field name="pm_interview" readonly="1" string=""/>
                         </group>
-                        <group>
-                            <field name="dl_interview" readonly="1" string="DL NOTE"/>
+                        <group string="DL NOTE" groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
+                            <field name="dl_interview" readonly="1" string=""/>
                         </group>
-                        <group>
-                            <field name="hr_interview" readonly="1" string="HR NOTE"/>
+                        <group string="HR NOTE" groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
+                            <field name="hr_interview" readonly="1" string=""/>
                         </group>
                         <group>
                             <!--                            <field name="hr_notes" string="NOTE"/>-->
@@ -224,8 +223,6 @@
         <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="PM_approud" type="object" string="Confirm"
-                />
                 <button name="PM_approud" type="object" string="HR assessing"
                         attrs="{'invisible' : [('status','!=','hr')]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
@@ -233,9 +230,9 @@
                 <!--                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>-->
             </xpath>
 
-            <xpath expr="//field[@name='reasons']" position="attributes">
-                <attribute name="readonly">1</attribute>
-            </xpath>
+<!--            <xpath expr="//field[@name='reasons']" position="attributes">-->
+<!--                <attribute name="readonly">1</attribute>-->
+<!--            </xpath>-->
         </field>
     </record>
 
