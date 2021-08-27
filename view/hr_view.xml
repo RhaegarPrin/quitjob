@@ -98,7 +98,36 @@
             </form>
         </field>
     </record>
+    <!--    form dl msg for pm-->
 
+    <!--    form for it,accountant-->
+    <record id="it_accountant_form_pop_up" model="ir.ui.view">
+        <field name="name">DL msf for PM</field>
+        <field name="model">employee.req</field>
+        <field name="active">false</field>
+        <field name="arch" type="xml">
+            <form>
+<!--                <div>-->
+<!--                    <group string="Confirm form">-->
+<!--                        <field name="personal_asset" readonly="1"-->
+<!--                               string="Thu hồi tài sản thiết bị cá nhân"-->
+<!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
+<!--                        <field name="customer_asset" readonly="1"-->
+<!--                               string="Tài sản và thiết bị khách hàng chuyển giao cho"-->
+<!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
+<!--                        <field name="other_asset" readonly="1" string="Tài sản khác"-->
+<!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
+<!--                        <field name="Email_asset" readonly="1" string="Có giữ lại mail không"-->
+<!--                               attrs="{'invisible':[('status','!=','it')]}"/>-->
+<!--                        <field name="git_account" readonly="1" string="Acc redmind và Git"-->
+<!--                               attrs="{'invisible':[('status','!=','it')]}"/>-->
+<!--                    </group>-->
+<!--                    <button name="it_confirm" type="object" string="Confirm"-->
+<!--                            attrs="{'invisible':[('status','!=','it')]}"/>-->
+<!--                </div>-->
+            </form>
+        </field>
+    </record>
 
     <record id="quitjob_manage.employee_hr_note" model="ir.actions.act_window">
         <field name="name">Hr note</field>

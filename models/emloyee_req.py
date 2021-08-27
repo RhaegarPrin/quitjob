@@ -17,7 +17,7 @@ class Employee_rq(models.Model):
                                 required=True)
     contract_id = fields.Many2one('hr.contract', related='employee_id.contract_id', groups="base.group_user")
     pm_id = fields.Many2one('hr.employee', string='pm')
-                            # domain=lambda self :[('department_id', '=', self.env.user.employee_id.department_id)])
+    # domain=lambda self :[('department_id', '=', self.env.user.employee_id.department_id)])
     dl_id = fields.Many2one('hr.employee', string='dl')
     hr_id = fields.Many2one('hr.employee', string='hr')
     rela_user_email = fields.Char(related="rela_user.email")
@@ -29,7 +29,7 @@ class Employee_rq(models.Model):
     pm_accept = fields.Boolean(default=False, string="PM accepted")
     hr_accept = fields.Boolean(default=False, string="hr accepted")
     other_confirm = fields.Boolean(default=False, string="IT confirm")
-    accountant_confirm = fields.Boolean(default=False, string="Ke toan confirm")
+    acct_confirm = fields.Boolean(default=False, string="Ke toan confirm")
     result = fields.Boolean(compute="_compute_status")
     req_date = fields.Date(string="Request Date")
     est_date = fields.Date(string="Request Date", compute="_compute_est_date")
@@ -64,23 +64,23 @@ class Employee_rq(models.Model):
     personal_asset = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
-    ], default=False)
+    ], default='no')
     customer_asset = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
-    ], default=False)
+    ], default='no')
     other_asset = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
-    ], default=False)
+    ], default='no')
     Email_asset = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
-    ], default=False)
+    ], default='no')
     git_account = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
-    ], default=False)
+    ], default='no')
 
     # send req gọi form note , form note gọi send_req_done để chuyển trạng thái
     def send_req_done(self):
@@ -114,7 +114,7 @@ class Employee_rq(models.Model):
             record.dl_second_accept = False
             record.hr_accept = False
             record.other_confirm = False
-            record.accountant_confirm = False
+            record.acct_confirm = False
 
     def Dl_approved_done(self):
         for record in self:
@@ -185,6 +185,11 @@ class Employee_rq(models.Model):
         for record in self:
             record.status = 'refuse'
             record.pm_accept = False
+        template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
+        print(template_id)
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)
+        record.editable = False
 
     def dl_refuse_done(self):
         for record in self:
@@ -192,6 +197,11 @@ class Employee_rq(models.Model):
             record.pm_accept = False
             record.dl_first_accept = False
             record.dl_second_accept = False
+        template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
+        print(template_id)
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)
+        record.editable = False
 
     def hr_refuse_done(self):
         for record in self:
@@ -201,7 +211,12 @@ class Employee_rq(models.Model):
             record.dl_second_accept = False
             record.hr_accept = False
             record.other_confirm = False
-            record.accountant_confirm = False
+            record.acct_confirm = False
+        template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
+        print(template_id)
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)
+        record.editable = False
 
     def PM_approud_done(self):
         for record in self:
@@ -232,7 +247,8 @@ class Employee_rq(models.Model):
             record.hr_accept = True
             record.dl_second_accept = True
             record.pm_accept = True
-            record.status = 'done'
+            if record.it_confirm and record.acct_confirm:
+                record.status = 'done'
             template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
             print(template_id)
             template = self.env['mail.template'].browse(template_id)
@@ -289,11 +305,16 @@ class Employee_rq(models.Model):
                 r.editable = False
 
     def it_confirm(self):
-        for record in self:
-            if record.dl_second_accept:
-                record.other_confirm = True
-            else:
-                raise ValidationError("Chờ DL Assessing")
+        for r in self:
+            r.other_confirm = True
+            if r.hr_accept and r.acct_confirm:
+                r.status = 'done'
+
+    def acct_confirm_(self):
+        for r in self:
+            r.acct_confirm = True
+            if r.hr_accept and r.it_confirm:
+                r.status = 'done'
 
     def delete_rec(self):
         for record in self:

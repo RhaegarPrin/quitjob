@@ -20,11 +20,11 @@
                             <field name="job_title" string="Vị trí"/>
                             <field name="contract_id" string="Contract"/>
                             <field name="department_id" string="Department"/>
-                            <field name="parent_id" string="Quản lý" attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                            <field name="parent_id" string="Quản lý" readonly="1"/>
                             <!--                            <field name="it_id" string="IT"  attrs="{'readonly': [('status', '!=', 'draft')]}"/>-->
                         </group>
                         <group>
-                            <field name="editable"/>
+                            <field name="editable" invisible="1"/>
                             <field name="create_date" string="Created on" readonly="1"/>
                             <field name="req_date" string="Ngày mong muốn"
                                    attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
@@ -42,13 +42,16 @@
                                attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
                     </group>
                     <div>
-                        <group string="PM NOTE" groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
+                        <group string="PM NOTE"
+                               groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
                             <field name="pm_interview" readonly="1" string=""/>
                         </group>
-                        <group string="DL NOTE" groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
+                        <group string="DL NOTE"
+                               groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
                             <field name="dl_interview" readonly="1" string=""/>
                         </group>
-                        <group string="HR NOTE" groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
+                        <group string="HR NOTE"
+                               groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user">
                             <field name="hr_interview" readonly="1" string=""/>
                         </group>
                         <group>
@@ -106,41 +109,6 @@
     <!--    form view employee req-->
 
 
-    <record id="emp_req_kanban" model="ir.ui.view">
-        <field name="name">Emp req kanban</field>
-        <field name="model">employee.req</field>
-        <field name="arch" type="xml">
-            <kanban>
-                <templates>
-                    <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
-                            <form>
-                                <span>Name:
-                                    <field name="rela_user"/>
-                                </span>
-                            </form>
-                            <form>
-                                <span>DL Acc1:
-                                    <field name="dl_first_accept"/>
-                                </span>
-                            </form>
-                            <form>
-                                <span>PM Acc:
-                                    <field name="pm_accept"/>
-                                </span>
-                            </form>
-                            <form>
-                                <span>DL Acc2:
-                                    <field name="dl_second_accept"/>
-                                </span>
-                            </form>
-                        </div>
-                    </t>
-                </templates>
-            </kanban>
-        </field>
-    </record>
-
     <record id="emp_req_tree" model="ir.ui.view">
         <field name="name">Emp req tree</field>
         <field name="model">employee.req</field>
@@ -152,10 +120,11 @@
                 <field name="est_date"/>
                 <field name="reasons" widget="many2many_tags"/>
                 <field name="status"/>
-                <field name="pm_accept" string="PM Assessing"/>
-                <field name="dl_second_accept" string="DL Assessing"/>
-                <field name="hr_accept" string="HR Assessing"/>
-                <field name="other_confirm" string="other Assessing"/>
+                <field name="pm_accept" string="PM Confirm"/>
+                <field name="dl_second_accept" string="DL Confirm"/>
+                <field name="hr_accept" string="HR Confirm"/>
+                <field name="other_confirm" string="IT Confirm"/>
+                <field name="acct_confirm" string="Accountant Confirm"/>
             </tree>
         </field>
     </record>
@@ -230,9 +199,9 @@
                 <!--                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>-->
             </xpath>
 
-<!--            <xpath expr="//field[@name='reasons']" position="attributes">-->
-<!--                <attribute name="readonly">1</attribute>-->
-<!--            </xpath>-->
+            <!--            <xpath expr="//field[@name='reasons']" position="attributes">-->
+            <!--                <attribute name="readonly">1</attribute>-->
+            <!--            </xpath>-->
         </field>
     </record>
 
@@ -243,19 +212,20 @@
         <field name="groups_id" eval="[(4, ref('group_it_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="it_confirm" type="object" string="Confirm"/>
+                <button name="it_confirm" type="object" string="Confirm"
+                        attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')]}"/>
             </xpath>
             <xpath expr="//field[@name='other_asset']" position="replace">
-                <field name="other_asset" string="Thu hồi tài sản thiết bị cá nhân"
-                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
+                <field name="other_asset" string="Tài sản khác"
+                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft'])]}"/>
             </xpath>
             <xpath expr="//field[@name='Email_asset']" position="replace">
                 <field name="Email_asset" string="Có giữ lại mail không"
-                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
+                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft'])]}"/>
             </xpath>
             <xpath expr="//field[@name='git_account']" position="replace">
                 <field name="git_account" string="Acc redmind và Git"
-                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
+                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft'])]}"/>
             </xpath>
         </field>
     </record>
