@@ -11,6 +11,7 @@ class Employee_rq(models.Model):
     position = fields.Char(compute="_get_position", string='Position')
     job_title = fields.Char(related='employee_id.job_title')
     department_id = fields.Many2one('hr.department', related='employee_id.department_id')
+    parent_department_id = fields.Many2one('hr.department', related='department_id.parent_id')
     employee_id = fields.Many2one('hr.employee', string='Employee',
                                   default=lambda self: self.env.user.employee_id)
     rela_user = fields.Many2one('res.users', string='USER Related', related='employee_id.user_id',
@@ -324,7 +325,7 @@ class Employee_rq(models.Model):
     @api.constrains('req_date')
     def _check_est_date(self):
         for r in self:
-            if r.req_date < r.create_date.date():
+            if r.req_date < r.create_date.date() :
                 raise ValidationError("Invalid est_date")
 
     @api.depends('req_date')

@@ -62,6 +62,7 @@
 
     <menuitem id="quitjob_manage.employee_req_menu"
               name="Employee REquest"
+              groups="base.group_user"
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee_req"/>
 

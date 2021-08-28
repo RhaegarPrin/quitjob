@@ -60,17 +60,6 @@
                     </div>
                     <notebook attrs="{'invisible' : [('hr_accept','=',False)]}">
                         <page string="DL confirm ">
-                            <div>
-                                <group>
-                                    <field name="personal_asset" readonly="1"
-                                           string="Thu hồi tài sản thiết bị cá nhân"/>
-                                    <field name="customer_asset" readonly="1"
-                                           string="Tài sản và thiết bị khách hàng chuyển giao cho"/>
-                                    <field name="other_asset" readonly="1" string="Tài sản khác"/>
-                                    <field name="Email_asset" readonly="1" string="Có giữ lại mail không"/>
-                                    <field name="git_account" readonly="1" string="Acc redmind và Git"/>
-                                </group>
-                            </div>
                             <form>
                                 <span>DL accept 1
                                     <field name="dl_first_accept" readonly="1"
@@ -96,10 +85,23 @@
                             </form>
                         </page>
                         <page string="IT confirm">
+                            <group>
+                                <field name="other_asset" readonly="1" string="Tài sản khác"/>
+                                <field name="Email_asset" readonly="1" string="Có giữ lại mail không"/>
+                                <field name="git_account" readonly="1" string="Acc redmind và Git"/>
+                            </group>
                             <span>Other
                                 <field name="other_confirm" readonly="1"
                                        attrs="{'invisible': [('other_confirm', '=', False)]}"/>
                             </span>
+                        </page>
+                        <page string="Accountant confirm">
+                            <group>
+                                <field name="personal_asset" readonly="1"
+                                       string="Thu hồi tài sản thiết bị cá nhân"/>
+                                <field name="customer_asset" readonly="1"
+                                       string="Tài sản và thiết bị khách hàng chuyển giao cho"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -185,6 +187,7 @@
         </field>
     </record>
 
+    <!--    hr view form inhr-->
     <record id="inherited_hr_rep_form" model="ir.ui.view">
         <field name="name">inherited.hr_req_form</field>
         <field name="model">employee.req</field>
@@ -193,15 +196,10 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="PM_approud" type="object" string="HR assessing"
-                        attrs="{'invisible' : [('status','!=','hr')]}"/>
+                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','hr')]}"/>
-                <!--                <button name="%(quitjob_manage.employee_hr_note)d" type="action" string="View Note"/>-->
             </xpath>
-
-            <!--            <xpath expr="//field[@name='reasons']" position="attributes">-->
-            <!--                <attribute name="readonly">1</attribute>-->
-            <!--            </xpath>-->
         </field>
     </record>
 
@@ -214,18 +212,21 @@
             <xpath expr="//field[@name='status']" position="before">
                 <button name="it_confirm" type="object" string="Confirm"
                         attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')]}"/>
+                <button name="send_req" type="object" string="send req"
+                        attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
+                </button>
             </xpath>
             <xpath expr="//field[@name='other_asset']" position="replace">
                 <field name="other_asset" string="Tài sản khác"
-                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft'])]}"/>
+                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
             </xpath>
             <xpath expr="//field[@name='Email_asset']" position="replace">
                 <field name="Email_asset" string="Có giữ lại mail không"
-                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft'])]}"/>
+                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
             </xpath>
             <xpath expr="//field[@name='git_account']" position="replace">
                 <field name="git_account" string="Acc redmind và Git"
-                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft'])]}"/>
+                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
             </xpath>
         </field>
     </record>
@@ -237,15 +238,16 @@
         <field name="groups_id" eval="[(4, ref('group_accountant_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="accountant_confirm" type="object" string="Confirm"/>
+                <button name="acct_confirm_" type="object" string="Confirm"/>
             </xpath>
             <xpath expr="//field[@name='personal_asset']" position="replace">
-                <field name="personal_asset"
-                       attrs="{'readonly' : [('status','in',['refuse','draft'])]}"/>
+                <field name="personal_asset"   string="Thu hồi tài sản thiết bị cá nhân"
+                       attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
+                <field name="acct_confirm" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='customer_asset']" position="replace">
-                <filed name="customer_asset"
-                       attrs="{'readonly' : [('status','in',['refuse','draft'])] }"/>
+                <filed name="customer_asset" string="Tài sản và thiết bị khách hàng chuyển giao cho"
+                       attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])] }"/>
             </xpath>
         </field>
     </record>

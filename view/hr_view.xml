@@ -41,13 +41,14 @@
                     <!--                    </group>-->
                     <group attrs="{'invisible':[('status','in',['dl2','hr'])]}">
                         <field name="department_id" invisible="1"/>
+                        <field name="parent_department_id" invisible="1"/>
                         <field name="dl_id" string="DL"
                                attrs="{'invisible':[('status','in',['dl2','hr'])]}"
-                               domain="[('department_id', '=', department_id),('job_title','=','DL')]"/>
+                               domain="['|',('department_id','=',parent_department_id),('department_id', '=', department_id),('job_title','=','DL')]"/>
                     </group>
                     <group attrs="{'invisible':[('status','!=','dl2')]}" name="HR">
                         <field name="hr_id" string="HR" attrs="{'invisible':[('status','!=','dl2')]} "
-                               domain="[('department_id', '=', department_id),('job_title','=','Hr')]"/>
+                               domain="['|',('department_id','=',parent_department_id),('department_id', '=', department_id),('job_title','=','Hr')]"/>
                     </group>
                 </group>
                 <group string="Note">
@@ -90,8 +91,9 @@
             <form>
                 <group string="Pick">
                     <field name="department_id" invisible="1"/>
+                    <field name="parent_department_id" invisible="1"/>
                     <field name="pm_id" string="PM "
-                           domain="[('department_id', '=', department_id),('job_title','=','PM')]"/>
+                           domain="['|',('department_id','=',parent_department_id),('department_id', '=', department_id),('job_title','=','PM')]"/>
                     <field name="dl_msg_pm" string="MSG"/>
                     <button name="DL_2_PM_done" type="object">Send to PM</button>
                 </group>
@@ -107,24 +109,24 @@
         <field name="active">false</field>
         <field name="arch" type="xml">
             <form>
-<!--                <div>-->
-<!--                    <group string="Confirm form">-->
-<!--                        <field name="personal_asset" readonly="1"-->
-<!--                               string="Thu hồi tài sản thiết bị cá nhân"-->
-<!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
-<!--                        <field name="customer_asset" readonly="1"-->
-<!--                               string="Tài sản và thiết bị khách hàng chuyển giao cho"-->
-<!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
-<!--                        <field name="other_asset" readonly="1" string="Tài sản khác"-->
-<!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
-<!--                        <field name="Email_asset" readonly="1" string="Có giữ lại mail không"-->
-<!--                               attrs="{'invisible':[('status','!=','it')]}"/>-->
-<!--                        <field name="git_account" readonly="1" string="Acc redmind và Git"-->
-<!--                               attrs="{'invisible':[('status','!=','it')]}"/>-->
-<!--                    </group>-->
-<!--                    <button name="it_confirm" type="object" string="Confirm"-->
-<!--                            attrs="{'invisible':[('status','!=','it')]}"/>-->
-<!--                </div>-->
+                <!--                <div>-->
+                <!--                    <group string="Confirm form">-->
+                <!--                        <field name="personal_asset" readonly="1"-->
+                <!--                               string="Thu hồi tài sản thiết bị cá nhân"-->
+                <!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
+                <!--                        <field name="customer_asset" readonly="1"-->
+                <!--                               string="Tài sản và thiết bị khách hàng chuyển giao cho"-->
+                <!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
+                <!--                        <field name="other_asset" readonly="1" string="Tài sản khác"-->
+                <!--                               attrs="{'invisible':[('status','!=','accountant')]}"/>-->
+                <!--                        <field name="Email_asset" readonly="1" string="Có giữ lại mail không"-->
+                <!--                               attrs="{'invisible':[('status','!=','it')]}"/>-->
+                <!--                        <field name="git_account" readonly="1" string="Acc redmind và Git"-->
+                <!--                               attrs="{'invisible':[('status','!=','it')]}"/>-->
+                <!--                    </group>-->
+                <!--                    <button name="it_confirm" type="object" string="Confirm"-->
+                <!--                            attrs="{'invisible':[('status','!=','it')]}"/>-->
+                <!--                </div>-->
             </form>
         </field>
     </record>

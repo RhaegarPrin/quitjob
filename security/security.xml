@@ -2,39 +2,39 @@
 
 <odoo>
 
-    <!--    <record model="ir.module.category" id="company_manage_quitjob">-->
-    <!--        <field name="name">QUIT J</field>-->
-    <!--        <field name="description">GR R</field>-->
-    <!--    </record>-->
+        <record model="ir.module.category" id="company_manage_quitjob">
+            <field name="name">QUIT J</field>
+            <field name="description">GR R</field>
+        </record>
 
     <record id="group_emp_user" model="res.groups">
         <field name="name">Emp User</field>
-        <!--        <field name="category_id" ref="company_manage_quitjob"/>-->
+                <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
 
     <record id="group_dl_user" model="res.groups">
         <field name="name">DL User</field>
-        <!--        <field name="category_id" ref="company_manage_quitjob"/>-->
+                <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="group_pm_user" model="res.groups">
         <field name="name">PM User</field>
-        <!--        <field name="category_id" ref="company_manage_quitjob"/>-->
+                <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="group_hr_user" model="res.groups">
         <field name="name">Hr User</field>
-        <!--        <field name="category_id" ref="company_manage_quitjob"/>-->
+                <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="group_it_user" model="res.groups">
         <field name="name">IT User</field>
-        <!--        <field name="category_id" ref="company_manage_quitjob"/>-->
+                <field name="category_id" ref="company_manage_quitjob"/>
     </record>
     <record id="group_accountant_user" model="res.groups">
         <field name="name">Accountant User</field>
-        <!--        <field name="category_id" ref="company_manage_quitjob"/>-->
+                <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="quitjob_manage.emp_rule" model="ir.rule">

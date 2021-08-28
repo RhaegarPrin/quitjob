@@ -31,8 +31,8 @@ access_employee_req,access.employee.req,model_employee_req,quitjob_manage.group_
 access_employee_req_dl,access.employee.req_dl,model_employee_req,quitjob_manage.group_dl_user,1,1,1,1
 access_employee_req_pm,access.employee.req_pm,model_employee_req,quitjob_manage.group_pm_user,1,1,1,1
 access_employee_req_hr,access.employee.req_hr,model_employee_req,quitjob_manage.group_hr_user,1,1,1,1
-access_employee_req_it,access.employee.req_hr,model_employee_req,quitjob_manage.group_it_user,1,1,1,1
-
+access_employee_req_it,access.employee.req_it,model_employee_req,quitjob_manage.group_it_user,1,1,1,1
+access_employee_req_acc,access.employee.req_acc,model_employee_req,quitjob_manage.group_accountant_user,1,1,1,1
 
 
 
