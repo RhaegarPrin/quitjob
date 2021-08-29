@@ -346,7 +346,7 @@ class Employee_rq(models.Model):
     def acct_confirm_(self):
         for r in self:
             r.acct_confirm = True
-            if r.hr_accept == True and r.it_confirm == True:
+            if r.hr_accept == True and r.other_confirm == True:
                 r.status = 'done'
 
     def delete_rec(self):

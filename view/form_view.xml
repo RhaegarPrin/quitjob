@@ -12,6 +12,7 @@
                 <header>
                     <field name="status" widget="statusbar"/>
                     <field name="pm_accept" invisible="1"/>
+                    <field name="acct_confirm" invisible="1"/>
                 </header>
                 <sheet>
                     <group>
@@ -221,8 +222,8 @@
         </field>
     </record>
 
-    <record id="inherited_hr_rep_form" model="ir.ui.view">
-        <field name="name">inherited.hr_req_form</field>
+    <record id="inherited_admin_rep_form" model="ir.ui.view">
+        <field name="name">inherited.admin_req_form</field>
         <field name="model">employee.req</field>
         <field name="inherit_id" ref="emp_req_form"/>
         <field name="groups_id" eval="[(4, ref('group_admin_user'))]"/>
@@ -247,7 +248,7 @@
         <field name="groups_id" eval="[(4, ref('group_it_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="it_confirm" type="object" string="Confirm"
+                <button name="it_confirm" type="object" string="IT Confirm"
                         attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')]}"/>
                 <button name="send_req" type="object" string="send req"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
@@ -275,7 +276,7 @@
         <field name="groups_id" eval="[(4, ref('group_accountant_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="acct_confirm_" type="object" string="Confirm"
+                <button name="acct_confirm_" type="object" string="Accountant Confirm"
                         attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')]}"/>
                 <button name="send_req" type="object" string="send req"
                         attrs="{'invisible': [('status', '!=', 'draft')]}"/>
@@ -283,7 +284,6 @@
             <xpath expr="//field[@name='personal_asset']" position="replace">
                 <field name="personal_asset" string="Thu hồi tài sản thiết bị cá nhân"
                        attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
-                <field name="acct_confirm" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='customer_asset']" position="replace">
                 <filed name="customer_asset" string="Tài sản và thiết bị khách hàng chuyển giao cho"
