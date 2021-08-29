@@ -105,6 +105,11 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
             </form>
         </field>
     </record>
@@ -238,10 +243,13 @@
         <field name="groups_id" eval="[(4, ref('group_accountant_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="acct_confirm_" type="object" string="Confirm"/>
+                <button name="acct_confirm_" type="object" string="Confirm"
+                        attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')]}"/>
+                <button name="send_req" type="object" string="send req"
+                        attrs="{'invisible': [('status', '!=', 'draft')]}"/>
             </xpath>
             <xpath expr="//field[@name='personal_asset']" position="replace">
-                <field name="personal_asset"   string="Thu hồi tài sản thiết bị cá nhân"
+                <field name="personal_asset" string="Thu hồi tài sản thiết bị cá nhân"
                        attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
                 <field name="acct_confirm" invisible="1"/>
             </xpath>

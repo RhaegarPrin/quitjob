@@ -6,6 +6,8 @@ import datetime
 
 class Employee_rq(models.Model):
     _name = "employee.req"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
     reasons = fields.Many2many('quit.reason', string='Reasons')
     notes = fields.Many2one('quit.note', string='DL Coms')
     position = fields.Char(compute="_get_position", string='Position')
@@ -21,7 +23,7 @@ class Employee_rq(models.Model):
     # domain=lambda self :[('department_id', '=', self.env.user.employee_id.department_id)])
     dl_id = fields.Many2one('hr.employee', string='dl')
     hr_id = fields.Many2one('hr.employee', string='hr')
-    rela_user_email = fields.Char(related="rela_user.email")
+
     parent_id = fields.Many2one('hr.employee', related='department_id.manager_id')
     it_id = fields.Many2one('it.req')
 
@@ -32,7 +34,7 @@ class Employee_rq(models.Model):
     other_confirm = fields.Boolean(default=False, string="IT confirm")
     acct_confirm = fields.Boolean(default=False, string="Ke toan confirm")
     result = fields.Boolean(compute="_compute_status")
-    req_date = fields.Date(string="Request Date")
+    req_date = fields.Date(string="Request Date", required=True)
     est_date = fields.Date(string="Request Date", compute="_compute_est_date")
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
@@ -86,6 +88,8 @@ class Employee_rq(models.Model):
     # send req gọi form note , form note gọi send_req_done để chuyển trạng thái
     def send_req_done(self):
         for record in self:
+            if record.dl_id.id == False:
+                raise ValidationError("Invalid DL ID")
             if record.status == 'draft':
                 record.status = 'dl2'
                 template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
@@ -119,6 +123,8 @@ class Employee_rq(models.Model):
 
     def Dl_approved_done(self):
         for record in self:
+            if record.hr_id.id == False :
+                raise ValidationError("Invalid Hr ID")
             if record.dl_second_accept == False and record.status != 'draft':
                 record.dl_second_accept = True
                 record.dl_first_accept = True
@@ -145,6 +151,8 @@ class Employee_rq(models.Model):
 
     def DL_2_PM_done(self):
         for record in self:
+            if record.pm_id.id == False:
+                raise ValidationError("Invalid PM ID")
             if record.hr_accept == False:
                 record.status = 'pm'
                 record.dl_first_accept = True
@@ -325,8 +333,10 @@ class Employee_rq(models.Model):
     @api.constrains('req_date')
     def _check_est_date(self):
         for r in self:
-            if r.req_date < r.create_date.date() :
+            if r.req_date < r.create_date.date() or r.req_date == False:
                 raise ValidationError("Invalid est_date")
+
+
 
     @api.depends('req_date')
     def _compute_est_date(self):
@@ -336,58 +346,7 @@ class Employee_rq(models.Model):
             else:
                 record.est_date = datetime.date.today()
 
-    def group_score(self, group_name):
-        if group_name == 'Hr User':
-            return 3
-        if group_name == 'DL User':
-            return 2
-        if group_name == 'PM User':
-            return 1
-        if group_name == 'EMP User':
-            return 0
-        return -10
 
-    def get_group_name(self):
-        user = self.env['res.users'].browse(self.env.uid)
-        if user.has_group('quitjob_manage.group_hr_user'):
-            return 'Hr User'
-        if user.has_group('quitjob_manage.group_dl_user'):
-            return 'DL User'
-        if user.has_group('quitjob_manage.group_pm_user'):
-            return 'PM User'
-        if user.has_group('quitjob_manage.group_emp_user'):
-            return 'EMP User'
-        return 'base.group_user'
-
-    @api.constrains('rela_user')
-    def _check_rela_user(self):
-        try:
-            print('go in rela')
-            user_gr = self.get_group_name()
-            print('user group : ', user_gr)
-            for record in self:
-                gr_ids = record.rela_user.reqs[0].rela_user.groups_id
-                print(gr_ids)
-                count = len(gr_ids)
-                print(count)
-                if record.rela_user == self.env.user:
-                    print('env user')
-                    pass
-                else:
-                    name = None
-                    print('other user')
-                    if record.rela_user.has_group('quitjob_manage.group_hr_user'):
-                        name = 'Hr User'
-                    if record.rela_user.has_group('quitjob_manage.group_dl_user'):
-                        name = 'DL User'
-                    if record.rela_user.has_group('quitjob_manage.group_pm_user'):
-                        name = 'PM User'
-                    if record.rela_user.has_group('quitjob_manage.group_emp_user'):
-                        name = 'EMP User'
-                    if record.group_score(name) >= record.group_score(user_gr):
-                        raise ValidationError("Invalid user")
-        except:
-            pass
 
     @api.depends('rela_user')
     def _get_position(self):
@@ -405,24 +364,4 @@ class Employee_rq(models.Model):
     def rela_user_hr_employee(self):
         self.rela_user = self.employee_id.user_id
 
-    #
-    # def hr_note_inverse(self):
-    #     if len(self.hr_notes) > 0:
-    #         hr_note = self.env['hr_note_test'].browse(self.hr_notes[0].id)
-    #         hr_note.employee_req_id = False
-    #     self.hr_note.employee_req_id=self
 
-    def test_open_edit(self):
-        return {
-
-            'type': 'ir.actions.act_window',
-
-            'view_type': 'form',
-
-            'view_mode': 'form',
-
-            'res_model': 'employee.req',  # name of respective model,
-            'target': 'new',
-            'context': {'force_detailed_view': 'true',
-                        'form_view_initial_mode': 'edit'},
-        }

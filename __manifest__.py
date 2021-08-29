@@ -9,7 +9,7 @@
     'category': 'Accounting/Accounting',
     'website': 'https://www.odoo.com/page/billing',
     'images': [],
-    'depends': ['sale','hr','hr_contract'],
+    'depends': ['sale','hr','hr_contract','mail'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
