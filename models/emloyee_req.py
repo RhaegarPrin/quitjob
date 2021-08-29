@@ -337,6 +337,7 @@ class Employee_rq(models.Model):
                 print('false --- ')
                 r.editable = False
 
+
     def it_confirm(self):
         for r in self:
             r.other_confirm = True
