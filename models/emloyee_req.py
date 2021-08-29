@@ -14,7 +14,7 @@ class Employee_rq(models.Model):
     job_title = fields.Char(related='employee_id.job_title')
     department_id = fields.Many2one('hr.department', related='employee_id.department_id')
     parent_department_id = fields.Many2one('hr.department', related='department_id.parent_id')
-    employee_id = fields.Many2one('hr.employee', string='Employee',
+    employee_id = fields.Many2one('hr.employee', string='Employee', tracking=True,
                                   default=lambda self: self.env.user.employee_id)
     rela_user = fields.Many2one('res.users', string='USER Related', related='employee_id.user_id',
                                 required=True)
@@ -34,15 +34,15 @@ class Employee_rq(models.Model):
     other_confirm = fields.Boolean(default=False, string="IT confirm")
     acct_confirm = fields.Boolean(default=False, string="Ke toan confirm")
     result = fields.Boolean(compute="_compute_status")
-    req_date = fields.Date(string="Request Date", required=True)
-    est_date = fields.Date(string="Request Date", compute="_compute_est_date")
+    req_date = fields.Date(string="Request Date", required=True,tracking=True)
+    est_date = fields.Date(string="Est Date", compute="_compute_est_date")
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
         ('Met ', 'Met'),
         ('Chuyen Cty', 'Chuyen Cty'),
         ('khac', 'Khac'),
-    ])
-    specific_reason = fields.Char(string="Lý do cụ thể")
+    ],tracking=True)
+    specific_reason = fields.Char(string="Lý do cụ thể",tracking=True)
 
     status = fields.Selection([
         ('refuse', 'Refuse'),
@@ -50,7 +50,7 @@ class Employee_rq(models.Model):
         ('pm', 'PM Assessing'),
         ('dl2', 'Dl Assessing'),
         ('hr', 'Hr Assessing'),
-        ('done', 'Approved')], default='draft')
+        ('done', 'Approved')], default='draft',tracking=True)
     creator_role = fields.Char()
     editable = fields.Boolean(default=True, compute='_check_edit_')
 

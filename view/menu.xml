@@ -21,29 +21,10 @@
         <field name="name">Employee_req</field>
         <field name="res_model">employee.req</field>
         <field name="type">ir.actions.act_window</field>
+        <field name="context">{'group_by':['create_date','status']}</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-<!--    <record id="quitjob_manage.dl_req" model="ir.actions.act_window">-->
-<!--        <field name="name">DL_action</field>-->
-<!--        <field name="res_model">dl.req</field>-->
-<!--        <field name="type">ir.actions.act_window</field>-->
-<!--        <field name="view_mode">kanban,tree,form</field>-->
-<!--    </record>-->
-
-<!--    <record id="quitjob_manage.pm_req" model="ir.actions.act_window">-->
-<!--        <field name="name">PM_action</field>-->
-<!--        <field name="res_model">pm.req</field>-->
-<!--        <field name="type">ir.actions.act_window</field>-->
-<!--        <field name="view_mode">kanban,tree,form</field>-->
-<!--    </record>-->
-
-<!--    <record id="quitjob_manage.hr_req" model="ir.actions.act_window">-->
-<!--        <field name="name">HR_action</field>-->
-<!--        <field name="res_model">hr.req</field>-->
-<!--        <field name="type">ir.actions.act_window</field>-->
-<!--        <field name="view_mode">kanban,tree,form</field>-->
-<!--    </record>-->
 
     <record id="quitjob_manage.it_req" model="ir.actions.act_window">
         <field name="name">IT_action</field>
@@ -66,23 +47,6 @@
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.employee_req"/>
 
-<!--    <menuitem id="quitjob_manage.dl_req_menu"-->
-<!--              name="DL req"-->
-<!--              groups="group_dl_user"-->
-<!--              parent="quitjob_manage.employee_menu"-->
-<!--              action="quitjob_manage.dl_req"/>-->
-
-<!--    <menuitem id="quitjob_manage.pm_req_menu"-->
-<!--              name="PM req"-->
-<!--              groups="group_pm_user"-->
-<!--              parent="quitjob_manage.employee_menu"-->
-<!--              action="quitjob_manage.pm_req"/>-->
-
-<!--    <menuitem id="quitjob_manage.hr_req_menu"-->
-<!--              name="Hr req"-->
-<!--              groups="base.group_system"-->
-<!--              parent="quitjob_manage.employee_menu"-->
-<!--              action="quitjob_manage.hr_req"/>-->
 
     <menuitem id="quitjob_manage.it_req_menu"
               name="IT req"
@@ -95,120 +59,6 @@
               parent="quitjob_manage.employee_menu"
               action="quitjob_manage.reason"/>
 
-    <!--        &lt;!&ndash;    fake record&ndash;&gt;-->
-    <!--    <record id="quitjob_manage.department" model="ir.actions.act_window">-->
-    <!--        <field name="name">Department_action</field>-->
-    <!--        <field name="res_model">employee.company</field>-->
-    <!--        <field name="type">ir.actions.act_window</field>-->
-    <!--        <field name="view_mode">kanban,tree,form</field>-->
-    <!--    </record>-->
-    <!--    &lt;!&ndash;    fake record&ndash;&gt;-->
-    <!--    <menuitem id="quitjob_manage.employee_menu"-->
-    <!--              name=" Quit J Manage"/>-->
 
-
-    <!--    &lt;!&ndash;    fake menu-item&ndash;&gt;-->
-    <!--    <menuitem id="quitjob_manage.emp_new"-->
-    <!--              name=" Employees"-->
-    <!--              sequence="1"-->
-    <!--              groups="base.group_user,group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.department"/>-->
-
-    <!--    <menuitem id="quitjob_manage.contracts"-->
-    <!--              name=" Contracts"-->
-    <!--              sequence="3"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.department"/>-->
-
-    <!--    <menuitem id="quitjob_manage.sarscov2"-->
-    <!--              name=" SARS-COV-2"-->
-    <!--              sequence="4"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.department"/>-->
-
-    <!--    <menuitem id="quitjob_manage.skills"-->
-    <!--              name=" Skills"-->
-    <!--              sequence="5"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.department"/>-->
-    <!--    &lt;!&ndash;    fake menu-item&ndash;&gt;-->
-
-
-    <!--    <menuitem id="quitjob_manage.emp_menu"-->
-    <!--              name=" Employee / New"-->
-    <!--              sequence="2"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.employee"/>-->
-
-    <!--    <menuitem id="quitjob_manage.employee_req_menu"-->
-    <!--              groups="group_emp_user"-->
-    <!--              name="Employee Resignation Request"-->
-    <!--              sequence="6"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.employee_req"/>-->
-
-    <!--    <menuitem id="quitjob_manage.dl_req_menu"-->
-    <!--              name="DL Resignation Request"-->
-    <!--              sequence="6"-->
-    <!--              groups="group_dl_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.dl_req"/>-->
-
-    <!--    <menuitem id="quitjob_manage.pm_req_menu"-->
-    <!--              name="PM Resignation Request"-->
-    <!--              sequence="6"-->
-    <!--              groups="group_pm_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.pm_req"/>-->
-
-    <!--    <menuitem id="quitjob_manage.hr_req_menu"-->
-    <!--              name="Hr Resignation Request"-->
-    <!--              sequence="6"-->
-    <!--              groups="group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.hr_req"/>-->
-
-    <!--    <menuitem id="quitjob_manage.it_req_menu"-->
-    <!--              name="IT Resignation Request "-->
-    <!--              sequence="6"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.it_req"/>-->
-
-
-    <!--    &lt;!&ndash;    fake menu-item&ndash;&gt;-->
-    <!--    <menuitem id="quitjob_manage.challenges"-->
-    <!--              name=" Challenges"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.employee"/>-->
-
-    <!--    <menuitem id="quitjob_manage.intern"-->
-    <!--              name=" Intern Management"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.employee"/>-->
-
-    <!--    <menuitem id="quitjob_manage.department"-->
-    <!--              name=" Departments"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.employee"/>-->
-
-    <!--    <menuitem id="quitjob_manage.report"-->
-    <!--              name=" Reporting"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.employee"/>-->
-
-    <!--    <menuitem id="quitjob_manage.config"-->
-    <!--              name=" Configuration"-->
-    <!--              groups="group_emp_user,group_dl_user,group_pm_user,group_hr_user"-->
-    <!--              parent="quitjob_manage.employee_menu"-->
-    <!--              action="quitjob_manage.employee"/>-->
-    <!--&lt;!&ndash;        fake menu-item&ndash;&gt;-->
 
 </odoo>
