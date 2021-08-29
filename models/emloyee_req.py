@@ -262,7 +262,7 @@ class Employee_rq(models.Model):
             print(template_id)
             template = self.env['mail.template'].browse(template_id)
             template.send_mail(self.id, force_send=True)
-            record.editable = False
+
 
     @api.model
     def create(self, vals):
@@ -275,20 +275,22 @@ class Employee_rq(models.Model):
             res_id.pm_accept = True
             res_id.dl_first_accept = True
             res_id.dl_second_accept = True
+            return res_id
         if res_id.create_uid.has_group('quitjob_manage.group_dl_user'):
             print('dl user')
             res_id.creator_role = 'dl2'
             res_id.status = 'dl2'
             res_id.pm_accept = True
             res_id.dl_first_accept = True
+            return res_id
         if res_id.create_uid.has_group('quitjob_manage.group_pm_user'):
             res_id.creator_role = 'pm'
             print('pm user')
             res_id.status = 'pm'
             res_id.pm_accept = True
-        if res_id.create_uid.has_group('quitjob_manage.group_emp_user'):
-            res_id.creator_role = 'draft'
-            print('emp user')
+            return res_id
+        res_id.creator_role = 'draft'
+        print('emp user')
         print('line 2  ', res_id.create_uid)
         return res_id
 
@@ -316,13 +318,13 @@ class Employee_rq(models.Model):
     def it_confirm(self):
         for r in self:
             r.other_confirm = True
-            if r.hr_accept and r.acct_confirm:
+            if r.hr_accept == True and r.acct_confirm == True:
                 r.status = 'done'
 
     def acct_confirm_(self):
         for r in self:
             r.acct_confirm = True
-            if r.hr_accept and r.it_confirm:
+            if r.hr_accept == True and r.it_confirm == True:
                 r.status = 'done'
 
     def delete_rec(self):
