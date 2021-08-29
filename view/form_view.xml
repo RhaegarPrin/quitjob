@@ -16,7 +16,7 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="employee_id" string="Employee" readonly="1" />
+                            <field name="employee_id" string="Employee" readonly="1"/>
                             <field name="job_title" string="Vị trí"/>
                             <field name="contract_id" string="Contract"/>
                             <field name="department_id" string="Department"/>
@@ -27,19 +27,19 @@
                             <field name="editable" invisible="1"/>
                             <field name="create_date" string="Created on" readonly="1"/>
                             <field name="req_date" string="Ngày mong muốn"
-                                   attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
+                                   attrs="{'readonly': [('editable', '!=',True)]}"/>
                             <field name="est_date" string="Ngày dự kiến nghỉ việc theo quy định"
-                                   attrs="{'readonly': [('status', '!=', 'draft')]}"/>
+                                   readonly="1"/>
                         </group>
                     </group>
                     <group string="Lý do">
                         <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
                                string=""
-                               attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
+                               attrs="{'readonly': [('editable', '!=',True)]}"/>
                     </group>
                     <group string="Lý do chi tiêt">
                         <field name="specific_reason" string=""
-                               attrs="{'readonly': [('status', '!=', 'draft'),('editable', '!=',True)]}"/>
+                               attrs="{'readonly': [('editable', '!=',True)]}"/>
                     </group>
                     <div>
                         <group string="PM NOTE"
@@ -206,17 +206,36 @@
                         attrs="{'invisible' : [('status','!=','hr')]}"/>
             </xpath>
             <xpath expr="//field[@name='req_date']" position="replace">
-                 <field name="req_date" string="Ngày mong muốn"
-                                   attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+                <field name="req_date" string="Ngày mong muốn"
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
             </xpath>
             <xpath expr="//field[@name='reasons']" position="replace">
                 <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
-                               string=""
-                               attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+                       string=""
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
             </xpath>
             <xpath expr="//field[@name='specific_reason']" position="replace">
-                 <field name="specific_reason" string=""
-                               attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+                <field name="specific_reason" string=""
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="inherited_hr_rep_form" model="ir.ui.view">
+        <field name="name">inherited.hr_req_form</field>
+        <field name="model">employee.req</field>
+        <field name="inherit_id" ref="emp_req_form"/>
+        <field name="groups_id" eval="[(4, ref('group_admin_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status']" position="before">
+                <button name="admin_approve" type="object" string="ADMIN Approve"
+                        attrs="{'invisible' : [('status','in',['refuse','done'])]}"/>
+                <button name="admin_refuse" type="object" string="Refuse"
+                        attrs="{'invisible' : [('status','in',['refuse','done'])]}"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="replace">
+                <field name="employee_id" string="Nhân viên"
+                       attrs="{'readonly' : [('editable','!=',True)]}"/>
             </xpath>
         </field>
     </record>

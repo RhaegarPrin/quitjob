@@ -2,39 +2,44 @@
 
 <odoo>
 
-        <record model="ir.module.category" id="company_manage_quitjob">
-            <field name="name">QUIT J</field>
-            <field name="description">GR R</field>
-        </record>
+    <record model="ir.module.category" id="company_manage_quitjob">
+        <field name="name">QUIT J</field>
+        <field name="description">GR R</field>
+    </record>
 
     <record id="group_emp_user" model="res.groups">
         <field name="name">Emp User</field>
-                <field name="category_id" ref="company_manage_quitjob"/>
+        <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
 
     <record id="group_dl_user" model="res.groups">
         <field name="name">DL User</field>
-                <field name="category_id" ref="company_manage_quitjob"/>
+        <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="group_pm_user" model="res.groups">
         <field name="name">PM User</field>
-                <field name="category_id" ref="company_manage_quitjob"/>
+        <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="group_hr_user" model="res.groups">
         <field name="name">Hr User</field>
-                <field name="category_id" ref="company_manage_quitjob"/>
+        <field name="category_id" ref="company_manage_quitjob"/>
+    </record>
+
+    <record id="group_admin_user" model="res.groups">
+        <field name="name">Amin User</field>
+        <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="group_it_user" model="res.groups">
         <field name="name">IT User</field>
-                <field name="category_id" ref="company_manage_quitjob"/>
+        <field name="category_id" ref="company_manage_quitjob"/>
     </record>
     <record id="group_accountant_user" model="res.groups">
         <field name="name">Accountant User</field>
-                <field name="category_id" ref="company_manage_quitjob"/>
+        <field name="category_id" ref="company_manage_quitjob"/>
     </record>
 
     <record id="quitjob_manage.emp_rule" model="ir.rule">
@@ -55,19 +60,6 @@
         </field>
     </record>
 
-    <!--    <record id="quitjob_manage.pm_rule_hr" model="ir.rule">-->
-    <!--        <field name="name">QUITJOB pm record for HR RULE</field>-->
-    <!--        <field name="model_id" ref="model_employee_req"/>-->
-    <!--        <field name="groups" eval="[(4, ref('group_hr_user'))]"/>-->
-    <!--        <field name="domain_force">['|',('hr_id.user_id','=',user.id),('rela_user','=',user.id)]</field>-->
-    <!--    </record>-->
-    <!--    <record id="quitjob_manage.dl_rule_hr" model="ir.rule">-->
-    <!--        <field name="name">QUITJOB DL record for HR RULE</field>-->
-    <!--        <field name="model_id" ref="model_employee_req"/>-->
-    <!--        <field name="groups" eval="[(4, ref('group_hr_user'))]"/>-->
-    <!--        <field name="domain_force">['|',('hr_id.user_id','=',user.id),('rela_user','=',user.id)]</field>-->
-    <!--    </record>-->
-
     <record id="quitjob_manage.emp_rule_pm" model="ir.rule">
         <field name="name">QUITJOB Emp record for PM RULE</field>
         <field name="model_id" ref="model_employee_req"/>
@@ -81,58 +73,22 @@
         <field name="groups" eval="[(4, ref('group_dl_user'))]"/>
         <field name="domain_force">['|',('dl_id.user_id','=',user.id),('rela_user','=',user.id)]</field>
     </record>
-    <!--    <record id="quitjob_manage.pm_rule_dl" model="ir.rule">-->
-    <!--        <field name="name">QUITJOB PM record for DL RULE</field>-->
-    <!--        <field name="model_id" ref="model_employee_req"/>-->
-    <!--        <field name="groups" eval="[(4, ref('group_dl_user'))]"/>-->
-    <!--        <field name="domain_force">['|',('dl_id.user_id','=',user.id),('rela_user','=',user.id)]</field>-->
-    <!--    </record>-->
 
-    <!--    <record id="quitjob_manage.emp_rs_rule" model="ir.rule">-->
-    <!--        <field name="name">QUITJOB Emp RULE interview</field>-->
-    <!--        <field name="model_id" ref="model_interview_rs"/>-->
-    <!--        <field name="domain_force">[('emp_view','=',True)]</field>-->
-    <!--        <field name="groups" eval="[(4, ref('group_emp_user'))]"/>-->
-    <!--    </record>-->
-
-    <!--    <record id="quitjob_manage.note" model="ir.rule">-->
-    <!--        <field name="name">Hr note rule</field>-->
-    <!--        <field name="model_id" ref="model_employee_req"/>-->
-    <!--        <field name="domain_force">[('status','!=','hr')]</field>-->
-    <!--        <field name="groups" eval="[(4, ref('quitjob_manage.group_hr_user'))]"/>-->
-    <!--        <field name="perm_read" eval="True"/>-->
-    <!--        <field eval="False" name="perm_write"/>-->
-    <!--        <field eval="False" name="perm_unlink"/>-->
-    <!--        <field eval="False" name="perm_create"/>-->
-    <!--    </record>-->
-
-
-    <!--    <record id="quitjob_manage.dl_rule" model="ir.rule">-->
-    <!--        <field name="name">QUITJOB DL RULE</field>-->
-    <!--        <field name="model_id" ref="model_dl_req"/>-->
-    <!--        <field name="domain_force">[('rela_user','=',user.id)]</field>-->
-    <!--        <field name="groups" eval="[(4, ref('group_dl_user'))]"/>-->
-    <!--    </record>-->
-
-    <!--    <record id="quitjob_manage.pm_rule" model="ir.rule">-->
-    <!--        <field name="name">QUITJOB PM RULE</field>-->
-    <!--        <field name="model_id" ref="model_pm_req"/>-->
-    <!--        <field name="domain_force">[('rela_user','=',user.id)]</field>-->
-    <!--        <field name="groups" eval="[(4, ref('group_pm_user'))]"/>-->
-    <!--    </record>-->
-
-    <!--    <record id="quitjob_manage.hr_rule" model="ir.rule">-->
-    <!--        <field name="name">QUITJOB HR RULE</field>-->
-    <!--        <field name="model_id" ref="model_hr_req"/>-->
-    <!--        <field name="domain_force">[('rela_user','=',user.id)]</field>-->
-    <!--        <field name="groups" eval="[(4, ref('group_hr_user'))]"/>-->
-    <!--    </record>-->
 
     <record id="quitjob_manage.it_rule" model="ir.rule">
         <field name="name">QUITJOB IT RULE</field>
-        <field name="model_id" ref="model_it_req"/>
+        <field name="model_id" ref="model_employee_req"/>
         <field name="domain_force">[('rela_user','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('group_it_user'))]"/>
+        <field name="domain_force">['|',('hr_accept','=',True),('rela_user','=',user.id)]</field>
+    </record>
+
+    <record id="quitjob_manage.accountant_rule" model="ir.rule">
+        <field name="name">QUITJOB Accountant RULE</field>
+        <field name="model_id" ref="model_employee_req"/>
+        <field name="domain_force">[('rela_user','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_accountant_user'))]"/>
+        <field name="domain_force">['|',('hr_accept','=',True),('rela_user','=',user.id)]</field>
     </record>
 
 </odoo>

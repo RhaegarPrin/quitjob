@@ -33,6 +33,7 @@ access_employee_req_pm,access.employee.req_pm,model_employee_req,quitjob_manage.
 access_employee_req_hr,access.employee.req_hr,model_employee_req,quitjob_manage.group_hr_user,1,1,1,1
 access_employee_req_it,access.employee.req_it,model_employee_req,quitjob_manage.group_it_user,1,1,1,1
 access_employee_req_acc,access.employee.req_acc,model_employee_req,quitjob_manage.group_accountant_user,1,1,1,1
+access_employee_req_ad,access.employee.req_ad,model_employee_req,quitjob_manage.group_admin_user,1,1,1,1
 
 
 

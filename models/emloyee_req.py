@@ -90,6 +90,7 @@ class Employee_rq(models.Model):
         for record in self:
             if record.dl_id.id == False:
                 raise ValidationError("Invalid DL ID")
+
             if record.status == 'draft':
                 record.status = 'dl2'
                 template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
@@ -263,6 +264,23 @@ class Employee_rq(models.Model):
             template = self.env['mail.template'].browse(template_id)
             template.send_mail(self.id, force_send=True)
 
+    def admin_approve(self):
+        for r in self:
+            r.pm_accept=True
+            r.dl_second_accept=True
+            r.hr_accept=True
+            r.other_confirm=True
+            r.acct_confirm=True
+            r.status='done'
+
+    def admin_refuse(self):
+        for r in self:
+            r.pm_accept=False
+            r.dl_second_accept=False
+            r.hr_accept=False
+            r.other_confirm=False
+            r.acct_confirm=False
+            r.status='refuse'
 
     @api.model
     def create(self, vals):
@@ -289,6 +307,10 @@ class Employee_rq(models.Model):
             res_id.status = 'pm'
             res_id.pm_accept = True
             return res_id
+        if res_id.create_uid.has_group('quitjob_manage.group_admin_user'):
+            res_id.creator_role = 'admin'
+            return res_id
+
         res_id.creator_role = 'draft'
         print('emp user')
         print('line 2  ', res_id.create_uid)
@@ -297,7 +319,7 @@ class Employee_rq(models.Model):
     def unlink(self):
         print(self)
         for record in self:
-            if record.editable == False:
+            if record.editable == False and record.creator_role in ['admin'] == False:
                 raise ValidationError(_("Ban kho the xoa ban ghi"))
             else:
                 print('sdfdfadf')
