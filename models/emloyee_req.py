@@ -228,6 +228,24 @@ class Employee_rq(models.Model):
         template.send_mail(self.id, force_send=True)
         record.editable = False
 
+    def it_refuse_done(self):
+        for record in self:
+            record.status = 'refuse'
+            record.other_confirm = False
+        template_id = self.env.ref("quitjob_manage.mail_template_IT_2_emp").id
+        print(template_id)
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)
+
+    def accountant_refuse_done(self):
+        for record in self:
+            record.status = 'refuse'
+            record.acct_confirm = False
+        template_id = self.env.ref("quitjob_manage.mail_template_Accountant_2_emp").id
+        print(template_id)
+        template = self.env['mail.template'].browse(template_id)
+        template.send_mail(self.id, force_send=True)
+
     def PM_approud_done(self):
         for record in self:
             record.pm_accept = True

@@ -200,7 +200,7 @@
                 <button name="PM_approud" type="object" string="HR Approve" class="oe_highlight"
                         attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
-                        attrs="{'invisible' : [('status','!=','hr')]}"/>
+                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
             </xpath>
             <xpath expr="//field[@name='req_date']" position="replace">
                 <field name="req_date" string="Ngày mong muốn"
@@ -249,6 +249,9 @@
                 <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
+                <button name="it_refuse_done" type="object" string="Refuse"
+                        attrs="{'invisible' : ['|',('other_confirm','=',True),('status','!=','hr')]}"/>
+
             </xpath>
             <xpath expr="//field[@name='other_asset']" position="replace">
                 <field name="other_asset" string="Tài sản khác"
@@ -289,6 +292,8 @@
                         attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')]}"/>
                 <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                <button name="accountant_refuse_done" type="object" string="Refuse"
+                        attrs="{'invisible' : ['|',('acct_confirm','=',True),('status','!=','hr')]}"/>
             </xpath>
             <xpath expr="//field[@name='personal_asset']" position="replace">
                 <field name="personal_asset" string="Thu hồi tài sản thiết bị cá nhân"

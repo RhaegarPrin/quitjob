@@ -78,7 +78,6 @@
     <record id="quitjob_manage.it_rule" model="ir.rule">
         <field name="name">QUITJOB IT RULE</field>
         <field name="model_id" ref="model_employee_req"/>
-        <field name="domain_force">[('rela_user','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('group_it_user'))]"/>
         <field name="domain_force">['|',('hr_accept','=',True),('rela_user','=',user.id)]</field>
     </record>
@@ -86,7 +85,6 @@
     <record id="quitjob_manage.accountant_rule" model="ir.rule">
         <field name="name">QUITJOB Accountant RULE</field>
         <field name="model_id" ref="model_employee_req"/>
-        <field name="domain_force">[('rela_user','=',user.id)]</field>
         <field name="groups" eval="[(4, ref('group_accountant_user'))]"/>
         <field name="domain_force">['|',('hr_accept','=',True),('rela_user','=',user.id)]</field>
     </record>
