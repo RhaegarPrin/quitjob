@@ -16,6 +16,8 @@ class Employee_rq(models.Model):
     parent_department_id = fields.Many2one('hr.department', related='department_id.parent_id')
     employee_id = fields.Many2one('hr.employee', string='Employee', tracking=True,
                                   default=lambda self: self.env.user.employee_id)
+    own_rec = fields.Boolean(compute='get_current_uid')
+
     rela_user = fields.Many2one('res.users', string='USER Related', related='employee_id.user_id',
                                 required=True)
     contract_id = fields.Many2one('hr.contract', related='employee_id.contract_id', groups="base.group_user")
@@ -407,3 +409,11 @@ class Employee_rq(models.Model):
     @api.onchange('employee_id')
     def rela_user_hr_employee(self):
         self.rela_user = self.employee_id.user_id
+
+    @api.depends()
+    def get_current_uid(self):
+        for r in self:
+            if r.rela_user == self.env.user :
+                r.own_rec = True
+            else :
+                r.own_rec = False

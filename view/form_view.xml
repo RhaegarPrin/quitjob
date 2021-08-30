@@ -26,6 +26,7 @@
                         </group>
                         <group>
                             <field name="editable" invisible="1"/>
+                            <field name="own_rec" invisible="1"/>
                             <field name="create_date" string="Created on" readonly="1"/>
                             <field name="req_date" string="Ngày mong muốn"
                                    attrs="{'readonly': [('editable', '!=',True)]}"/>
@@ -62,12 +63,12 @@
                     <notebook attrs="{'invisible' : [('hr_accept','=',False)]}">
                         <page string="DL confirm ">
                             <form>
-                                <span>DL accept 1
-                                    <field name="dl_first_accept" readonly="1"
+                                <span>
+                                    <field name="dl_first_accept" readonly="1" invisible="1"
                                            attrs="{'invisible': [('dl_first_accept', '=', False)]}"/>
                                 </span>
-                                <span>DL accept 2
-                                    <field name="dl_second_accept" readonly="1"
+                                <span>
+                                    <field name="dl_second_accept" readonly="1" invisible="1"
                                            attrs="{'invisible': [('dl_second_accept', '=', False)]}"/>
                                 </span>
                             </form>
@@ -75,8 +76,8 @@
 
                         <page string="HR confirm ">
                             <form>
-                                <span>HR
-                                    <field name="hr_accept" readonly="1"
+                                <span>
+                                    <field name="hr_accept" readonly="1" invisible="1"
                                            attrs="{'invisible': [('hr_accept', '=', False)]}"/>
                                 </span>
                             </form>
@@ -245,12 +246,13 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="it_confirm" type="object" string="IT Confirm" class="oe_highlight"
-                        attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')]}"/>
+                        attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')] , 'invisible':[('own_rec','=',True)]}"/>
+                attrs="{'invisible':[('rala_user','=',user.id)]}"/>
                 <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
                 <button name="it_refuse_done" type="object" string="Refuse"
-                        attrs="{'invisible' : ['|',('other_confirm','=',True),('status','!=','hr')]}"/>
+                        attrs="{'invisible' : ['|',('other_confirm','=',True),('status','!=','hr')], 'invisible':[('own_rec','=',True)]}"/>
 
             </xpath>
             <xpath expr="//field[@name='other_asset']" position="replace">
@@ -289,11 +291,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="acct_confirm_" type="object" string="Accountant Confirm" class="oe_highlight"
-                        attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')]}"/>
+                        attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':[('own_rec','=',True)]}"/>
                 <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}"/>
                 <button name="accountant_refuse_done" type="object" string="Refuse"
-                        attrs="{'invisible' : ['|',('acct_confirm','=',True),('status','!=','hr')]}"/>
+                        attrs="{'invisible' : ['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':[('own_rec','=',True)]}"/>
             </xpath>
             <xpath expr="//field[@name='personal_asset']" position="replace">
                 <field name="personal_asset" string="Thu hồi tài sản thiết bị cá nhân"
