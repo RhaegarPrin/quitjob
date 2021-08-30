@@ -34,15 +34,15 @@ class Employee_rq(models.Model):
     other_confirm = fields.Boolean(default=False, string="IT confirm")
     acct_confirm = fields.Boolean(default=False, string="Ke toan confirm")
     result = fields.Boolean(compute="_compute_status")
-    req_date = fields.Date(string="Request Date", required=True,tracking=True)
+    req_date = fields.Date(string="Request Date", required=True, tracking=True)
     est_date = fields.Date(string="Est Date", compute="_compute_est_date")
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
         ('Met ', 'Met'),
         ('Chuyen Cty', 'Chuyen Cty'),
         ('khac', 'Khac'),
-    ],tracking=True)
-    specific_reason = fields.Char(string="Lý do cụ thể",tracking=True)
+    ], tracking=True)
+    specific_reason = fields.Char(string="Lý do cụ thể", tracking=True)
 
     status = fields.Selection([
         ('refuse', 'Refuse'),
@@ -50,7 +50,7 @@ class Employee_rq(models.Model):
         ('pm', 'PM Assessing'),
         ('dl2', 'Dl Assessing'),
         ('hr', 'Hr Assessing'),
-        ('done', 'Approved')], default='draft',tracking=True)
+        ('done', 'Approved')], default='draft', tracking=True)
     creator_role = fields.Char()
     editable = fields.Boolean(default=True, compute='_check_edit_')
 
@@ -124,7 +124,7 @@ class Employee_rq(models.Model):
 
     def Dl_approved_done(self):
         for record in self:
-            if record.hr_id.id == False :
+            if record.hr_id.id == False:
                 raise ValidationError("Invalid Hr ID")
             if record.dl_second_accept == False and record.status != 'draft':
                 record.dl_second_accept = True
@@ -266,21 +266,21 @@ class Employee_rq(models.Model):
 
     def admin_approve(self):
         for r in self:
-            r.pm_accept=True
-            r.dl_second_accept=True
-            r.hr_accept=True
-            r.other_confirm=True
-            r.acct_confirm=True
-            r.status='done'
+            r.pm_accept = True
+            r.dl_second_accept = True
+            r.hr_accept = True
+            r.other_confirm = True
+            r.acct_confirm = True
+            r.status = 'done'
 
     def admin_refuse(self):
         for r in self:
-            r.pm_accept=False
-            r.dl_second_accept=False
-            r.hr_accept=False
-            r.other_confirm=False
-            r.acct_confirm=False
-            r.status='refuse'
+            r.pm_accept = False
+            r.dl_second_accept = False
+            r.hr_accept = False
+            r.other_confirm = False
+            r.acct_confirm = False
+            r.status = 'refuse'
 
     @api.model
     def create(self, vals):
@@ -319,7 +319,7 @@ class Employee_rq(models.Model):
     def unlink(self):
         print(self)
         for record in self:
-            if record.editable == False and record.creator_role in ['admin'] == False:
+            if record.editable == False and self.env.user.has_group('quitjob_manage.group_admin_user') == False:
                 raise ValidationError(_("Ban kho the xoa ban ghi"))
             else:
                 print('sdfdfadf')
@@ -336,7 +336,6 @@ class Employee_rq(models.Model):
             else:
                 print('false --- ')
                 r.editable = False
-
 
     def it_confirm(self):
         for r in self:
@@ -361,8 +360,6 @@ class Employee_rq(models.Model):
             if r.req_date < r.create_date.date() or r.req_date == False:
                 raise ValidationError("Invalid est_date")
 
-
-
     @api.depends('req_date')
     def _compute_est_date(self):
         for record in self:
@@ -370,8 +367,6 @@ class Employee_rq(models.Model):
                 record.est_date = record.req_date + datetime.timedelta(5)
             else:
                 record.est_date = datetime.date.today()
-
-
 
     @api.depends('rela_user')
     def _get_position(self):
@@ -388,5 +383,3 @@ class Employee_rq(models.Model):
     @api.onchange('employee_id')
     def rela_user_hr_employee(self):
         self.rela_user = self.employee_id.user_id
-
-

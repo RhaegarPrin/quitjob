@@ -161,7 +161,7 @@
         <field name="groups_id" eval="[(4, ref('group_dl_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="Dl_approud_1" type="object" string="DL Assessing"
+                <button name="Dl_approud_1" type="object" string="DL Approve"
                         attrs="{'invisible' : [('status','!=','dl2')]}"/>
                 <button name="Dl_2_PM" type="object" string="Assessing for PM"
                         attrs="{'invisible' : ['|',('status','!=','dl2'),('pm_accept','=',True)]}"/>
@@ -179,11 +179,11 @@
         <field name="groups_id" eval="[(4, ref('group_pm_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="PM_approud" type="object" string="PM Assessing"
+                <button name="PM_approud" type="object" string="PM Approve"
                         attrs="{'invisible' : [('status','!=','pm')]}"
                 />
 
-                <button name="call_Refuse_form" type="object" string="Cancel"
+                <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','pm')]}"
                 />
             </xpath>
@@ -201,7 +201,7 @@
         <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="PM_approud" type="object" string="HR assessing"
+                <button name="PM_approud" type="object" string="HR Approve"
                         attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','hr')]}"/>
@@ -266,6 +266,19 @@
                 <field name="git_account" string="Acc redmind và Git"
                        attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
             </xpath>
+            <xpath expr="//field[@name='req_date']" position="replace">
+                <field name="req_date" string="Ngày mong muốn"
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='reasons']" position="replace">
+                <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
+                       string=""
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='specific_reason']" position="replace">
+                <field name="specific_reason" string=""
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+            </xpath>
         </field>
     </record>
 
@@ -286,8 +299,21 @@
                        attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
             </xpath>
             <xpath expr="//field[@name='customer_asset']" position="replace">
-                <filed name="customer_asset" string="Tài sản và thiết bị khách hàng chuyển giao cho"
+                <field name="customer_asset" string="Tài sản và thiết bị khách hàng chuyển giao cho"
                        attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])] }"/>
+            </xpath>
+            <xpath expr="//field[@name='req_date']" position="replace">
+                <field name="req_date" string="Ngày mong muốn"
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='reasons']" position="replace">
+                <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
+                       string=""
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='specific_reason']" position="replace">
+                <field name="specific_reason" string=""
+                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
             </xpath>
         </field>
     </record>
