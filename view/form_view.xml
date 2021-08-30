@@ -197,7 +197,7 @@
         <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="PM_approud" type="object" string="HR Approve"
+                <button name="PM_approud" type="object" string="HR Approve" class="oe_highlight"
                         attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','hr')]}"/>
@@ -232,7 +232,7 @@
             </xpath>
             <xpath expr="//field[@name='employee_id']" position="replace">
                 <field name="employee_id" string="Nhân viên"
-                       attrs="{'readonly' : [('editable','!=',True)]}"/>
+                       attrs="{'readonly' : [('status','in',['refuse','done'])]}"/>
             </xpath>
         </field>
     </record>

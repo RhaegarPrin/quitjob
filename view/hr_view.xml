@@ -5,24 +5,25 @@
         <field name="name">Hr note new form</field>
         <field name="model">employee.req</field>
         <field name="arch" type="xml">
-            <form>
+            <form edit="0" create="0" delete="0">
                 <group invisible="1">
                     <field name="status"/>
                 </group>
-                <group string="Reason test">
+                <group string="Reason ">
                     <group string="Note">
                         <field name="hr_interview" string="HR Note" attrs="{'invisible':[('status','!=','hr')]}"/>
                         <field name="dl_interview" string="DL Note" attrs="{'invisible':[('status','!=','dl2')]}"/>
                         <field name="pm_interview" string="PM Note" attrs="{'invisible':[('status','!=','pm')]}"/>
                     </group>
                 </group>
-
-                <button name="pm_refuse_done" type="object" attrs="{'invisible':[('status','!=','pm')]}">PM Refuse
-                </button>
-                <button name="dl_refuse_done" type="object" attrs="{'invisible':[('status','!=','dl2')]}">DL Refuse
-                </button>
-                <button name="hr_refuse_done" type="object" attrs="{'invisible':[('status','!=','hr')]}">HR Refuse
-                </button>
+                <footer>
+                    <button name="pm_refuse_done" type="object" attrs="{'invisible':[('status','!=','pm')]}">PM Refuse
+                    </button>
+                    <button name="dl_refuse_done" type="object" attrs="{'invisible':[('status','!=','dl2')]}">DL Refuse
+                    </button>
+                    <button name="hr_refuse_done" type="object" attrs="{'invisible':[('status','!=','hr')]}">HR Refuse
+                    </button>
+                </footer>
             </form>
         </field>
     </record>
@@ -64,19 +65,23 @@
                     <field name="pm_accept" string="DL Aprroved"/>
                 </group>
                 <!--                get field for attrs-->
-
-                <button name="send_req_done" type="object"
-                        attrs="{'invisible':[('status','!=','draft')]}">Send reqest
-                </button>
-                <button name="PM_approud_done" type="object" attrs="{'invisible':[('status','!=','pm')]}">PM
-                    Approve
-                </button>
-                <button name="Dl_approved_done" type="object" attrs="{'invisible':[('status','!=','dl2')]}">DL
-                    Approve
-                </button>
-                <button name="Hr_approved_done" type="object" attrs="{'invisible':[('status','!=','hr')]}">HR
-                    Approve
-                </button>
+                <footer>
+                    <button name="send_req_done" type="object"
+                            attrs="{'invisible':[('status','!=','draft')]}">Send reqest
+                    </button>
+                    <button name="PM_approud_done" type="object" class="oe_highlight"
+                            attrs="{'invisible':[('status','!=','pm')]}">PM
+                        Approve
+                    </button>
+                    <button name="Dl_approved_done" type="object" class="oe_highlight"
+                            attrs="{'invisible':[('status','!=','dl2')]}">DL
+                        Approve
+                    </button>
+                    <button name="Hr_approved_done" type="object" class="oe_highlight"
+                            attrs="{'invisible':[('status','!=','hr')]}">HR
+                        Approve
+                    </button>
+                </footer>
             </form>
         </field>
     </record>
@@ -95,8 +100,10 @@
                     <field name="pm_id" string="PM "
                            domain="['|',('department_id','=',parent_department_id),('department_id', '=', department_id),('job_title','=','PM')]"/>
                     <field name="dl_msg_pm" string="MSG"/>
-                    <button name="DL_2_PM_done" type="object">Send to PM</button>
                 </group>
+                <footer>
+                    <button name="DL_2_PM_done" class="oe_highlight" type="object">Send to PM</button>
+                </footer>
             </form>
         </field>
     </record>

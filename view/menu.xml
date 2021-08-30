@@ -2,7 +2,7 @@
 
 
 <odoo>
-    <record id="quitjob_manage.reason" model="ir.actions.act_window">
+    <record id="quitjob_manage.reason_action" model="ir.actions.act_window">
         <field name="name">reasons</field>
         <field name="res_model">quit.reason</field>
 <!--        <field name="context">{}</field>-->
@@ -57,7 +57,7 @@
     <menuitem id="quitjob_manage.reason"
               name="Add Reason"
               parent="quitjob_manage.employee_menu"
-              action="quitjob_manage.reason"/>
+              action="quitjob_manage.reason_action"/>
 
 
 

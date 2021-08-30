@@ -309,6 +309,7 @@ class Employee_rq(models.Model):
             return res_id
         if res_id.create_uid.has_group('quitjob_manage.group_admin_user'):
             res_id.creator_role = 'admin'
+            print('admin')
             return res_id
 
         res_id.creator_role = 'draft'
@@ -320,6 +321,9 @@ class Employee_rq(models.Model):
         print(self)
         for record in self:
             if record.editable == False and self.env.user.has_group('quitjob_manage.group_admin_user') == False:
+                print(self.env.user.name)
+                for i in self.env.user.groups_id:
+                    print(i.name)
                 raise ValidationError(_("Ban kho the xoa ban ghi"))
             else:
                 print('sdfdfadf')
