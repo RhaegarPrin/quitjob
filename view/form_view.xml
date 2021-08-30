@@ -74,10 +74,6 @@
                         </page>
 
                         <page string="HR confirm ">
-                            <group>
-                                <field name="hr_notes" context="{'default_hr_notes': id}" readonly="1"
-                                       string="HR Note"/>
-                            </group>
                             <form>
                                 <span>HR
                                     <field name="hr_accept" readonly="1"
