@@ -141,7 +141,7 @@
         <field name="groups_id" eval="[(4, ref('group_emp_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="send_req" type="object" string="send req"
+                <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
                 <button name="cancel_send_req" type="object" string="back to draft"/>
@@ -157,9 +157,9 @@
         <field name="groups_id" eval="[(4, ref('group_dl_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="Dl_approud_1" type="object" string="DL Approve"
+                <button name="Dl_approud_1" type="object" string="DL Approve" class="oe_highlight"
                         attrs="{'invisible' : [('status','!=','dl2')]}"/>
-                <button name="Dl_2_PM" type="object" string="Assessing for PM"
+                <button name="Dl_2_PM" type="object" string="Assessing for PM" class="oe_highlight"
                         attrs="{'invisible' : ['|',('status','!=','dl2'),('pm_accept','=',True)]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','dl2')]}"/>
@@ -175,7 +175,7 @@
         <field name="groups_id" eval="[(4, ref('group_pm_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="PM_approud" type="object" string="PM Approve"
+                <button name="PM_approud" type="object" string="PM Approve" class="oe_highlight"
                         attrs="{'invisible' : [('status','!=','pm')]}"
                 />
 
@@ -225,7 +225,7 @@
         <field name="groups_id" eval="[(4, ref('group_admin_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="admin_approve" type="object" string="ADMIN Approve"
+                <button name="admin_approve" type="object" string="ADMIN Approve" class="oe_highlight"
                         attrs="{'invisible' : [('status','in',['refuse','done'])]}"/>
                 <button name="admin_refuse" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','in',['refuse','done'])]}"/>
@@ -244,9 +244,9 @@
         <field name="groups_id" eval="[(4, ref('group_it_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="it_confirm" type="object" string="IT Confirm"
+                <button name="it_confirm" type="object" string="IT Confirm" class="oe_highlight"
                         attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')]}"/>
-                <button name="send_req" type="object" string="send req"
+                <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
             </xpath>
@@ -285,9 +285,9 @@
         <field name="groups_id" eval="[(4, ref('group_accountant_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="acct_confirm_" type="object" string="Accountant Confirm"
+                <button name="acct_confirm_" type="object" string="Accountant Confirm" class="oe_highlight"
                         attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')]}"/>
-                <button name="send_req" type="object" string="send req"
+                <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}"/>
             </xpath>
             <xpath expr="//field[@name='personal_asset']" position="replace">

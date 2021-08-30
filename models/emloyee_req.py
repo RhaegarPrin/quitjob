@@ -102,7 +102,7 @@ class Employee_rq(models.Model):
     def send_req(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
         return {
-            'name': _('DL Note'),
+            'name': _('Note'),
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_view.id,
@@ -140,7 +140,7 @@ class Employee_rq(models.Model):
     def Dl_approud_1(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
         return {
-            'name': _('DL Note'),
+            'name': _('Note'),
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_view.id,
@@ -167,7 +167,7 @@ class Employee_rq(models.Model):
     def Dl_2_PM(self):
         form_view = self.env.ref('quitjob_manage.dl_2_pm')
         return {
-            'name': _('DL Note'),
+            'name': _('Note'),
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_view.id,
@@ -181,7 +181,7 @@ class Employee_rq(models.Model):
     def call_Refuse_form(self):
         form_view = self.env.ref('quitjob_manage.refuse_note')
         return {
-            'name': _('DL Note'),
+            'name': _('Note'),
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_view.id,
@@ -241,7 +241,7 @@ class Employee_rq(models.Model):
     def PM_approud(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
         return {
-            'name': _('DL Note'),
+            'name': _('Note'),
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_view.id,
@@ -326,6 +326,8 @@ class Employee_rq(models.Model):
                     print(i.name)
                 raise ValidationError(_("Ban kho the xoa ban ghi"))
             else:
+                if record.creator_role == 'hr' and record.hr_accept == True:
+                    raise ValidationError(_("Ban kho the xoa ban ghi"))
                 print('sdfdfadf')
         return super(Employee_rq, self).unlink()
 
