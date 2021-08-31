@@ -128,7 +128,6 @@
     </record>
 
 
-
     <record id="emp_req_tree" model="ir.ui.view">
         <field name="name">Emp req tree</field>
         <field name="model">employee.req</field>
@@ -184,7 +183,8 @@
             </xpath>
             <xpath expr="//field[@name='employee_id']" position="replace">
                 <field name="employee_id" string="Nhân viên"
-                       attrs="{'readonly':[('status','not in',['dl2','draft'])]}"/>
+                       attrs="{'readonly':[('status','not in',['dl2','draft'])]}" domain="[('department_id',
+                '=', department_id),('job_title','in',['PM','Dev'])]"/>
             </xpath>
 
         </field>
@@ -208,7 +208,7 @@
                 />
             </xpath>
             <xpath expr="//field[@name='pm_interview']" position="replace">
-                <field name="pm_interview" attrs="{'readonly' : [('status','!=','send')]}"/>
+                <field name="pm_interview" attrs="{'readonly' : [('status','!=','send')]} "/>
             </xpath>
         </field>
     </record>
@@ -229,10 +229,12 @@
                         attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
             </xpath>
             <xpath expr="//field[@name='employee_id']" position="replace">
-                <field name="employee_id" string="Nhân viên" attrs="{'readonly':[('status','not in',['pm','draft'])]}"/>
+                <field name="employee_id" string="Nhân viên"
+                       domain="[('department_id','=', department_id),('job_title','in',['PM','Dev','DL'])]"
+                       attrs="{'readonly':[('status','not in',['pm','draft'])]}"/>
             </xpath>
             <xpath expr="//field[@name='req_date']" position="after">
-                <button name="hr_update_date" string="Update" type="object" class="oe_stat_button"   icon="fa-edit"/>
+                <button name="hr_update_date" string="Update" type="object" class="oe_stat_button" icon="fa-edit"/>
             </xpath>
         </field>
     </record>
