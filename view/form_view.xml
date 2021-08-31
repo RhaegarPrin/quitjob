@@ -24,6 +24,7 @@
                             <field name="parent_id" string="Department Manager" readonly="1"/>
                             <!--                            <field name="it_id" string="IT"  attrs="{'readonly': [('status', '!=', 'draft')]}"/>-->
                         </group>
+
                         <group>
                             <field name="editable" invisible="1"/>
                             <field name="own_rec" invisible="1"/>
