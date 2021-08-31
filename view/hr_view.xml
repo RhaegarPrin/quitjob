@@ -10,9 +10,9 @@
                     <field name="status"/>
                 </group>
                 <group string="Lý do ">
-                        <field name="hr_interview" string="" attrs="{'invisible':[('status','!=','hr')]}"/>
-                        <field name="dl_interview" string="" attrs="{'invisible':[('status','!=','dl2')]}"/>
-                        <field name="pm_interview" string="" attrs="{'invisible':[('status','!=','pm')]}"/>
+                    <field name="hr_interview" string="" attrs="{'invisible':[('status','!=','hr')]}"/>
+                    <field name="dl_interview" string="" attrs="{'invisible':[('status','!=','dl2')]}"/>
+                    <field name="pm_interview" string="" attrs="{'invisible':[('status','!=','pm')]}"/>
                 </group>
                 <footer>
                     <button name="pm_refuse_done" type="object" attrs="{'invisible':[('status','!=','pm')]}">PM Refuse
@@ -33,11 +33,21 @@
         <field name="active">false</field>
         <field name="arch" type="xml">
             <form edit="0" create="0" delete="0">
-                <group string="Note">
-                    <field name="hr_interview" string="" attrs="{'invisible':[('status','!=','hr')]}"/>
-                    <field name="dl_interview" string="" attrs="{'invisible':[('status','!=','dl2')]}"/>
-                    <field name="dl_pick_date" string="Chọn ngày nghỉ " required="1" attrs="{'invisible':[('status','not in',['dl2','hr'])]}"/>
-                    <field name="pm_interview" string="" attrs="{'invisible':[('status','!=','pm')]}"/>
+                <group string="Approve">
+                    <field name="pm_reason" options="{'no_create_edit': True}" widget="many2many_tags"
+                           attrs="{'invisible':[('status','!=','pm')]}" string="Lý do"/>
+                    <field name="dl_reason" options="{'no_create_edit': True}" widget="many2many_tags"
+                           attrs="{'invisible':[('status','not in',['dl2','draft'])]}" string="Lý do"/>
+                    <field name="hr_reason" options="{'no_create_edit': True}" widget="many2many_tags"
+                           attrs="{'invisible':[('status','!=','hr')]}" string="Lý do"/>
+                    <field name="hr_interview" string="Ghi chú" attrs="{'invisible':[('status','!=','hr')]}"/>
+                    <field name="dl_interview" string="Ghi chú"
+                           attrs="{'invisible':[('status','not in',['dl2','draft'])]}"/>
+                    <field name="dl_acc" widget="radio" string="Bạn có đồng ý cho ngỉ không"
+                           attrs="{'invisible':[('status','not in',['dl2','draft'])]}"/>
+                    <field name="dl_pick_date" string="Chọn ngày nghỉ "
+                           attrs="{'invisible':['|',('status','not in',['dl2','draft']),('dl_acc','=','no')]}"/>
+                    <field name="pm_interview" string="Ghi chú" attrs="{'invisible':[('status','!=','pm')]}"/>
                 </group>
                 <!-- get field to attrs-->
                 <group invisible="1">
@@ -48,15 +58,12 @@
                 </group>
                 <!--                get field for attrs-->
                 <footer>
-                    <button name="send_req_done" type="object"
-                            attrs="{'invisible':[('status','!=','draft')]}">Send reqest
-                    </button>
                     <button name="PM_approud_done" type="object" class="oe_highlight"
                             attrs="{'invisible':[('status','!=','pm')]}">PM
                         Approve
                     </button>
                     <button name="Dl_approved_done" type="object" class="oe_highlight"
-                            attrs="{'invisible':[('status','!=','dl2')]}">DL
+                            attrs="{'invisible':[('status','not in',['draft','dl2'])]}">DL
                         Approve
                     </button>
                     <button name="Hr_approved_done" type="object" class="oe_highlight"
@@ -89,6 +96,8 @@
             </form>
         </field>
     </record>
+
+
     <!--    form dl msg for pm-->
 
     <!--    form for it,accountant-->

@@ -8,9 +8,11 @@ class Employee_rq(models.Model):
     _name = "employee.req"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    reasons = fields.Many2many('quit.reason', string='Reasons')
+    reasons = fields.Many2many('quit.reason', relation='emp_reason', string='Reasons')
+    pm_reason = fields.Many2many('quit.reason', relation='pm_reason', string='Pm reason')
+    dl_reason = fields.Many2many('quit.reason', relation='dl_reason', string='Dl reason')
+    hr_reason = fields.Many2many('quit.reason', relation='hr_reason', string='Hr reason')
     name = fields.Char(related='employee_id.name')
-    notes = fields.Many2one('quit.note', string='DL Coms')
     position = fields.Char(compute="_get_position", string='Position')
     job_title = fields.Char(related='employee_id.job_id.name')
     department_id = fields.Many2one('hr.department', related='employee_id.department_id')
@@ -39,8 +41,8 @@ class Employee_rq(models.Model):
     result = fields.Boolean(compute="_compute_status")
     req_date = fields.Date(string="Request Date", required=True, tracking=True)
     est_date = fields.Date(string="Est Date", compute="_compute_est_date")
-    dl_pick_date = fields.Date(string="DL PICK DATE")
-
+    dl_pick_date = fields.Date(string="DL PICK DATE", default=datetime.date.today())
+    dl_acc = fields.Selection([('yes', 'Đồng ý cho ngỉ'), ('no', 'Không đồng ý cho ngỉ')], default='no')
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
         ('Met ', 'Met'),
@@ -69,6 +71,9 @@ class Employee_rq(models.Model):
                             groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
     hr_interview = fields.Text(string='HR Note',
                                groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
+    profile = fields.Boolean(string='Hồ sơ')
+    notes = fields.Char()
+    refuse_notes = fields.Char()
     personal_asset = fields.Selection([
         ('no', 'Có'),
         ('yes', 'Không'),
@@ -93,16 +98,16 @@ class Employee_rq(models.Model):
     # send req gọi form note , form note gọi send_req_done để chuyển trạng thái
     def send_req_done(self):
         for record in self:
-            if record.dl_id.id == False:
-                raise ValidationError("Invalid DL ID")
-
-            if record.status == 'draft':
+            if record.status == 'draft' and record.creator_role == 'draft':
                 record.status = 'dl2'
                 template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
                 print(template_id)
                 template = self.env['mail.template'].browse(template_id)
                 template.send_mail(self.id, force_send=True)
                 record.editable = False
+                record.notes = self.env.user.employee_id.name + 'assigned DL to do resignation request '
+            else :
+                raise  ValidationError('Bạn không có quyền thay đổi')
 
     def send_req(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
@@ -129,20 +134,23 @@ class Employee_rq(models.Model):
 
     def Dl_approved_done(self):
         for record in self:
-            if record.hr_id.id == False:
-                raise ValidationError("Invalid Hr ID")
-            if record.dl_second_accept == False and record.status != 'draft':
-                record.dl_second_accept = True
-                record.dl_first_accept = True
-                record.pm_accept = True
-                record.status = 'hr'
-                template_id = self.env.ref("quitjob_manage.mail_template_hr").id
-                print(template_id)
-                template = self.env['mail.template'].browse(template_id)
-                template.send_mail(self.id, force_send=True)
-                record.editable = False
+            if record.dl_pick_date < (datetime.date.today() - datetime.timedelta(5)):
+                raise ValidationError("Invalid est_date")
+            record.dl_second_accept = True
+            record.dl_first_accept = True
+            record.pm_accept = True
+            record.status = 'hr'
+            record.notes = self.env.user.employee_id.name + 'assigned Hr manager to do resignation request ' + record.employee_id.name
+            template_id = self.env.ref("quitjob_manage.mail_template_hr").id
+            print(template_id)
+            template = self.env['mail.template'].browse(template_id)
+            template.send_mail(self.id, force_send=True)
+            record.editable = False
 
     def Dl_approud_1(self):
+        for record in self:
+            if record.rela_user == self.env.user and record.create_uid != self.env.user:
+                raise ValidationError("Bạn không có quyền thay đổi bản ghi")
         form_view = self.env.ref('quitjob_manage.approved_note')
         return {
             'name': _('Note'),
@@ -164,6 +172,7 @@ class Employee_rq(models.Model):
                 record.dl_first_accept = True
                 record.dl_second_accept = False
                 record.pm_accept = False
+                record.notes = self.env.user.employee_id.name + 'assigned to PM to do resignation request' + record.employee_id.name
                 template_id = self.env.ref("quitjob_manage.mail_template_emp_2_pm").id
                 print(template_id)
                 template = self.env['mail.template'].browse(template_id)
@@ -205,6 +214,7 @@ class Employee_rq(models.Model):
         template = self.env['mail.template'].browse(template_id)
         template.send_mail(self.id, force_send=True)
         record.editable = False
+        record.refuse_notes = 'PM ' + self.env.user.employee_id.name + 'refuse ' + record.employee_id.name + ' request'
 
     def dl_refuse_done(self):
         for record in self:
@@ -212,6 +222,7 @@ class Employee_rq(models.Model):
             record.pm_accept = False
             record.dl_first_accept = False
             record.dl_second_accept = False
+            record.refuse_notes = 'DL ' + self.env.user.employee_id.name + 'refuse ' + record.employee_id.name + ' request'
         template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
         print(template_id)
         template = self.env['mail.template'].browse(template_id)
@@ -227,6 +238,7 @@ class Employee_rq(models.Model):
             record.hr_accept = False
             record.other_confirm = False
             record.acct_confirm = False
+            record.refuse_notes = 'HR ' + self.env.user.employee_id.name + 'refuse ' + record.employee_id.name + ' request'
         template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
         print(template_id)
         template = self.env['mail.template'].browse(template_id)
@@ -260,6 +272,7 @@ class Employee_rq(models.Model):
             template = self.env['mail.template'].browse(template_id)
             template.send_mail(self.id, force_send=True)
             record.editable = False
+            record.notes = self.env.user.employee_id.name + 'assigned DL to do resignation request ' + record.employee_id.name
 
     def PM_approud(self):
         form_view = self.env.ref('quitjob_manage.approved_note')
@@ -281,6 +294,7 @@ class Employee_rq(models.Model):
             record.dl_second_accept = True
             record.pm_accept = True
             record.status = 'done'
+            record.notes = self.env.user.employee_id.name + 'Approved resignation request ' + record.employee_id.name
             template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
             print(template_id)
             template = self.env['mail.template'].browse(template_id)
@@ -319,7 +333,7 @@ class Employee_rq(models.Model):
         if res_id.create_uid.has_group('quitjob_manage.group_dl_user'):
             print('dl user')
             res_id.creator_role = 'dl2'
-            res_id.status = 'dl2'
+            # res_id.status = 'dl2'
             res_id.pm_accept = True
             res_id.dl_first_accept = True
             return res_id
@@ -415,7 +429,28 @@ class Employee_rq(models.Model):
     @api.depends()
     def get_current_uid(self):
         for r in self:
-            if r.rela_user == self.env.user :
+            if r.rela_user == self.env.user or r.create_uid == self.env.user:
                 r.own_rec = True
-            else :
+            else:
                 r.own_rec = False
+
+    def hr_update_date(self):
+        print('hr in')
+        form_view = self.env.ref('quitjob_manage.hr_note_trans_form')
+        return {
+            'name': _('Note'),
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': form_view.id,
+            'res_model': 'hr_note_trans',
+            'type': 'ir.actions.act_window',
+            'context': {'default_employee_req_id': self.id},
+            'target': 'new',
+        }
+    # def confirm_req_date(self):
+    #     pass
+
+    # @api.onchange('dl_acc')
+    # def onchange_dl_acc(self):
+    #     for r in self:
+    #         if r.dl_acc='yes'

@@ -65,7 +65,7 @@
         <field name="model_id" ref="model_employee_req"/>
         <field name="groups" eval="[(4, ref('group_hr_user'))]"/>
         <field name="domain_force">
-            [('rela_user','=',user.id)]
+            ['|',('rela_user','=',user.id),('create_uid','=',user.id)]
         </field>
     </record>
 
@@ -103,7 +103,7 @@
         <field name="model_id" ref="model_employee_req"/>
         <field name="groups" eval="[(4, ref('group_dl_user'))]"/>
         <field name="domain_force">
-            [('rela_user','=',user.id)]
+            ['|',('rela_user','=',user.id),('create_uid','=',user.id)]
         </field>
     </record>
 
