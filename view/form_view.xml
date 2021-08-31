@@ -130,8 +130,8 @@
                 <field name="pm_accept" string="PM Confirm"/>
                 <field name="dl_second_accept" string="DL Confirm"/>
                 <field name="hr_accept" string="HR Confirm"/>
-<!--                <field name="other_confirm" string="IT Confirm"/>-->
-<!--                <field name="acct_confirm" string="Accountant Confirm"/>-->
+                <!--                <field name="other_confirm" string="IT Confirm"/>-->
+                <!--                <field name="acct_confirm" string="Accountant Confirm"/>-->
             </tree>
         </field>
     </record>
@@ -161,7 +161,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="Dl_approud_1" type="object" string="DL Approve" class="oe_highlight"
-                        attrs="{'invisible' : [('status','!=','dl2')]}"/>
+                        attrs="{'invisible' : ['|',('status','not in',['dl2']),('own_rec','=',True)]}"/>
+                <button name="Dl_approud_1" type="object" string="Submit" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('status','!=','dl2'),('own_rec','!=',True)]}"/>
                 <button name="Dl_2_PM" type="object" string="Assessing for PM" class="oe_highlight"
                         attrs="{'invisible' : ['|',('status','!=','dl2'),('pm_accept','=',True)]}"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
@@ -179,9 +181,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="PM_approud" type="object" string="PM Approve" class="oe_highlight"
-                        attrs="{'invisible' : [('status','!=','pm')]}"
+                        attrs="{'invisible' : ['|',('status','not in',['pm']),('own_rec','=',True)]}"
                 />
-
+                <button name="PM_approud" type="object" string="Submit" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('status','!=','pm'),('own_rec','!=',True)]}"
+                />
                 <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : [('status','!=','pm')]}"
                 />
@@ -201,7 +205,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="PM_approud" type="object" string="HR Approve" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
+                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','not in',['hr'])] ,'invisible' :[('own_rec','=',True)]}"/>
+                <button name="PM_approud" type="object" string="Submit" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')] ,'invisible' :[('own_rec','!=',True)] }"/>
                 <button name="call_Refuse_form" type="object" string="Refuse"
                         attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
             </xpath>

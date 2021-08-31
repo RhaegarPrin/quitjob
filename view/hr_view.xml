@@ -36,7 +36,7 @@
                 <group string="Note">
                     <field name="hr_interview" string="" attrs="{'invisible':[('status','!=','hr')]}"/>
                     <field name="dl_interview" string="" attrs="{'invisible':[('status','!=','dl2')]}"/>
-                    <field name="dl_pick_date" string="Chọn ngày nghỉ " attrs="{'invisible':[('status','!=','dl2')]}"/>
+                    <field name="dl_pick_date" string="Chọn ngày nghỉ " required="1" attrs="{'invisible':[('status','not in',['dl2','hr'])]}"/>
                     <field name="pm_interview" string="" attrs="{'invisible':[('status','!=','pm')]}"/>
                 </group>
                 <!-- get field to attrs-->
