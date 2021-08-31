@@ -18,7 +18,7 @@
     </record>
 
     <record id="quitjob_manage.employee_req" model="ir.actions.act_window">
-        <field name="name">Employee_req</field>
+        <field name="name">Resignation Request</field>
         <field name="res_model">employee.req</field>
         <field name="type">ir.actions.act_window</field>
         <field name="context">{'group_by':['create_date','status']}</field>
@@ -42,9 +42,9 @@
               action="quitjob_manage.employee"/>
 
     <menuitem id="quitjob_manage.employee_req_menu"
-              name="Employee REquest"
+              name="Resignation Request"
               groups="base.group_user"
-              parent="quitjob_manage.employee_menu"
+              parent="hr.menu_hr_root"
               action="quitjob_manage.employee_req"/>
 
 

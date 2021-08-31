@@ -56,7 +56,16 @@
         <field name="model_id" ref="model_employee_req"/>
         <field name="groups" eval="[(4, ref('group_hr_user'))]"/>
         <field name="domain_force">
-            ['|',('hr_id.user_id','=',user.id),('rela_user','=',user.id)]
+            ['|',('hr_id.user_id','=',user.id),('rela_user','=',user.id),('status','!=','draft')]
+        </field>
+    </record>
+
+    <record id="quitjob_manage.emp_rule_hr_2" model="ir.rule">
+        <field name="name">QUITJOB Emp record for HR RULE 2</field>
+        <field name="model_id" ref="model_employee_req"/>
+        <field name="groups" eval="[(4, ref('group_hr_user'))]"/>
+        <field name="domain_force">
+            [('rela_user','=',user.id)]
         </field>
     </record>
 
@@ -64,14 +73,38 @@
         <field name="name">QUITJOB Emp record for PM RULE</field>
         <field name="model_id" ref="model_employee_req"/>
         <field name="groups" eval="[(4, ref('group_pm_user'))]"/>
-        <field name="domain_force">['|',('pm_id.user_id','=',user.id),('rela_user','=',user.id)]</field>
+        <field name="domain_force">
+            ['|',('pm_id.user_id','=',user.id),('rela_user','=',user.id),('status','!=','draft')]
+        </field>
     </record>
+
+    <record id="quitjob_manage.emp_rule_pm_2" model="ir.rule">
+        <field name="name">QUITJOB Emp record for PM RULE 2</field>
+        <field name="model_id" ref="model_employee_req"/>
+        <field name="groups" eval="[(4, ref('group_dl_user'))]"/>
+        <field name="domain_force">
+            [('rela_user','=',user.id)]
+        </field>
+    </record>
+
 
     <record id="quitjob_manage.emp_rule_dl" model="ir.rule">
         <field name="name">QUITJOB Emp record for DL RULE</field>
         <field name="model_id" ref="model_employee_req"/>
         <field name="groups" eval="[(4, ref('group_dl_user'))]"/>
-        <field name="domain_force">['|',('dl_id.user_id','=',user.id),('rela_user','=',user.id)]</field>
+        <field name="domain_force">
+            ['|',('dl_id.user_id','=',user.id),('rela_user','=',user.id),('status','!=','draft')]
+        </field>
+    </record>
+
+
+    <record id="quitjob_manage.emp_rule_dl_2" model="ir.rule">
+        <field name="name">QUITJOB Emp record for DL RULE 2</field>
+        <field name="model_id" ref="model_employee_req"/>
+        <field name="groups" eval="[(4, ref('group_dl_user'))]"/>
+        <field name="domain_force">
+            [('rela_user','=',user.id)]
+        </field>
     </record>
 
 

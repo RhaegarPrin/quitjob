@@ -9,12 +9,10 @@
                 <group invisible="1">
                     <field name="status"/>
                 </group>
-                <group string="Reason ">
-                    <group string="Note">
-                        <field name="hr_interview" string="HR Note" attrs="{'invisible':[('status','!=','hr')]}"/>
-                        <field name="dl_interview" string="DL Note" attrs="{'invisible':[('status','!=','dl2')]}"/>
-                        <field name="pm_interview" string="PM Note" attrs="{'invisible':[('status','!=','pm')]}"/>
-                    </group>
+                <group string="Lý do ">
+                        <field name="hr_interview" string="" attrs="{'invisible':[('status','!=','hr')]}"/>
+                        <field name="dl_interview" string="" attrs="{'invisible':[('status','!=','dl2')]}"/>
+                        <field name="pm_interview" string="" attrs="{'invisible':[('status','!=','pm')]}"/>
                 </group>
                 <footer>
                     <button name="pm_refuse_done" type="object" attrs="{'invisible':[('status','!=','pm')]}">PM Refuse
@@ -35,27 +33,11 @@
         <field name="active">false</field>
         <field name="arch" type="xml">
             <form edit="0" create="0" delete="0">
-                <group string="PICK">
-                    <!--                    <group attrs="{'invisible':[('status','!=','dl2'),('pm_accept','!=',True)]}" name="PM">-->
-                    <!--                        <field name="pm_id" string="PM"-->
-                    <!--                               attrs="{'invisible':[('status','!=','dl2'),('pm_accept','!=',True)]}"/>-->
-                    <!--                    </group>-->
-                    <group attrs="{'invisible':[('status','in',['dl2','hr'])]}">
-                        <field name="department_id" invisible="1"/>
-                        <field name="parent_department_id" invisible="1"/>
-                        <field name="dl_id" string="DL"
-                               attrs="{'invisible':[('status','in',['dl2','hr'])]}"
-                               domain="['|',('department_id','=',parent_department_id),('department_id', '=', department_id),('job_title','=','DL')]"/>
-                    </group>
-                    <group attrs="{'invisible':[('status','!=','dl2')]}" name="HR">
-                        <field name="hr_id" string="HR" attrs="{'invisible':[('status','!=','dl2')]} "
-                               domain="['|',('department_id','=',parent_department_id),('department_id', '=', department_id),('job_title','=','Hr')]"/>
-                    </group>
-                </group>
                 <group string="Note">
-                    <field name="hr_interview" string="HR Note" attrs="{'invisible':[('status','!=','hr')]}"/>
-                    <field name="dl_interview" string="DL Note" attrs="{'invisible':[('status','!=','dl2')]}"/>
-                    <field name="pm_interview" string="PM Note" attrs="{'invisible':[('status','!=','pm')]}"/>
+                    <field name="hr_interview" string="" attrs="{'invisible':[('status','!=','hr')]}"/>
+                    <field name="dl_interview" string="" attrs="{'invisible':[('status','!=','dl2')]}"/>
+                    <field name="dl_pick_date" string="Chọn ngày nghỉ " attrs="{'invisible':[('status','!=','dl2')]}"/>
+                    <field name="pm_interview" string="" attrs="{'invisible':[('status','!=','pm')]}"/>
                 </group>
                 <!-- get field to attrs-->
                 <group invisible="1">
@@ -94,7 +76,7 @@
         <field name="active">false</field>
         <field name="arch" type="xml">
             <form>
-                <group string="Pick">
+                <group string="Chọn PM">
                     <field name="department_id" invisible="1"/>
                     <field name="parent_department_id" invisible="1"/>
                     <field name="pm_id" string="PM "

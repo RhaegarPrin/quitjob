@@ -17,11 +17,11 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="employee_id" string="Employee" readonly="1"/>
+                            <field name="employee_id" string="Nhân viên" readonly="1"/>
                             <field name="job_title" string="Vị trí"/>
-                            <field name="contract_id" string="Contract"/>
-                            <field name="department_id" string="Department"/>
-                            <field name="parent_id" string="Quản lý" readonly="1"/>
+                            <field name="contract_id" string="Loại hợp đồng"/>
+                            <field name="department_id" string="Phòng ban"/>
+                            <field name="parent_id" string="Department Manager" readonly="1"/>
                             <!--                            <field name="it_id" string="IT"  attrs="{'readonly': [('status', '!=', 'draft')]}"/>-->
                         </group>
                         <group>
@@ -32,6 +32,8 @@
                                    attrs="{'readonly': [('editable', '!=',True)]}"/>
                             <field name="est_date" string="Ngày dự kiến nghỉ việc theo quy định"
                                    readonly="1"/>
+                            <field name="dl_pick_date" string="Thời gian DL đồng ý cho nghỉ" readonly="1"
+                                   attrs="{'invisible':[('dl_second_accept','=',False)] }"/>
                         </group>
                     </group>
                     <group string="Lý do">
@@ -128,8 +130,8 @@
                 <field name="pm_accept" string="PM Confirm"/>
                 <field name="dl_second_accept" string="DL Confirm"/>
                 <field name="hr_accept" string="HR Confirm"/>
-                <field name="other_confirm" string="IT Confirm"/>
-                <field name="acct_confirm" string="Accountant Confirm"/>
+<!--                <field name="other_confirm" string="IT Confirm"/>-->
+<!--                <field name="acct_confirm" string="Accountant Confirm"/>-->
             </tree>
         </field>
     </record>
@@ -142,7 +144,7 @@
         <field name="groups_id" eval="[(4, ref('group_emp_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
-                <button name="send_req" type="object" string="send req" class="oe_highlight"
+                <button name="send_req_done" type="object" string="Submit" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
                 <button name="cancel_send_req" type="object" string="back to draft"/>
@@ -246,13 +248,13 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="it_confirm" type="object" string="IT Confirm" class="oe_highlight"
-                        attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')] , 'invisible':[('own_rec','=',True)]}"/>
+                        attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')] , 'invisible':['|',('other_confirm','=',True),('own_rec','=',True)]}"/>
                 attrs="{'invisible':[('rala_user','=',user.id)]}"/>
                 <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
                 <button name="it_refuse_done" type="object" string="Refuse"
-                        attrs="{'invisible' : ['|',('other_confirm','=',True),('status','!=','hr')], 'invisible':[('own_rec','=',True)]}"/>
+                        attrs="{'invisible' : ['|',('other_confirm','=',True),('status','!=','hr')], 'invisible':['|',('other_confirm','=',True),('own_rec','=',True)]}"/>
 
             </xpath>
             <xpath expr="//field[@name='other_asset']" position="replace">
@@ -291,11 +293,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='status']" position="before">
                 <button name="acct_confirm_" type="object" string="Accountant Confirm" class="oe_highlight"
-                        attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':[('own_rec','=',True)]}"/>
+                        attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':['|',('acct_confirm','=',True),('own_rec','=',True)]}"/>
                 <button name="send_req" type="object" string="send req" class="oe_highlight"
                         attrs="{'invisible': [('status', '!=', 'draft')]}"/>
                 <button name="accountant_refuse_done" type="object" string="Refuse"
-                        attrs="{'invisible' : ['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':[('own_rec','=',True)]}"/>
+                        attrs="{'invisible' : ['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':['|',('acct_confirm','=',True),('own_rec','=',True)]}"/>
             </xpath>
             <xpath expr="//field[@name='personal_asset']" position="replace">
                 <field name="personal_asset" string="Thu hồi tài sản thiết bị cá nhân"

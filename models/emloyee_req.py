@@ -9,9 +9,10 @@ class Employee_rq(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     reasons = fields.Many2many('quit.reason', string='Reasons')
+    name = fields.Char(related='employee_id.name')
     notes = fields.Many2one('quit.note', string='DL Coms')
     position = fields.Char(compute="_get_position", string='Position')
-    job_title = fields.Char(related='employee_id.job_title')
+    job_title = fields.Char(related='employee_id.job_id.name')
     department_id = fields.Many2one('hr.department', related='employee_id.department_id')
     parent_department_id = fields.Many2one('hr.department', related='department_id.parent_id')
     employee_id = fields.Many2one('hr.employee', string='Employee', tracking=True,
@@ -23,8 +24,8 @@ class Employee_rq(models.Model):
     contract_id = fields.Many2one('hr.contract', related='employee_id.contract_id', groups="base.group_user")
     pm_id = fields.Many2one('hr.employee', string='pm')
     # domain=lambda self :[('department_id', '=', self.env.user.employee_id.department_id)])
-    dl_id = fields.Many2one('hr.employee', string='dl')
-    hr_id = fields.Many2one('hr.employee', string='hr')
+    dl_id = fields.Many2one('hr.employee', string='dl', related='employee_id.parent_id')
+    hr_id = fields.Many2one('hr.employee', string='hr', related='contract_id.hr_responsible_id.employee_id')
 
     parent_id = fields.Many2one('hr.employee', related='department_id.manager_id')
     it_id = fields.Many2one('it.req')
@@ -38,13 +39,15 @@ class Employee_rq(models.Model):
     result = fields.Boolean(compute="_compute_status")
     req_date = fields.Date(string="Request Date", required=True, tracking=True)
     est_date = fields.Date(string="Est Date", compute="_compute_est_date")
+    dl_pick_date = fields.Date(string="DL PICK DATE")
+
     reason = fields.Selection([
         ('luong thap', 'Luong Thap'),
         ('Met ', 'Met'),
         ('Chuyen Cty', 'Chuyen Cty'),
         ('khac', 'Khac'),
     ], tracking=True)
-    specific_reason = fields.Char(string="Lý do cụ thể", tracking=True)
+    specific_reason = fields.Text(string="Lý do cụ thể", tracking=True)
 
     status = fields.Selection([
         ('refuse', 'Refuse'),
@@ -58,13 +61,13 @@ class Employee_rq(models.Model):
 
     interview_ids = fields.One2many('interview_rs', 'emp_id', string="interviews", store=True)
     hr_notes = fields.One2many('hr_note_trans', 'employee_req_id', string='hr Notes', store=True)
-    pm_interview = fields.Char(string='PM Note',
+    pm_interview = fields.Text(string='PM Note',
                                groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
-    dl_interview = fields.Char(string='DL Note',
+    dl_interview = fields.Text(string='DL Note',
                                groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
-    dl_msg_pm = fields.Char(string='DL MSG for PM',
+    dl_msg_pm = fields.Text(string='DL MSG for PM',
                             groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
-    hr_interview = fields.Char(string='HR Note',
+    hr_interview = fields.Text(string='HR Note',
                                groups="quitjob_manage.group_dl_user,quitjob_manage.group_pm_user,quitjob_manage.group_hr_user")
     personal_asset = fields.Selection([
         ('no', 'Có'),
@@ -183,7 +186,7 @@ class Employee_rq(models.Model):
     def call_Refuse_form(self):
         form_view = self.env.ref('quitjob_manage.refuse_note')
         return {
-            'name': _('Note'),
+            'name': _('Refuse form'),
             'view_type': 'form',
             'view_mode': 'form',
             'view_id': form_view.id,
@@ -277,8 +280,7 @@ class Employee_rq(models.Model):
             record.hr_accept = True
             record.dl_second_accept = True
             record.pm_accept = True
-            if record.it_confirm and record.acct_confirm:
-                record.status = 'done'
+            record.status = 'done'
             template_id = self.env.ref("quitjob_manage.mail_template_hr_2_emp").id
             print(template_id)
             template = self.env['mail.template'].browse(template_id)
