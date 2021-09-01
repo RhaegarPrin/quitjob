@@ -26,21 +26,21 @@
                             <field name="job_title" string="Vị trí"/>
                             <field name="contract_id" string="Loại hợp đồng"/>
                             <field name="department_id" string="Phòng ban"/>
-                            <field name="parent_id" string="Department Manager" readonly="1"/>
+                            <field name="parent_id" string="Trưởng phòng" readonly="1"/>
                             <!--                            <field name="it_id" string="IT"  attrs="{'readonly': [('status', '!=', 'draft')]}"/>-->
                         </group>
 
                         <group>
                             <field name="editable" invisible="1"/>
                             <field name="own_rec" invisible="1"/>
-                            <field name="create_date" string="Created on" readonly="1"/>
+                            <field name="create_date" string="Ngày tạo" readonly="1"/>
                             <field name="req_date" string="Ngày mong muốn"
                                    attrs="{'readonly': [('editable', '!=',True)]}"/>
                             <field name="est_date" string="Ngày dự kiến nghỉ việc theo quy định"
                                    readonly="1"/>
                             <field name="dl_acc" invisible="1"/>
                             <field name="dl_pick_date" string="Thời gian DL đồng ý cho nghỉ" readonly="1"
-                                   attrs="{'invisible':['|',('dl_second_accept','=',False),('dl_acc','=','no')] }"/>
+                                   attrs="{'invisible':[('dl_second_accept','=',False),('dl_acc','=','no')] }"/>
                         </group>
                     </group>
                     <group string="Lý do">
@@ -122,6 +122,7 @@
                     <field name="message_follower_ids" groups="base.group_user"/>
                     <field name="activity_ids"/>
                     <field name="message_ids"/>
+<!--                    <field name="auto_delete" eval="False"/>-->
                 </div>
             </form>
         </field>
@@ -160,84 +161,15 @@
                         attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
                 </button>
                 <button name="cancel_send_req" type="object" string="back to draft" invisible="1"/>
+
             </xpath>
         </field>
     </record>
 
 
-    <record id="inherited_dl_rep_form" model="ir.ui.view">
-        <field name="name">inherited.dl_req_form</field>
-        <field name="model">employee.req</field>
-        <field name="inherit_id" ref="emp_req_form"/>
-        <field name="groups_id" eval="[(4, ref('group_dl_user'))]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='status']" position="before">
-                <button name="Dl_approud_1" type="object" string="Exit interview" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('status','not in',['dl2']),('own_rec','=',True)]}"/>
-                <button name="Dl_approud_1" type="object" string="Submit" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('status','not in',['dl2','draft']),('own_rec','!=',True)]}"/>
-                <button name="Dl_2_PM" type="object" string="Assessing for PM" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('status','!=','dl2'),('pm_accept','=',True)]}"/>
-                <button name="call_Refuse_form" type="object" string="Refuse"
-                        attrs="{'invisible' : [('status','!=','dl2')]}"/>
-            </xpath>
-            <xpath expr="//field[@name='employee_id']" position="replace">
-                <field name="employee_id" string="Nhân viên"
-                       attrs="{'readonly':[('status','not in',['dl2','draft'])]}" domain="[('department_id',
-                '=', department_id),('job_title','in',['PM','Dev'])]"/>
-            </xpath>
 
-        </field>
-    </record>
 
-    <record id="inherited_pm_rep_form" model="ir.ui.view">
-        <field name="name">inherited.pm_req_form</field>
-        <field name="model">employee.req</field>
-        <field name="inherit_id" ref="emp_req_form"/>
-        <field name="groups_id" eval="[(4, ref('group_pm_user'))]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='status']" position="before">
-                <button name="PM_approud" type="object" string="Exit interview" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('status','not in',['pm']),('own_rec','=',True)]}"
-                />
-                <button name="PM_approud" type="object" string="Submit" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('status','!=','pm'),('own_rec','!=',True)]}"
-                />
-                <button name="call_Refuse_form" type="object" string="Refuse"
-                        attrs="{'invisible' : [('status','!=','pm')]}"
-                />
-            </xpath>
-            <xpath expr="//field[@name='pm_interview']" position="replace">
-                <field name="pm_interview" attrs="{'readonly' : [('status','!=','send')]} "/>
-            </xpath>
-        </field>
-    </record>
 
-    <!--    hr view form inhr-->
-    <record id="inherited_hr_rep_form" model="ir.ui.view">
-        <field name="name">inherited.hr_req_form</field>
-        <field name="model">employee.req</field>
-        <field name="inherit_id" ref="emp_req_form"/>
-        <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='status']" position="before">
-                <button name="PM_approud" type="object" string="Exit interview" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','not in',['hr'])] ,'invisible' :[('own_rec','=',True)]}"/>
-                <button name="PM_approud" type="object" string="Submit" class="oe_highlight"
-                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')] ,'invisible' :[('own_rec','!=',True)] }"/>
-                <button name="call_Refuse_form" type="object" string="Refuse"
-                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
-            </xpath>
-            <xpath expr="//field[@name='employee_id']" position="replace">
-                <field name="employee_id" string="Nhân viên"
-                       domain="[('department_id','=', department_id),('job_title','in',['PM','Dev','DL'])]"
-                       attrs="{'readonly':[('status','not in',['pm','draft'])]}"/>
-            </xpath>
-            <xpath expr="//field[@name='req_date']" position="after">
-                <button name="hr_update_date" string="Update" type="object" class="oe_stat_button" icon="fa-edit"/>
-            </xpath>
-        </field>
-    </record>
 
     <record id="inherited_admin_rep_form" model="ir.ui.view">
         <field name="name">inherited.admin_req_form</field>
@@ -258,86 +190,4 @@
         </field>
     </record>
 
-    <record id="inherited_it_rep_form" model="ir.ui.view">
-        <field name="name">inherited.it_req_form</field>
-        <field name="model">employee.req</field>
-        <field name="inherit_id" ref="emp_req_form"/>
-        <field name="groups_id" eval="[(4, ref('group_it_user'))]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='status']" position="before">
-                <button name="it_confirm" type="object" string="IT Confirm" class="oe_highlight"
-                        attrs="{'invisible':['|',('other_confirm','=',True),('status','!=','hr')] , 'invisible':['|',('other_confirm','=',True),('own_rec','=',True)]}"/>
-                attrs="{'invisible':[('rala_user','=',user.id)]}"/>
-                <button name="send_req" type="object" string="send req" class="oe_highlight"
-                        attrs="{'invisible': [('status', '!=', 'draft')]}">Send rq
-                </button>
-                <button name="it_refuse_done" type="object" string="Refuse"
-                        attrs="{'invisible' : ['|',('other_confirm','=',True),('status','!=','hr')], 'invisible':['|',('other_confirm','=',True),('own_rec','=',True)]}"/>
-
-            </xpath>
-            <xpath expr="//field[@name='other_asset']" position="replace">
-                <field name="other_asset" string="Tài sản khác"
-                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
-            </xpath>
-            <xpath expr="//field[@name='Email_asset']" position="replace">
-                <field name="Email_asset" string="Có giữ lại mail không"
-                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
-            </xpath>
-            <xpath expr="//field[@name='git_account']" position="replace">
-                <field name="git_account" string="Acc redmind và Git"
-                       attrs="{'readonly' : ['|',('other_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
-            </xpath>
-            <xpath expr="//field[@name='req_date']" position="replace">
-                <field name="req_date" string="Ngày mong muốn"
-                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
-            </xpath>
-            <xpath expr="//field[@name='reasons']" position="replace">
-                <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
-                       string=""
-                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
-            </xpath>
-            <xpath expr="//field[@name='specific_reason']" position="replace">
-                <field name="specific_reason" string=""
-                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="inherited_accountant_rep_form" model="ir.ui.view">
-        <field name="name">inherited.accountant_req_form</field>
-        <field name="model">employee.req</field>
-        <field name="inherit_id" ref="emp_req_form"/>
-        <field name="groups_id" eval="[(4, ref('group_accountant_user'))]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='status']" position="before">
-                <button name="acct_confirm_" type="object" string="Accountant Confirm" class="oe_highlight"
-                        attrs="{'invisible':['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':['|',('acct_confirm','=',True),('own_rec','=',True)]}"/>
-                <button name="send_req" type="object" string="send req" class="oe_highlight"
-                        attrs="{'invisible': [('status', '!=', 'draft')]}"/>
-                <button name="accountant_refuse_done" type="object" string="Refuse"
-                        attrs="{'invisible' : ['|',('acct_confirm','=',True),('status','!=','hr')], 'invisible':['|',('acct_confirm','=',True),('own_rec','=',True)]}"/>
-            </xpath>
-            <xpath expr="//field[@name='personal_asset']" position="replace">
-                <field name="personal_asset" string="Thu hồi tài sản thiết bị cá nhân"
-                       attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])]}"/>
-            </xpath>
-            <xpath expr="//field[@name='customer_asset']" position="replace">
-                <field name="customer_asset" string="Tài sản và thiết bị khách hàng chuyển giao cho"
-                       attrs="{'readonly' : ['|',('acct_confirm','=',True),('status','in',['refuse','draft','done'])] }"/>
-            </xpath>
-            <xpath expr="//field[@name='req_date']" position="replace">
-                <field name="req_date" string="Ngày mong muốn"
-                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
-            </xpath>
-            <xpath expr="//field[@name='reasons']" position="replace">
-                <field name="reasons" widget="many2many_tags" options="{'no_create_edit': True}"
-                       string=""
-                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
-            </xpath>
-            <xpath expr="//field[@name='specific_reason']" position="replace">
-                <field name="specific_reason" string=""
-                       attrs="{'readonly': ['|',('hr_accept', '=',True),('editable', '!=',True)]}"/>
-            </xpath>
-        </field>
-    </record>
 </odoo>

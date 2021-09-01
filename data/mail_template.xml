@@ -8,6 +8,7 @@
             <field name="subject">${object.env.user.employee_id.name} send mail to Hr ${object.hr_id.name}</field>
             <field name="email_from">${object.employee_id.work_email}</field>
             <field name="email_to">${object.hr_id.work_email}</field>
+            <field name="auto_delete" eval="False"/>
             <field name="body_html" type="html">
                 <p>${object.employee_id.work_email}</p>
                 <p>${object.employee_id.name}</p>
@@ -19,6 +20,7 @@
 
         <record id="mail_template_emp_2_dl" model="mail.template">
             <field name="name">Emp 2 DL</field>
+            <field name="auto_delete" eval="True"/>
             <field name="model_id" ref="model_employee_req"/>
             <field name="subject">${object.employee_id.name} send request for DL</field>
             <field name="email_from">${object.employee_id.work_email}</field>

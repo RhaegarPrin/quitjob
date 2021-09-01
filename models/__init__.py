@@ -1,3 +1,3 @@
-from . import hr_note ,emloyee_req , employees
-from . import  it_req
-from . import interview_rs ,reason , dl_com
+from . import emloyee_req  , reason
+
+from . import   employees, dl_com  #file không dùng

@@ -34,20 +34,21 @@
         <field name="arch" type="xml">
             <form edit="0" create="0" delete="0">
                 <group string="Approve">
+                    <field name="pos_ass" invisible="1"/>
                     <field name="pm_reason" options="{'no_create_edit': True}" widget="many2many_tags"
-                           attrs="{'invisible':[('status','!=','pm')]}" string="Lý do"/>
+                           attrs="{'invisible':[('pos_ass','!=','pm')]}" string="Lý do"/>
                     <field name="dl_reason" options="{'no_create_edit': True}" widget="many2many_tags"
-                           attrs="{'invisible':[('status','not in',['dl2','draft'])]}" string="Lý do"/>
+                           attrs="{'invisible':[('pos_ass','not in',['dl2'])]}" string="Lý do"/>
                     <field name="hr_reason" options="{'no_create_edit': True}" widget="many2many_tags"
                            attrs="{'invisible':[('status','!=','hr')]}" string="Lý do"/>
                     <field name="hr_interview" string="Ghi chú" attrs="{'invisible':[('status','!=','hr')]}"/>
                     <field name="dl_interview" string="Ghi chú"
-                           attrs="{'invisible':[('status','not in',['dl2','draft'])]}"/>
+                             attrs="{'invisible':[('pos_ass','not in',['dl2'])]}"/>
                     <field name="dl_acc" widget="radio" string="Bạn có đồng ý cho ngỉ không"
-                           attrs="{'invisible':[('status','not in',['dl2','draft'])]}"/>
+                             attrs="{'invisible':[('pos_ass','not in',['dl2'])]}"/>
                     <field name="dl_pick_date" string="Chọn ngày nghỉ "
-                           attrs="{'invisible':['|',('status','not in',['dl2','draft']),('dl_acc','=','no')]}"/>
-                    <field name="pm_interview" string="Ghi chú" attrs="{'invisible':[('status','!=','pm')]}"/>
+                           attrs="{'invisible':['|',('pos_ass','not in',['dl2']),('dl_acc','=','no')]}"/>
+                    <field name="pm_interview" string="Ghi chú" attrs="{'invisible':[('pos_ass','!=','pm')]}"/>
                 </group>
                 <!-- get field to attrs-->
                 <group invisible="1">
@@ -57,17 +58,18 @@
                     <field name="pm_accept" string="DL Aprroved"/>
                 </group>
                 <!--                get field for attrs-->
+                <field name="editable" invisible="1"/>
                 <footer>
                     <button name="PM_approud_done" type="object" class="oe_highlight"
-                            attrs="{'invisible':[('status','!=','pm')]}">PM
+                            attrs="{'invisible':[('pos_ass','!=','pm')]}">PM
                         Approve
                     </button>
                     <button name="Dl_approved_done" type="object" class="oe_highlight"
-                            attrs="{'invisible':[('status','not in',['draft','dl2'])]}">DL
+                              attrs="{'invisible':[('pos_ass','not in',['dl2'])]}">DL
                         Approve
                     </button>
                     <button name="Hr_approved_done" type="object" class="oe_highlight"
-                            attrs="{'invisible':[('status','!=','hr')]}">HR
+                           attrs="{'invisible':[('status','not in',['hr'])]}">HR
                         Approve
                     </button>
                 </footer>
@@ -86,7 +88,7 @@
                 <group string="Chọn PM">
                     <field name="department_id" invisible="1"/>
                     <field name="parent_department_id" invisible="1"/>
-                    <field name="pm_id" string="PM "
+                    <field name="pm_id" string="PM " required="1"
                            domain="['|',('department_id','=',parent_department_id),('department_id', '=', department_id),('job_title','=','PM')]"/>
                     <field name="dl_msg_pm" string="MSG"/>
                 </group>

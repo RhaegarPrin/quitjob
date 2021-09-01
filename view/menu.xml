@@ -10,12 +10,6 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <record id="quitjob_manage.employee" model="ir.actions.act_window">
-        <field name="name">Employee_action</field>
-        <field name="res_model">employee.company</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">kanban,tree,form</field>
-    </record>
 
     <record id="quitjob_manage.employee_req" model="ir.actions.act_window">
         <field name="name">Resignation Request</field>
@@ -26,20 +20,10 @@
     </record>
 
 
-    <record id="quitjob_manage.it_req" model="ir.actions.act_window">
-        <field name="name">IT_action</field>
-        <field name="res_model">it.req</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">kanban,tree,form</field>
-    </record>
+
 
     <menuitem id="quitjob_manage.employee_menu"
               name=" Quit J Manage"/>
-
-    <menuitem id="quitjob_manage.emp_menu"
-              name=" Employee Action"
-              parent="quitjob_manage.employee_menu"
-              action="quitjob_manage.employee"/>
 
     <menuitem id="quitjob_manage.employee_req_menu"
               name="Resignation Request"
@@ -47,16 +31,9 @@
               parent="hr.menu_hr_root"
               action="quitjob_manage.employee_req"/>
 
-
-    <menuitem id="quitjob_manage.it_req_menu"
-              name="IT req"
-              groups="group_it_user"
-              parent="quitjob_manage.employee_menu"
-              action="quitjob_manage.it_req"/>
-
     <menuitem id="quitjob_manage.reason"
-              name="Add Reason"
-              parent="quitjob_manage.employee_menu"
+              name="Add quit job reason"
+              parent="hr.menu_human_resources_configuration"
               action="quitjob_manage.reason_action"/>
 
 

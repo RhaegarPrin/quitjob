@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="inherited_pm_rep_form" model="ir.ui.view">
+        <field name="name">inherited.pm_req_form</field>
+        <field name="model">employee.req</field>
+        <field name="inherit_id" ref="emp_req_form"/>
+        <field name="groups_id" eval="[(4, ref('group_pm_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status']" position="before">
+                <button name="PM_approud" type="object" string="Exit interview" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('status','not in',['pm']),('own_rec','=',True)]}"
+                />
+                <button name="PM_approud" type="object" string="Submit" class="oe_highlight"
+                        attrs="{'invisible' : [('editable','!=',True)]}"/>
+                <button name="call_Refuse_form" type="object" string="Refuse"
+                        attrs="{'invisible' : [('status','!=','pm')]}"
+                />
+            </xpath>
+            <xpath expr="//field[@name='pm_interview']" position="replace">
+                <field name="pm_interview" attrs="{'readonly' : [('status','!=','send')]} "/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

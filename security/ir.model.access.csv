@@ -1,30 +1,9 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
 
-access_hr_note_test,access.hr_note_test,model_hr_note_test,base.group_user,1,1,1,1
-access_hr_note_trans,access.hr_note_trans,model_hr_note_trans,base.group_user,1,1,1,1
-access_hr_note_test_2,access.hr_note_test_2,model_hr_note_test,,1,1,1,1
+
 
 access_quit_reason,access.quit.reason,model_quit_reason,base.group_system,1,1,1,1
 access_quit_reason_user,access.quit.reason_user,model_quit_reason,base.group_user,1,0,0,0
-
-access_quit_note_emp,access.quit.note_emp,model_quit_note,quitjob_manage.group_emp_user,1,0,0,0
-access_quit_note_pm,access.quit.note_pm,model_quit_note,quitjob_manage.group_pm_user,1,0,0,0
-access_quit_note_dl,access.quit.note_dl,model_quit_note,quitjob_manage.group_dl_user,1,1,1,1
-access_quit_note_hr,access.quit.note_hr,model_quit_note,quitjob_manage.group_hr_user,1,1,1,1
-access_quit_note_it,access.quit.note_it,model_quit_note,quitjob_manage.group_it_user,1,1,1,1
-
-access_employee_company_emp,access.employee.company_emp,model_employee_company,quitjob_manage.group_emp_user,1,0,0,0
-access_employee_company_dl,access.employee.company_dl,model_employee_company,quitjob_manage.group_dl_user,1,0,0,0
-access_employee_company_pm,access.employee.company_pm,model_employee_company,quitjob_manage.group_pm_user,1,1,1,1
-access_employee_company_hr,access.employee.company_hr,model_employee_company,quitjob_manage.group_hr_user,1,1,1,1
-access_employee_company_it,access.employee.company_it,model_employee_company,quitjob_manage.group_it_user,1,0,0,0
-
-access_interview_rs_pm,access.interview_rs_pm,model_interview_rs,quitjob_manage.group_pm_user,1,1,1,1
-access_interview_rs_emp,access.interview_rs_emp,model_interview_rs,quitjob_manage.group_emp_user,1,0,0,0
-access_interview_rs_dl,access.interview_rs_dl,model_interview_rs,quitjob_manage.group_dl_user,1,0,0,0
-access_interview_rs_hr,access.interview_rs_hr,model_interview_rs,quitjob_manage.group_hr_user,1,0,0,0
-access_interview_rs_it,access.interview_rs_it,model_interview_rs,quitjob_manage.group_it_user,1,0,0,0
-
 
 
 access_employee_req,access.employee.req,model_employee_req,quitjob_manage.group_emp_user,1,1,1,1
@@ -35,19 +14,3 @@ access_employee_req_it,access.employee.req_it,model_employee_req,quitjob_manage.
 access_employee_req_acc,access.employee.req_acc,model_employee_req,quitjob_manage.group_accountant_user,1,1,1,1
 access_employee_req_ad,access.employee.req_ad,model_employee_req,quitjob_manage.group_admin_user,1,1,1,1
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-access_it_req,access.it.req,model_it_req,base.group_system,1,1,1,1
-access_it_req_emp,access.it.req,model_it_req,quitjob_manage.group_emp_user,1,0,0,0

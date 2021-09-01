@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="inherited_dl_rep_form" model="ir.ui.view">
+        <field name="name">inherited.dl_req_form</field>
+        <field name="model">employee.req</field>
+        <field name="inherit_id" ref="emp_req_form"/>
+        <field name="groups_id" eval="[(4, ref('group_dl_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status']" position="before">
+                <button name="Dl_approud_1" type="object" string="Exit interview" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('status','not in',['dl2']),('own_rec','=',True)]}"/>
+                <button name="Dl_approud_1" type="object" string="Submit" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('status','not in',['dl2','draft']),('own_rec','!=',True)]}"/>
+                <button name="call_Refuse_form" type="object" string="Refuse"
+                        attrs="{'invisible' : [('status','!=','dl2')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="replace">
+                <field name="employee_id" string="Nhân viên"
+                       attrs="{'readonly':[('status','not in',['dl2','draft'])]}" domain="[('department_id',
+                '=', department_id),('job_title','in',['PM','Dev'])]"/>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="after">
+                <button name="Dl_2_PM" type="object" string="Assign to PM" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('status','!=','dl2'),('pm_accept','=',True)]}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

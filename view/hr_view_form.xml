@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="inherited_hr_rep_form" model="ir.ui.view">
+        <field name="name">inherited.hr_req_form</field>
+        <field name="model">employee.req</field>
+        <field name="inherit_id" ref="emp_req_form"/>
+        <field name="groups_id" eval="[(4, ref('group_hr_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='status']" position="before">
+                <button name="PM_approud" type="object" string="Exit interview" class="oe_highlight"
+                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','not in',['hr'])] }"/>
+                <button name="PM_approud" type="object" string="Submit" class="oe_highlight"
+                        attrs="{'invisible' : [('editable','!=',True)] }"/>
+                <button name="call_Refuse_form" type="object" string="Refuse"
+                        attrs="{'invisible' : ['|',('hr_accept','=',True),('status','!=','hr')]}"/>
+            </xpath>
+            <xpath expr="//field[@name='employee_id']" position="replace">
+                <field name="employee_id" string="Nhân viên"
+                       domain="[('department_id','=', department_id),('job_title','in',['PM','Dev','DL'])]"
+                       attrs="{'readonly':[('status','not in',['pm','draft'])]}"/>
+            </xpath>
+            <xpath expr="//field[@name='req_date']" position="replace">
+                <label for="req_date" string="Ngày mong muốn"/>
+                <div>
+                    <field name="req_date" string="Ngày mong muốn"
+                           attrs="{'readonly': [('editable', '!=',True)]}"/>
+                    <button name="hr_update_date" string="Update" type="object" class="oe_stat_button" icon="fa-edit"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
