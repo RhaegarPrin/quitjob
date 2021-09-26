@@ -93,25 +93,27 @@ class Employee_rq(models.Model):
         ('yes', 'Không'),
     ], default='no')
 
+    def test_submit(self):
+        for r in self :
+            r.status='done'
+            print(r.status)
+
     def send_req_done(self):
-        check = self.env['employee.req'].sudo().search(
-            [('employee_id', '=', self.employee_id.id), ('status', 'not in', ['refuse', 'draft', 'done'])])
-        for d in check:
-            print(d.status)
-        if len(check) > 0:
-            raise ValidationError('Nhân viên này đang trong quá trình ngỉ việc không thể nộp đơn mới')
+        # check = self.env['employee.req'].sudo().search(
+        #     [('employee_id', '=', self.employee_id.id), ('status', 'not in', ['refuse', 'draft', 'done'])])
+        # for d in check:
+        #     print(d.status)
+        # if len(check) > 0:
+        #     raise ValidationError('Nhân viên này đang trong quá trình ngỉ việc không thể nộp đơn mới')
         for record in self:
-            if record.status == 'draft' and record.creator_role == 'draft':
                 record.status = 'dl2'
                 record.pos_ass = 'dl2'
                 template_id = self.env.ref("quitjob_manage.mail_template_emp_2_dl").id
-                print(template_id)
                 template = self.env['mail.template'].browse(template_id)
-                template.send_mail(self.id, force_send=True)
+                template.send_mail(record.id, force_send=True)
                 record.editable = False
-                record.notes = self.env.user.employee_id.name + 'assigned DL to do resignation request '
-            else:
-                raise ValidationError('Bạn không có quyền thay đổi')
+                record.notes = record.employee_id.name + 'assigned DL to do resignation request '
+                print(record.notes)
 
     def send_req(self):
         form_view = self.env.ref('quitjob_manage.approved_note')

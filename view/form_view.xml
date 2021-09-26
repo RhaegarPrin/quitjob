@@ -22,9 +22,9 @@
                     </div>
                     <group>
                         <group>
-                            <field name="employee_id" string="Nhân viên" readonly="1"/>
-                            <field name="job_title" string="Vị trí"/>
-                            <field name="contract_id" string="Loại hợp đồng"/>
+                            <field name="employee_id" string="Nhân viên" readonly="1" widget="bold_red"/>
+                            <field name="job_title" string="Vị trí" widget="bold_red"/>
+                            <field name="contract_id" string="Loại hợp đồng" />
                             <field name="department_id" string="Phòng ban"/>
                             <field name="parent_id" string="Trưởng phòng" readonly="1"/>
                             <!--                            <field name="it_id" string="IT"  attrs="{'readonly': [('status', '!=', 'draft')]}"/>-->

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate = "1">
+        <record id="employee_req" model="ir.actions.report">
+            <field name="name">Employee request</field>
+            <field name="model">employee.req</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">quitjob_manage.report_employee_request</field>
+            <field name="report_file">quitjob_manage.request</field>
+            <field name="binding_model_id" ref="model_employee_req"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

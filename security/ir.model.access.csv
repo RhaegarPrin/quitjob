@@ -4,7 +4,7 @@ id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
 
 access_quit_reason,access.quit.reason,model_quit_reason,base.group_system,1,1,1,1
 access_quit_reason_user,access.quit.reason_user,model_quit_reason,base.group_user,1,0,0,0
-
+access_hr_note_trans,access.hr_note_trans,model_hr_note_trans,base.group_user,1,1,1,1
 
 access_employee_req,access.employee.req,model_employee_req,quitjob_manage.group_emp_user,1,1,1,1
 access_employee_req_dl,access.employee.req_dl,model_employee_req,quitjob_manage.group_dl_user,1,1,1,1
